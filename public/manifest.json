@@ -1,0 +1,6 @@
+{
+  "name": "YodaOS JSAR Website",
+  "short_name": "JSAR Website",
+  "description": "The embeddable AR runtime for JavaScript Developers",
+  "start_url": "/"
+}
