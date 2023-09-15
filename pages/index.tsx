@@ -114,7 +114,11 @@ export default function Home() {
             </li>
           </ul>
           <Space style={{ marginTop: '20px' }}>
-            <Button shape="round" size="large" type="primary">下载 VSCode 插件</Button>
+            <Button shape="round" size="large" type="primary" icon={
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref="#icon-vscode"></use>
+              </svg>
+            }>下载 VSCode 插件</Button>
             <Button shape="round" size="large">
               开发者文档
               <ArrowRightOutlined />
@@ -122,7 +126,7 @@ export default function Home() {
           </Space>
         </Space>
         <Image
-          src="/logo-jsar.png"
+          src="logo-jsar.png"
           alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
           height={220}
           width={220}
@@ -223,7 +227,7 @@ export default function Home() {
         </Space>
         <Space size="large" align="start">
           <Image
-            src="/logo-typescript.png"
+            src="logo-typescript.png"
             alt="TypeScript"
             height={160}
             width={160}
@@ -266,7 +270,7 @@ export default function Home() {
 
       <Space size={10} style={{ padding: '30px 0', width: '100%', justifyContent: 'space-around' }}>
         <Image
-          src="/logo-babylonjs.svg"
+          src="logo-babylonjs.svg"
           alt="Babylon.js"
           height={240}
           width={240}
@@ -291,7 +295,7 @@ export default function Home() {
 
       <Space size={10} style={{ padding: '30px 0', width: '100%', justifyContent: 'space-around' }}>
         <Image
-          src="/logo-unity.svg"
+          src="logo-unity.svg"
           alt="Babylon.js"
           height={240}
           width={240}

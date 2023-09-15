@@ -1,6 +1,7 @@
-import { CommentOutlined, GithubOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Layout, Menu, Space } from 'antd'
+import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
+import { Button, Divider, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function RootLayout({
   children,
@@ -21,14 +22,16 @@ export default function RootLayout({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div className="logo" style={{ marginRight: '2.25rem' }}>
-            <Image
-              src="/logo-jsar.png"
-              alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
-              width={50}
-              height={50}
-            />
-          </div>
+          <Link href="/">
+            <div className="logo" style={{ marginRight: '2.25rem' }}>
+              <Image
+                src="logo-jsar.png"
+                alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
+                width={50}
+                height={50}
+              />
+            </div>
+          </Link>
           <Space>
             <Dropdown
               arrow={true}
@@ -36,7 +39,16 @@ export default function RootLayout({
               menu={{
                 items: [{
                   key: 'vscode-extension',
-                  label: 'VSCode 插件',
+                  label: (
+                    <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions" target="_blank">
+                      <Space style={{ fontSize: '16px' }}>
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref="#icon-vscode"></use>
+                        </svg>
+                        VSCode 插件
+                      </Space>
+                    </a>
+                  ),
                 }],
               }}
             >
@@ -48,16 +60,50 @@ export default function RootLayout({
               menu={{
                 items: [{
                   key: 'manual',
-                  label: '上手指南',
+                  label: (
+                    <Link href="/manual/introduction">
+                      <Space style={{ fontSize: '16px' }}>
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref="#icon-zhinan"></use>
+                        </svg>
+                        开发者指南
+                      </Space>
+                    </Link>
+                  )
                 }, {
                   key: 'apis',
-                  label: '接口文档',
+                  label: (
+                    <Link href="/api">
+                      <Space style={{ fontSize: '16px' }}>
+                        <UnorderedListOutlined />
+                        API 文档
+                      </Space>
+                    </Link>
+                  )
                 }, {
                   key: 'publish',
-                  label: '发布到 RAP',
+                  label: (
+                    <Link href="/publish">
+                      <Space style={{ fontSize: '16px' }}>
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref="#icon-package"></use>
+                        </svg>
+                        发布
+                      </Space>
+                    </Link>
+                  )
                 }, {
                   key: 'examples',
-                  label: '示例组件',
+                  label: (
+                    <Link href="/examples">
+                      <Space style={{ fontSize: '16px' }}>
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref="#icon-examples"></use>
+                        </svg>
+                        示例
+                      </Space>
+                    </Link>
+                  )
                 }],
               }}
             >
@@ -71,7 +117,7 @@ export default function RootLayout({
                   key: 'rokid-forum',
                   label: (
                     <a href="#" target="_blank">
-                      <Space>
+                      <Space style={{ fontSize: '16px' }}>
                         <CommentOutlined />
                         开发者论坛
                       </Space>
@@ -81,7 +127,7 @@ export default function RootLayout({
                   key: 'github',
                   label: (
                     <a href="https://github.com/M-CreativeLab/jsar-website" target="_blank">
-                      <Space>
+                      <Space style={{ fontSize: '16px' }}>
                         <GithubOutlined />
                         GitHub
                       </Space>
@@ -96,7 +142,7 @@ export default function RootLayout({
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           By&nbsp;&nbsp;<Image
-            src="/logo-rokid-ar-platform.png"
+            src="logo-rokid-ar-platform.png"
             alt="Rokid AR Platform"
             width={208}
             height={21}

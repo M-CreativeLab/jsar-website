@@ -1,0 +1,70 @@
+# 创建项目
+
+JSAR 空间组件项目遵循 npm 项目规范，使用 `npm init` 命令创建项目。
+
+```bash
+$ npm init
+```
+
+运行成功后，会获得一个 package.json，可以按照如下编写：
+
+```json
+{
+  "name": "jsar-gallery-rokid-jungle",
+  "displayName": "Rokid Jungle",
+  "version": "1.0.0",
+  "description": "The mstudio gallery for JSAR",
+  "main": "main.xsml",
+  "files": [
+    "icon.png",
+    "main.xsml",
+    "lib/*.ts",
+    "model/foobar.glb"
+  ],
+  "icon3d": {
+    "base": "./model/foobar.glb"
+  },
+  "author": "your name and email",
+  "license": "MIT",
+  "devDependencies": {
+    "@yodaos-jsar/types": "^1.4.0"
+  }
+}
+```
+
+下面是 package.json 的字段说明：
+
+- `name`：项目名称，必须是小写字母，可以包含连字符和下划线，不能包含空格。
+- `displayName`：项目显示名称，可以包含中文。
+- `version`：项目版本号，遵循 [语义化版本](https://semver.org/lang/zh-CN/) 规范。
+- `description`：项目描述。
+- `main`：项目入口文件，必须是 xsml 文件。
+- `files`：项目文件列表，包含 xsml 文件、icon 图片、模型文件等，只有添加到 `files` 字段中的文件或文件夹才会被打包到 JSAR 空间组件包中。
+- `icon3d`：项目 3D 图标配置，包含 `base` 和 `size` 两个字段，其中 `base` 是模型文件路径，`size` 是模型文件的尺寸，单位是米。
+- `author`：项目作者，可以是姓名和邮箱。
+- `license`：项目许可证，遵循 [SPDX](https://spdx.org/licenses/) 规范。
+- `devDependencies`：项目开发依赖，包含 `@yodaos-jsar/types`，这是 JSAR 空间组件的类型定义文件。
+
+特别注意事项：
+
+1. `name` 字段必须是小写字母，不支持 scoped namespace，例如 `@rokid/jsar-gallery-rokid-jungle` 是不支持的。
+2. `main` 字段必须是 xsml 文件，不支持 js 文件。
+3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在 JSAR 空间组件商店及小组件列表中。
+4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了 JSAR 空间组件的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+
+为了使用 JSAR 的 TypeScript 的类型提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
+
+```json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "types": [
+      "@yodaos-jsar/types"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
+```
