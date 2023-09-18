@@ -1,3 +1,113 @@
 # XSML
 
-XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它沿用了 HTML 的一些标签定义，比如 head、title、script、style、div 等，同时也增加了一些标签用于表示空间，比如间 body 替换为 space，使用 cube 表示一个立方体等。
+XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它沿用了 HTML 的一些标签定义，比如 `head`、`title`、`script`、`style`、`div` 等，同时也增加了一些标签用于表示空间，比如 `body` 替换为 `space`，使用 `cube` 表示一个立方体等。
+
+以下是一个 XSML 的示例：
+
+```html
+<xsml version="1.0">
+  <head>
+    <title>Rokid Jungle</title>
+    <link id="model" rel="mesh" type="octstream/glb" href="./model/welcome.glb" />
+    <script src="./lib/main.ts"></script>
+  </head>
+  <space>
+    <mesh id="model" ref="model" selector="__root__" />
+  </space>
+</xsml>
+```
+
+## XSML 标签
+
+以下对当前 XSML 做简要说明。
+
+### xsml
+
+`<xsml>` 标签是 XSML 的根标签，它的属性有：
+
+- `version`：表示 XSML 的版本号，目前只支持 `1.0`。
+
+### head
+
+`<head>` 标签用于定义 XSML 的头部信息，它的子标签有：`title`、`link`、`script` 等。
+
+#### title
+
+`<title>` 标签用于定义 XSML 的标题，它的内容为字符串。
+
+#### link
+
+`<link>` 标签用于定义 XSML 的链接信息，它的属性有：
+
+- `id`：表示链接的唯一标识符，它的值为字符串。
+- `rel`：表示链接的关系，它的值为字符串，目前只支持 `mesh`。
+- `type`：表示链接的类型，它的值为字符串，目前只支持 `octstream/glb`。
+
+在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
+
+> 在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件。
+
+#### script
+
+`<script>` 标签用于定义 XSML 的脚本信息，它的属性有：
+
+- `src`：表示脚本的链接地址，它的值为字符串。
+
+在 XSML 中，`<script>` 标签除了可以引入 JavaScript 文件外，还可以引入 TypeScript 文件，但需要在 `src` 属性中指定文件的后缀名为 `.ts`，引入 TypeScript 脚本无需额外的代码编译。
+
+> 当前版本中，我们还不支持 CommonJS 或 ECMAScript Module 等模块系统，但你可以通过挂载全局变量 `global.spaceDocument` 来实现不同文件之间的引用，但仍然不推荐这么做，因为这样会导致代码的可读性变差。
+
+> 我们会尽快在 JSAR 中支持 ECMAScript Module。
+
+#### style
+
+`<style>` 标签用于定义 XSML 的样式信息，它与 HTML 中的 style 有同样的用途，它的属性有：
+
+- `type`：表示样式的类型，它的值为字符串，目前只支持 `text/scss`。
+
+以下是一个 `<style>` 标签的示例：
+
+```html
+<xsml version="1.0">
+  <head>
+    <style type="text/scss">
+      @material yellow {
+        diffuse-color: #fdd276;
+        backface-culling: false;
+        side-orientation: frontside;
+      }
+      #lion {
+        rotation: 0 0 0;
+      }
+      #lion_body {
+        material: "yellow";
+        position: 0 -30 -60;
+      }
+      #lion_head {
+        y: 60;
+        z: -50;
+      }
+      #lion_face {
+        material: "yellow";
+        position: 0 0 135;
+      }
+      #lion_mane {
+        position: 0 -10 80;
+      }
+    </style>
+  </head>
+  <space>
+    <!-- 空间结构 -->
+  </space>
+</xsml>
+```
+
+可以看到通过 `<style>` 标签内部的内容，可以像 CSS 一样定义样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+
+比如我们通过原来 `@font-family` 和 `@keyframes` 的语法定义了 3D 中的材质，在 `@material` 中你可以设置材质类型、颜色、贴图等，然后在具体的元素中通过 material 属性来使用对应的材质定义。
+
+同样，我们也拓展了原有的样式定义，比如增加了 `position`、`rotation`、`scale` 等属性，用于定义 3D 元素的位置、旋转、缩放等。
+
+> 注：当前版本仅支持按照 id 查询，后续会兼容 CSS 的按照元素标签和 class 查询。
+
+> 更多关于 `<style>` 标签的内容，可以参考 [SCSS](./basic-concepts/intro-scss)。
