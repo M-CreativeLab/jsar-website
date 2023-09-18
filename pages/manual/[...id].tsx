@@ -78,22 +78,22 @@ const tocOfManual: TocItem[] = [
     title: '示例',
     key: 'examples',
     children: [{
-      title: 'Hello World',
-      key: 'hello-world',
+      title: 'Hello Rokid',
+      key: 'hello-rokid',
     }, {
-      title: 'AR 画板',
+      title: '星系',
       key: 'ar-drawing-board',
     }, {
-      title: 'AR 识字',
+      title: '小狗',
       key: 'ar-recognize-words',
     }, {
-      title: 'AR 拼图',
+      title: '魔方',
       key: 'ar-puzzle',
     }, {
-      title: 'AR 翻牌',
+      title: '棒球',
       key: 'ar-flip-card',
     }, {
-      title: 'AR 点餐',
+      title: '狮子',
       key: 'ar-ordering',
     }]
   }
@@ -158,7 +158,7 @@ export default function Page() {
         )
       },
       img: (props) => {
-        return <img {...props} style={{ maxWidth: '80%' }} />
+        return <img {...props} style={{ maxWidth: '60%' }} />
       },
       code: (props) => {
         return <Typography.Text code>{props.children}</Typography.Text>

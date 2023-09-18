@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Button, Divider, Space, Tabs, Tooltip, Typography } from 'antd'
 import { ArrowRightOutlined, CheckCircleOutlined, CodeSandboxOutlined, Html5Outlined } from '@ant-design/icons'
 import { CodeBlock, monokaiSublime } from 'react-code-blocks'
+import Link from 'next/link'
 
 const xsmlCodeText = `
 <xsml version="1.0">
@@ -119,10 +120,12 @@ export default function Home() {
                 <use xlinkHref="#icon-vscode"></use>
               </svg>
             }>下载 VSCode 插件</Button>
-            <Button shape="round" size="large">
-              开发者文档
-              <ArrowRightOutlined />
-            </Button>
+            <Link href="manual/introduction">
+              <Button shape="round" size="large">
+                开发者文档
+                <ArrowRightOutlined />
+              </Button>
+            </Link>
           </Space>
         </Space>
         <Image
