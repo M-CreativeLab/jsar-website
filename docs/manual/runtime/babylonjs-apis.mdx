@@ -48,10 +48,22 @@ console.log(vector3);
 - [资源系统](https://doc.babylonjs.com/features/featuresDeepDive/importers)
 - [事件系统](https://doc.babylonjs.com/features/featuresDeepDive/events)
 
+未来会在支持列表中实现的特性：
+
+- [音频系统](https://doc.babylonjs.com/features/featuresDeepDive/audio)
+- [粒子系统](https://doc.babylonjs.com/features/particles)
+- [物理系统](https://doc.babylonjs.com/features/physics_engines)
+- [后处理](https://doc.babylonjs.com/features/postprocesses)
+- [WebXR](https://doc.babylonjs.com/features/webxr)
+
+> 注：以上不支持的仅代表 Babylon.js APIs 的支持情况，有一些能力会优先实现 Web-standard APIs 版本，比如音频系统，可以使用 [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) ，再保证 Babylon.js APIs 的一致性。
+
 另外，有一些 API 与可嵌入空间的定位冲突，因此在 JSAR 中无法使用，比如：
 
 - [相机系统](https://doc.babylonjs.com/features/cameras)，由于相机不由 JSAR 控制，因此无法使用 Babylon.js 中的相机系统
 - [灯光系统](https://doc.babylonjs.com/features/lights)，由于灯光同样不受 JSAR 控制，因此无法使用 Babylon.js 中的灯光系统
+
+为了更好地让开发者在 JSAR 中使用 Babylon.js APIs，我们将简单介绍 JSAR 是如何实现这些 Babylon.js 特性的底层原理，了解这些原理后可以更好地理解 Babylon.js APIs 在 JSAR 中的运行方式。
 
 ### Babylon.js 动画系统
 
@@ -121,3 +133,31 @@ const animationGroups = scene.animationGroups;
 // 播放第一个动画组
 animationGroups[0].start(true);
 ```
+
+### Babylon.js 网格系统
+
+Babylon.js 网格系统是 Babylon.js 中最重要的一部分，它提供了一套完整的网格系统，JSAR 通过 Babylon.js Mesh API 获取每个对象的顶点数据（包含顶点坐标、法线向量、UV 等），再将其同步到 Unity 渲染侧，以实现 Babylon.js 中的网格数据和 Unity 中的网格数据的同步。
+
+> 当前支持的顶点数据：
+>
+> - 顶点坐标（Position）
+> - 顶点组合（Triangles）
+> - 法线向量（Normals）
+> - 切线向量（Tangents）
+> - UV 坐标（UV1）
+>
+> 如需支持更多顶点数据，请在 [GitHub Issues](https://github.com/M-CreativeLab/jsar-website/issues/new) 中提出。
+
+### Babylon.js 材质系统
+
+在 Babylon.js 中，物体的材质被分为两类：[Standard Material](https://doc.babylonjs.com/typedoc/classes/babylon.standardmaterial) 和 [PBR Material](https://doc.babylonjs.com/typedoc/classes/babylon.pbrmetallicroughnessmaterial)，它们都是 Babylon.js 中的基础材质，JSAR 通过 Babylon.js Material API 获取每个对象的材质数据（包含材质颜色、纹理等），再将其同步到 Unity 渲染侧，以实现 Babylon.js 中的材质数据和 Unity 中的材质数据的同步。
+
+### Babylon.js 资源系统
+
+资源系统用于加载 Babylon.js 中的资源，比如 glTF、glb、Babylon、OBJ、STL、FBX 等，在 JSAR 中并未直接使用它，而是通过 Babylon.js 的 [SceneLoader](https://doc.babylonjs.com/typedoc/classes/babylon.sceneloader) 来加载资源，加载后的资源通过网格系统和材质系统同步到 Unity 渲染侧。
+
+> 当前仅支持加载 `glb/gltf` 资源，其他资源会在后续版本中支持。
+
+### Babylon.js 事件系统
+
+事件系统是 Babylon.js 基于 [Observable](https://doc.babylonjs.com/typedoc/classes/babylon.observable) 实现的一套事件系统，是纯粹 JavaScript 实现的功能，因此不存在任何同步问题，可以直接使用。

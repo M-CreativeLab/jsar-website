@@ -1,9 +1,18 @@
-const remarkGfm = import('remark-gfm')
+import nextMdx from '@next/mdx'
+import remarkGfm from 'remark-gfm'
 
-const withMDX = require('@next/mdx')({
+const withMDX = nextMdx({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [
+      [
+        remarkGfm,
+        {
+          tableCellPadding: true,
+          singleTilde: true,
+        }
+      ]
+    ],
     rehypePlugins: [],
   },
 })
@@ -18,4 +27,4 @@ const nextConfig = {
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
 }
 
-module.exports = withMDX(nextConfig)
+export default withMDX(nextConfig)

@@ -1,4 +1,4 @@
-import { Affix, Layout, Tree, TreeDataNode, Typography } from 'antd'
+import { Affix, Layout, Table, Tree, TreeDataNode, Typography } from 'antd'
 import { useRouter } from 'next/router'
 import type { MDXProps } from 'mdx/types'
 import { useEffect, useState } from 'react'
@@ -65,12 +65,12 @@ const tocOfManual: TocItem[] = [
       key: 'web-apis',
     }, {
       title: 'JSAR APIs',
-      key: 'jsar-api',
+      key: 'jsar-internal-apis',
     }, {
       title: '模块系统',
       key: 'module-system',
     }, {
-      title: '调试',
+      title: '调试代码',
       key: 'debugging',
     }]
   },
@@ -179,6 +179,50 @@ export default function Page() {
                 width: '100%',
               }}
             />
+          </Typography.Paragraph>
+        )
+      },
+      table: (props) => {
+        return (
+          <Typography.Paragraph>
+            <style scoped>{`
+            /* Light theme. */
+            :root {
+              --color-canvas-default: #ffffff;
+              --color-canvas-subtle: #f6f8fa;
+              --color-border-default: #d0d7de;
+              --color-border-muted: hsla(210, 18%, 87%, 1);
+            }
+            table {
+              border-spacing: 0;
+              border-collapse: collapse;
+              display: block;
+              margin-top: 0;
+              margin-bottom: 16px;
+              width: max-content;
+              max-width: 100%;
+              overflow: auto;
+            }
+            tr {
+              background-color: var(--color-canvas-default);
+              border-top: 1px solid var(--color-border-muted);
+            }
+            tr:nth-child(2n) {
+              background-color: var(--color-canvas-subtle);
+            }
+            td,
+            th {
+              padding: 6px 13px;
+              border: 1px solid var(--color-border-default);
+            }
+            th {
+              font-weight: 600;
+            }
+            table img {
+              background-color: transparent;
+            }
+            `}</style>
+            <table>{props.children}</table>
           </Typography.Paragraph>
         )
       },
