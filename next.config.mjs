@@ -19,6 +19,7 @@ const withMDX = nextMdx({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: process.env.NODE_ENV === 'prod' ? 'export' : 'standalone',
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   images: {
     unoptimized: true,
