@@ -29,6 +29,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      NODE_ENV: prod
       NEXT_PUBLIC_BASE_PATH: /jsar-website
     steps:
       - name: Checkout
