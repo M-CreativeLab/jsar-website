@@ -6,9 +6,8 @@ function SiteDocument() {
     <Html lang="en">
       <Head>
         <title>YodaOS JSAR: The embeddable AR runtime for JavaScript Developers</title>
-        <base href="/" />
         <link rel="icon" href="logo-jsar.png" />
-        <script src="js/iconfonts.js"></script>
+        <script src="/js/iconfonts.js"></script>
         <style type="text/css">{`
           .icon {
             width: 1em;
