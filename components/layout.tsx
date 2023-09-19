@@ -40,7 +40,7 @@ export default function RootLayout({
                 items: [{
                   key: 'vscode-extension',
                   label: (
-                    <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions" target="_blank">
+                    <a href="/installer/vscode-jsar-devtools-latest.vsix">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-vscode"></use>
