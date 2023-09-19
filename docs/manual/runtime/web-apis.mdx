@@ -31,6 +31,46 @@ fetch('https://example.com')
   .then((body) => console.log(body));
 ```
 
+## Timer API
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `setTimeout` | 已实现 | 由 JSAR 实现 |
+| `clearTimeout` | 已实现 | 由 JSAR 实现 |
+| `setInterval` | 已实现 | 由 JSAR 实现 |
+| `clearInterval` | 已实现 | 由 JSAR 实现 |
+
+JSAR 实现了以上计时器相关的 API。
+
+```typescript
+const timer = setTimeout(() => console.log('timeout'), 1000);
+clearTimeout(timer);
+
+const interval = setInterval(() => console.log('interval'), 1000);
+clearInterval(interval);
+```
+
+当子空间被移除时，JSAR 会自动清理该空间内部的计时器。
+
+## <s>requestAnimationFrame API</s>
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `requestAnimationFrame` | 不会实现 |  |
+| `cancelAnimationFrame` | 不会实现 |  |
+
+`requestAnimationFrame` 和 `cancelAnimationFrame` 一般是用于处理 Web 中 2D 动画的 API，但是在 JSAR 中，使用 `XRSession` 是更好的选择，后者的实现是针对空间渲染而言，而非 2D。因此建议开发者通过使用 `XRSession` 来实现同样的功能，以下是一个简单的使用示例：
+
+```typescript
+const xr = navigator.xr;
+xr.requestSession('immersive-vr')
+  .then(session => {
+    session.requestAnimationFrame((time) => {
+      // 渲染空间
+    });
+  });
+```
+
 ## Web Audio API
 
 | API | 状态 | 备注 |
