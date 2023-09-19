@@ -69,9 +69,6 @@ const tocOfManual: TocItem[] = [
     }, {
       title: '模块系统',
       key: 'module-system',
-    }, {
-      title: '调试代码',
-      key: 'debugging',
     }]
   },
   {
@@ -248,7 +245,7 @@ export default function Page() {
       <Layout.Sider
         width={260}
         style={{
-          marginRight: '2rem',
+          marginRight: '6rem',
           backgroundColor: 'transparent',
         }}
       >
