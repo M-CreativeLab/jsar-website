@@ -52,7 +52,58 @@ const tocOfManual: TocItem[] = [
     }, {
       title: 'SCSS',
       key: 'intro-scss',
+    }, {
+      title: 'TypeScript',
+      key: 'intro-typescript',
     }]
+  },
+  {
+    title: '基础功能',
+    key: 'features',
+    children: [
+      {
+        title: '网格与模型',
+        key: 'meshes-and-models',
+      },
+      {
+        title: '材质',
+        key: 'materials',
+      },
+      {
+        title: '动画',
+        key: 'animations',
+      },
+      {
+        title: '音频',
+        key: 'audio',
+      },
+      {
+        title: '输入事件',
+        key: 'input-events',
+      },
+    ],
+  },
+  {
+    title: '开发者工具',
+    key: 'developer-tools',
+    children: [
+      {
+        title: '工具介绍',
+        key: 'introduction',
+      },
+      {
+        title: '子空间预览',
+        key: 'subspace-preview',
+      },
+      {
+        title: '子空间调试',
+        key: 'subspace-debugging',
+      },
+      {
+        title: '打包',
+        key: 'packaging',
+      }
+    ],
   },
   {
     title: '运行时',
@@ -67,9 +118,29 @@ const tocOfManual: TocItem[] = [
       title: 'JSAR APIs',
       key: 'jsar-internal-apis',
     }, {
+      title: '资源缓存',
+      key: 'resource-cache',
+    }, {
       title: '模块系统',
       key: 'module-system',
-    }]
+    }],
+  },
+  {
+    title: '发布与分发',
+    key: 'delivery',
+    children: [{
+      title: 'Rokid AR Studio',
+      key: 'rokid-arstudio',
+    }, {
+      title: 'GitHub',
+      key: 'github',
+    }, {
+      title: 'NPM',
+      key: 'npm',
+    }, {
+      title: '自定义服务',
+      key: 'custom-server',
+    }],
   },
   {
     title: '示例',
@@ -295,7 +366,7 @@ export default function Page() {
       </Layout.Sider>
       <Layout.Content
         style={{
-          minHeight: '80vh',
+          minHeight: '100vh',
         }}
       >
         <Typography.Paragraph>
