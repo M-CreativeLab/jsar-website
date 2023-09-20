@@ -231,7 +231,7 @@ export default function Home() {
           <Typography.Paragraph style={textStyle}>
             JSAR 运行时在执行小程序时，可直接解析 TypeScript 代码，因此开发者无需任何编译和配置即可运行 TypeScript 代码。
           </Typography.Paragraph>
-          <Link href="manual/basic-concepts/intro-typescript">
+          <Link href="manual/basic-concepts/typescript">
             <Button size="large" shape="round">
               在 JSAR 中使用 TypeScript
               <ArrowRightOutlined />
