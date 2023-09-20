@@ -18,7 +18,7 @@ $ npm init @yodaos-jsar/widget
 - 下载最新的模版项目 [M-CreativeLab/template-for-jsar-widget](https://github.com/M-CreativeLab/template-for-jsar-widget)
 - 根据你的输入更新 package.json 中的项目名称
 
-运行成功后，会获得一个 package.json，可以按照如下编写：
+运行成功后，会获得一个 `package.json`，可以按照如下编写：
 
 ```json
 {
@@ -50,7 +50,7 @@ $ npm init @yodaos-jsar/widget
 $ npm install
 ```
 
-它用于安装 JSAR 空间组件的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+它用于安装空间小程序的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
 
 ## 通过 GitHub Template 创建
 
@@ -64,36 +64,38 @@ $ npm install
 
 ![use this template](./howto-use-github-template-02.png)
 
-按照上图所示，填写相关信息即可，这样创建好的项目就是一个 JSAR 空间组件项目，它同样包含我们模版项目中的文件，以下是一些通过 GitHub Template 创建的项目：
+按照上图所示，填写相关信息即可，这样创建好的项目就是一个 JSAR 空间小程序项目，它同样包含我们模版项目中的文件，以下是一些通过 GitHub Template 创建的项目：
 
 - https://github.com/M-CreativeLab/jsar-gallery-solar-system
 - https://github.com/M-CreativeLab/jsar-gallery-flatten-lion
 
-> 如果通过 GitHub 项目创建的 JSAR 空间组件，推荐为你的项目添加 "jsar-widget" 的主题（Topic），这样可以方便 JSAR 开发团队以及社区在 [GitHub #jsar-widget](https://github.com/topics/jsar-widget) 上发现你的项目。
+> 如果通过 GitHub 项目创建的 JSAR 空间小程序，推荐为你的项目添加 "jsar-widget" 的主题（Topic），这样可以方便 JSAR 开发团队以及社区在 [GitHub #jsar-widget](https://github.com/topics/jsar-widget) 上发现你的项目。
 
 ## package.json 字段说明
 
-- `name`：项目名称，必须是小写字母，可以包含连字符和下划线，不能包含空格。
-- `displayName`：项目显示名称，可以包含中文。
-- `version`：项目版本号，遵循 [语义化版本](https://semver.org/lang/zh-CN/) 规范。
-- `description`：项目描述。
-- `main`：项目入口文件，必须是 xsml 文件。
-- `files`：项目文件列表，包含 xsml 文件、icon 图片、模型文件等，只有添加到 `files` 字段中的文件或文件夹才会被打包到 JSAR 空间组件包中。
-- `icon3d`：项目 3D 图标配置，包含 `base` 和 `size` 两个字段，其中 `base` 是模型文件路径，`size` 是模型文件的尺寸，单位是米。
-- `author`：项目作者，可以是姓名和邮箱。
-- `license`：项目许可证，遵循 [SPDX](https://spdx.org/licenses/) 规范。
-- `devDependencies`：项目开发依赖，包含 `@yodaos-jsar/types`，这是 JSAR 空间组件的类型定义文件。
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `name` | string | 是 | 项目名称，必须是小写字母，可以包含连字符和下划线，不能包含空格。 |
+| `displayName` | string | 是 | 项目显示名称，可以包含中文。 |
+| `version` | string | 是 | 项目版本号，遵循 [语义化版本](https://semver.org/lang/zh-CN/) 规范。 |
+| `description` | string | 是 | 项目描述。 |
+| `main` | string | 是 | 项目入口文件，必须是 xsml 文件。 |
+| `files` | string[] | 是 | 项目文件列表，包含 xsml 文件、icon 图片、模型文件等，只有添加到 `files` 字段中的文件或文件夹才会被打包到 JSAR 空间小程序的包中。 |
+| `icon3d` | object | 是 | 项目 3D 图标配置，包含 `base` 和 `size` 两个字段，其中 `base` 是模型文件路径，`size` 是模型文件的尺寸，单位是米。 |
+| `author` | string | 否 | 项目作者，可以是姓名和邮箱。 |
+| `license` | string | 否 | 项目许可证，遵循 [SPDX](https://spdx.org/licenses/) 规范。 |
+| `devDependencies` | object | 否 | 项目开发依赖，包含 `@yodaos-jsar/types`，这是 JSAR 空间小程序的类型定义文件。 |
 
 特别注意事项：
 
-1. `name` 字段必须是小写字母，不支持 scoped namespace，例如 `@rokid/jsar-gallery-rokid-jungle` 是不支持的。
-2. `main` 字段必须是 xsml 文件，不支持 js 文件。
-3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在 JSAR 空间组件商店及小组件列表中。
-4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了 JSAR 空间组件的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+1. `name` 字段必须是小写字母，不支持 [scoped package](https://docs.npmjs.com/cli/v10/using-npm/scope)，例如 `@rokid/jsar-gallery-rokid-jungle` 是不支持的。
+2. `main` 字段必须是 xsml 文件，不支持 JavaScript 文件。
+3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在商店及小程序列表。
+4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了空间小程序的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
 
 ## 使用 TypeScript 智能提示
 
-为了使用 JSAR 的 TypeScript 的智能提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
+为了使用 JSAR 的 TypeScript 智能提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
 
 ```json
 {

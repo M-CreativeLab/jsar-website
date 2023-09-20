@@ -93,7 +93,7 @@ export default function Home() {
     >
       <Space size={50} style={{ padding: '100px 0', width: '100%', justifyContent: 'space-around' }}>
         <Space direction="vertical">
-          <Title level={1}>可嵌入空间的 Web 运行时</Title>
+          <Title level={1}>空间小程序：可嵌入空间的 Web 运行时</Title>
           <ul
             style={{
               listStyle: 'none',
@@ -110,13 +110,13 @@ export default function Home() {
             <li style={listItemStyle}>
               <Space>
                 <CheckCircleOutlined style={listItemIconStyle} />
-                <Typography.Text style={textStyle}>空间运行安全，空间组件运行在空间隔离框架中，保证在空间中互不干扰</Typography.Text>
+                <Typography.Text style={textStyle}>空间运行安全，空间小程序运行在空间隔离框架中，互不干扰</Typography.Text>
               </Space>
             </li>
             <li style={listItemStyle}>
               <Space>
                 <CheckCircleOutlined style={listItemIconStyle} />
-                <Typography.Text style={textStyle}>通过应用层与渲染层代码逻辑分离，实现多实例渲染的高性能</Typography.Text>
+                <Typography.Text style={textStyle}>通过应用层与渲染层代码逻辑分离，实现接近原生的渲染性能</Typography.Text>
               </Space>
             </li>
           </ul>
@@ -139,8 +139,8 @@ export default function Home() {
         <Image
           src="logo-jsar.png"
           alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
-          height={220}
-          width={220}
+          height={260}
+          width={260}
         />
       </Space>
       <Divider />
@@ -207,9 +207,9 @@ export default function Home() {
           />
         </div>
         <Space wrap direction="vertical" style={{ flex: 1 }}>
-          <Title level={2}>如 Web 一般<br />但用于空间组件开发</Title>
+          <Title level={2}>如 Web 一般<br />但用于空间小程序开发</Title>
           <Typography.Paragraph style={textStyle}>
-            空间组件还原最开始的 Web 开发体验，并所见即所得。
+            空间小程序还原最开始的 Web 开发体验，并所见即所得。
           </Typography.Paragraph>
           <Typography.Paragraph style={textStyle}>
             我们引入了 <Tooltip title="Extensible Spatial Marked Language，即可扩展空间标记语言"><u>XSML</u></Tooltip>，它是一种类似于 HTML 的语言，用于描述组件的空间结构。
@@ -218,7 +218,7 @@ export default function Home() {
             我们引入了 <Tooltip title="Spatial Cascading Style Sheets，即空间层叠样式表"><u>SCSS</u></Tooltip>，它是一种类似于 CSS 的语言，用于描述组件的空间样式。
           </Typography.Paragraph>
           <Typography.Paragraph style={textStyle}>
-            同样地，JSAR 使用 JavaScript / TypeScript 作为空间组件的逻辑编程语言。
+            同样地，JSAR 使用 TypeScript / JavaScript 作为空间小程序的脚本语言。
           </Typography.Paragraph>
           <Button size="large" shape="round" type="default">了解更多<ArrowRightOutlined /></Button>
         </Space>
@@ -229,7 +229,7 @@ export default function Home() {
         <Space wrap direction="vertical" style={{ width: '30vw' }}>
           <Title level={2}>TypeScript 内置</Title>
           <Typography.Paragraph style={textStyle}>
-            JSAR 运行时在执行空间组件时，可直接解析 TypeScript 代码，因此开发者无需任何编译和配置即可运行 TypeScript 代码。
+            JSAR 运行时在执行小程序时，可直接解析 TypeScript 代码，因此开发者无需任何编译和配置即可运行 TypeScript 代码。
           </Typography.Paragraph>
           <Link href="manual/basic-concepts/intro-typescript">
             <Button size="large" shape="round">
@@ -319,7 +319,7 @@ export default function Home() {
           <Title level={2}>与 <a href="https://unity.com/">Unity</a> 一同构建</Title>
           <Space wrap direction="vertical" style={{ width: '30vw' }}>
             <Typography.Paragraph style={textStyle}>
-              使用 JSAR 开发的空间组件可以在任何一个 Unity 场景中运行，我们提供了 JSAR UPM 插件，按需实现底层数据接口，即可在你的 Unity 应用中使用 JSAR 空间组件。
+              使用 JSAR 开发的空间组件可以在任何一个 Unity 场景中运行，我们提供了 JSAR UPM 插件，按需实现底层数据接口，即可在你的 Unity 应用中使用 JSAR 空间小程序。
             </Typography.Paragraph>
             <Space>
               <Button size="large" shape="round" type="primary">申请 JSAR UPM 试用</Button>

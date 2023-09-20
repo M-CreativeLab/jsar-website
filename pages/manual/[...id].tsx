@@ -41,7 +41,7 @@ const tocOfManual: TocItem[] = [
     title: '基础概念',
     key: 'basic-concepts',
     children: [{
-      title: '空间组件',
+      title: '空间小程序',
       key: 'space-widget',
     }, {
       title: '可嵌入空间',
@@ -179,6 +179,12 @@ export default function Page() {
   const router = useRouter()
   const treeData = toMenuTreeData(tocOfManual, null)
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
+  const segmentStyle = {
+    margin: '1rem 0',
+  }
+  const createHeaderRenderer = (level?: 1 | 2 | 3 | 4 | 5) => {
+    return (props: any) => <Typography.Title level={level} style={segmentStyle}>{props.children}</Typography.Title>
+  }
 
   let docPath: string | undefined = undefined
   let markdownChildren = null
@@ -186,12 +192,11 @@ export default function Page() {
     docPath = router.query.id instanceof Array ? router.query.id.join('/') : router.query.id
     const MarkdownContent: React.ComponentType<MDXProps> = require(`../../docs/manual/${docPath}.mdx`).default
     markdownChildren = <MarkdownContent components={{
-      h1: (props) => {
-        return <Typography.Title level={1}>{props.children}</Typography.Title>
-      },
-      h2: (props) => {
-        return <Typography.Title level={2}>{props.children}</Typography.Title>
-      },
+      h1: createHeaderRenderer(1),
+      h2: createHeaderRenderer(2),
+      h3: createHeaderRenderer(3),
+      h4: createHeaderRenderer(4),
+      h5: createHeaderRenderer(5),
       ol: (props) => {
         return <ol style={{ fontSize, marginBottom: 0 }}>{props.children}</ol>
       },
