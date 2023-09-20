@@ -231,10 +231,12 @@ export default function Home() {
           <Typography.Paragraph style={textStyle}>
             JSAR 运行时在执行空间组件时，可直接解析 TypeScript 代码，因此开发者无需任何编译和配置即可运行 TypeScript 代码。
           </Typography.Paragraph>
-          <Button size="large" shape="round">
-            在 JSAR 中使用 TypeScript
-            <ArrowRightOutlined />
-          </Button>
+          <Link href="manual/basic-concepts/intro-typescript">
+            <Button size="large" shape="round">
+              在 JSAR 中使用 TypeScript
+              <ArrowRightOutlined />
+            </Button>
+          </Link>
         </Space>
         <Space size="large" align="start">
           <Image
@@ -295,10 +297,12 @@ export default function Home() {
             <Typography.Paragraph style={textStyle}>
               JSAR 实现了 Babylon.js <code>Engine</code> 部分的接口，因此开发者可直接使用 Babylon.js 的 API 进行开发（不过还存在不完全支持的情况）。
             </Typography.Paragraph>
-            <Button size="large" shape="round">
-              在 JSAR 中使用 Babylon.js
-              <ArrowRightOutlined />
-            </Button>
+            <Link href="manual/runtime/babylonjs-apis">
+              <Button size="large" shape="round">
+                在 JSAR 中使用 Babylon.js
+                <ArrowRightOutlined />
+              </Button>
+            </Link>
           </Space>
         </Space>
       </Space>
@@ -324,7 +328,6 @@ export default function Home() {
                 <ArrowRightOutlined />
               </Button>
             </Space>
-
           </Space>
         </Space>
       </Space>

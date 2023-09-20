@@ -44,6 +44,14 @@ $ npm init @yodaos-jsar/widget
 }
 ```
 
+初始化成功后，为了让项目正常运行，还需要安装依赖：
+
+```bash
+$ npm install
+```
+
+它用于安装 JSAR 空间组件的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+
 ## 通过 GitHub Template 创建
 
 > 如果你希望通过本地创建项目，请忽略这一小节。
@@ -83,7 +91,9 @@ $ npm init @yodaos-jsar/widget
 3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在 JSAR 空间组件商店及小组件列表中。
 4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了 JSAR 空间组件的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
 
-为了使用 JSAR 的 TypeScript 的类型提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
+## 使用 TypeScript 智能提示
+
+为了使用 JSAR 的 TypeScript 的智能提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
 
 ```json
 {

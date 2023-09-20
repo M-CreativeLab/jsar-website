@@ -54,7 +54,7 @@ const tocOfManual: TocItem[] = [
       key: 'intro-scss',
     }, {
       title: 'TypeScript',
-      key: 'intro-typescript',
+      key: 'typescript',
     }]
   },
   {
@@ -129,17 +129,11 @@ const tocOfManual: TocItem[] = [
     title: '发布与分发',
     key: 'delivery',
     children: [{
-      title: 'Rokid AR Studio',
-      key: 'rokid-arstudio',
+      title: 'Rokid AR 商店',
+      key: 'rokid-arstore',
     }, {
-      title: 'GitHub',
-      key: 'github',
-    }, {
-      title: 'NPM',
-      key: 'npm',
-    }, {
-      title: '自定义服务',
-      key: 'custom-server',
+      title: 'JSAR Canary',
+      key: 'jsar-canary',
     }],
   },
   {
@@ -198,25 +192,17 @@ export default function Page() {
       h2: (props) => {
         return <Typography.Title level={2}>{props.children}</Typography.Title>
       },
-      ul: (props) => {
-        return <Typography.Paragraph style={{ fontSize }}>
-          <ul>{props.children}</ul>
-        </Typography.Paragraph>
-      },
       ol: (props) => {
-        return <Typography.Paragraph style={{ fontSize }}>
-          <ul>{props.children}</ul>
-        </Typography.Paragraph>
+        return <ol style={{ fontSize, marginBottom: 0 }}>{props.children}</ol>
+      },
+      ul: (props) => {
+        return <ul style={{ fontSize, marginBottom: 0 }}>{props.children}</ul>
       },
       li: (props) => {
-        return <li
-          style={{ lineHeight: 2 }}
-        >
-          {props.children}
-        </li>
+        return <li style={{ lineHeight: 2 }}>{props.children}</li>
       },
       p: (props) => {
-        return <Typography.Paragraph style={{ fontSize }}>{props.children}</Typography.Paragraph>
+        return <Typography.Paragraph style={{ fontSize, margin: '1rem 0' }}>{props.children}</Typography.Paragraph>
       },
       a: (props) => {
         return (
@@ -227,9 +213,6 @@ export default function Page() {
       },
       img: (props) => {
         return <img {...props} style={{ maxWidth: '60%' }} />
-      },
-      code: (props) => {
-        return <Typography.Text code>{props.children}</Typography.Text>
       },
       pre: (props) => {
         const lang = (props.children as any)?.props.className?.replace('language-', '')

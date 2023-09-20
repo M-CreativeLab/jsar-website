@@ -83,7 +83,7 @@ export default function RootLayout({
                 }, {
                   key: 'publish',
                   label: (
-                    <Link href="/publish">
+                    <Link href="/manual/delivery">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-package"></use>
@@ -126,10 +126,10 @@ export default function RootLayout({
                 }, {
                   key: 'github',
                   label: (
-                    <a href="https://github.com/M-CreativeLab/jsar-website" target="_blank">
+                    <a href="https://github.com/M-CreativeLab/jsar-website/discussions" target="_blank">
                       <Space style={{ fontSize: '16px' }}>
                         <GithubOutlined />
-                        GitHub
+                        GitHub Discussion
                       </Space>
                     </a>
                   ),
