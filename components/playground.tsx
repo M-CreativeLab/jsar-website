@@ -20,6 +20,11 @@ const examples = [
     key: 'jsar-gallery-flatten-lion',
     label: '狮子',
     url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-flatten-lion@main/lib/lion.xsml',
+  },
+  {
+    key: 'jsar-gallery-mesh-collision',
+    label: '碰撞检测',
+    url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-mesh-collision@main/main.xsml',
   }
 ]
 let isTransmuteInitialized = false
