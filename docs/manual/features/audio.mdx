@@ -1,1 +1,52 @@
-# 音效与音频
+# 音频
+
+开发者可通过 `Audio` 类来播放音频，比如：
+
+```ts
+const audio = new Audio('https://example.com/audio.mp3'); // 同时支持本地和远程音频
+audio.addEventListener('ended', () => console.log('audio ended'));
+audio.play();
+```
+
+`Audio` 类为 Web API [`HTMLAudioElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement) 的实现，具体支持的情况可以参考 [运行时/Web APIs](./runtime/web-apis)。
+
+## 支持音频格式
+
+| 格式 | 支持情况 |
+| --- | --- |
+| WAV | 是 |
+| MP3 | 是 |
+| AAC | 否 |
+| OGG | 否 |
+| OPUS | 否 |
+| FLAC | 否 |
+
+## 方法
+
+### `play()`
+
+播放音频。
+
+> 注：如需重新播放，请重新创建 `Audio` 实例进行播放。
+
+### `pause()`
+
+暂停音频。
+
+### `fastSeek(time: number)`
+
+快速定位到指定时间（秒）。
+
+参数：
+
+- `time`：时间（秒）定义的时间。
+
+## 事件
+
+支持的事件如下：
+
+- [`play`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play_event)
+- [`pause`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause_event)
+- [`ended`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/ended_event)
+- [`loadeddata`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/loadeddata_event)
+- [`suspend`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/suspend_event)

@@ -1,2 +1,134 @@
 # 材质
 
+材质用于定义物体的外观，包括颜色、纹理、透明度、反射率等等。在当前 JSAR 中，材质支持比较简单，通过将 Babylon.js 的材质属性同步到渲染端，对于用户的使用来说，一般有两种方式：
+
+1. 通过 SCSS 定义和使用材质
+2. 通过 TypeScript 中使用 [Babylon.js Materials](https://doc.babylonjs.com/features/featuresDeepDive/materials/using) 相关接口
+
+本节将从功能出发，介绍在 JSAR 中使用材质的一些细节和用法。
+
+## 材质的定义
+
+### 通过 SCSS 定义
+
+在 XSML 文档中新建 `<style>` 标签，并定义如下：
+
+```
+<style>
+  @material my-material {
+    diffuse-color: #ff0000;
+  }
+</style>
+```
+
+通过这种方式创建的材质，可以在 TypeScript 脚本中通过 `spatialDocument.scene` 获取。
+
+### 通过 TypeScript 定义
+
+在 TypeScript 脚本中，你可以通过 Babylon.js 的材质接口来定义材质，例如：
+
+```ts
+const material = new BABYLON.StandardMaterial('my-material', scene);
+material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+```
+
+## 材质的使用
+
+### 通过 SCSS 使用
+
+在 XSML 文档中，你可以通过 `material` 属性来使用材质，例如：
+
+```css
+#box1 {
+  material: "my-material";
+}
+```
+
+上面的代码将会把 `#box1` 的材质设置为 `my-material`。
+
+> 注：在使用 SCSS 使用材质时，只能使用通过 SCSS 定义的材质。
+
+### 通过 TypeScript 使用
+
+在 TypeScript 脚本中，你可以通过 Babylon.js 的材质接口来使用材质，例如：
+
+```ts
+const box1 = spatialDocument.getElementById('box1');
+box1.material = material;
+```
+
+## 材质属性
+
+### 标准材质（Standard）
+
+在标准材质中，JSAR 支持的属性有：
+
+| 属性名 | 类型 | 说明 | 是否在 SCSS 中支持 | 是否在 TypeScript 中支持 |
+| --- | --- | --- | --- | --- |
+| `diffuseColor` | Color3 | 漫反射颜色 | 是 | 是 |
+| `diffuseTexture` | Texture | 漫反射贴图 | 否 | 否 |
+| `ambientColor` | Color3 | 环境光颜色 | 否 | 否 |
+| `ambientTexture` | Texture | 环境光贴图 | 否 | 否 |
+| `emissiveColor` | Color3 | 自发光颜色 | 是 | 是 |
+| `emissiveTexture` | Texture | 自发光贴图 | 否 | 否 |
+| `specularColor` | Color3 | 镜面反射颜色 | 否 | 否 |
+| `specularTexture` | Texture | 镜面反射贴图 | 否 | 否 |
+
+> 暂不支持贴图设置
+
+### PBR 材质
+
+在 PBR 材质中，JSAR 支持的属性有：
+
+| 属性名 | 类型 | 说明 | 是否在 SCSS 中支持 | 是否在 TypeScript 中支持 |
+| --- | --- | --- | --- | --- |
+| `albedoColor` | Color3 | 漫反射颜色 | 是 | 是 |
+| `albedoTexture` | Texture | 漫反射贴图 | 否 | 是 |
+| `emissiveColor` | Color3 | 自发光颜色 | 否 | 否 |
+| `emissiveTexture` | Texture | 自发光贴图 | 否 | 否 |
+| `metallic` | number | 金属度 | 是 | 是 |
+| `roughness` | number | 粗糙度 | 是 | 是 |
+
+### 多材质
+
+> 暂不支持
+
+## 更新材质
+
+在 Babylon.js 中，材质的属性是可以动态更新的，例如：
+
+```ts
+const scene = spaceDocument.scene as BABYLON.Scene;
+const model = scene.getNodeById('model');
+model.getChildMeshes().forEach(mesh => {
+  if (mesh.material.getClassName() === 'PBRMaterial') {
+    const mat = mesh.material as BABYLON.PBRMaterial;
+    mat.metallic = 0;
+  }
+});
+```
+
+上面的代码将会把 `model` 中所有的 PBR 材质的金属度设置为 0。
+
+## Wireframe
+
+在 Babylon.js 中，材质的 `wireframe` 属性可以设置是否显示网格，例如：
+
+```ts
+const scene = spaceDocument.scene as BABYLON.Scene;
+const model = scene.getNodeById('model');
+
+model.getChildMeshes().forEach(mesh => {
+  mesh.material.wireframe = true;
+});
+```
+
+该方法可以用于在调试时，显示模型的网格，当然也可以用于其他用途。
+
+## 不支持的特性
+
+- 多材质
+- 动态贴图
+- 视频贴图
+- 自定义着色器
+- Node Material
