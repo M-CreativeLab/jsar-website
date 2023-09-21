@@ -1,3 +1,70 @@
 # 输入事件
 
-手势识别器的输入事件是`PointerEvent`，
+在 JSAR 中，可以支持鼠标、手关节、手势等输入事件，通过输入事件，可以实现一些交互效果，比如点击、拖拽、旋转等。
+
+## 交互模式
+
+> TODO 介绍各种手势以及小组件的接收模式
+
+## 监听输入事件
+
+通过调用 `spatialDocument.watchInputEvent()` 可以启动输入事件的监听，一旦调用通过，就可以通过 `spatialDocument.addEventListener()` 来监听输入事件。
+
+> 注：未来会对 `watchInputEvent()` 以及输入事件进行弃用（deprecate），我们计划使用 WebXR 以及标准的 DOM 事件来替代当前的实现。
+
+```typescript
+spatialDocument.watchInputEvent();
+spatialDocument.addEventListener('{type}', (event) => {
+  console.log(event);
+});
+```
+
+其中 `{type}` 是输入事件的类型，当前支持的类型及对应 `event` 的数据类型如下：
+
+- `mouse` 鼠标事件
+  - `event.inputData.Type` 子事件类型，`move`、`up`、`down`
+  - `event.inputData.PositionX` 鼠标 X 轴坐标
+  - `event.inputData.PositionY` 鼠标 Y 轴坐标
+- `handtracking` 手关节事件
+  - `event.inputData.Type` 手的左右，`0` 为左手，`1` 为右手
+  - `event.inputData.Joints` 具体的关节数据
+- `gesture` 手势事件
+  - `event.inputData.Type` 手势类型
+
+关于关节数据，它是一个数组，包含20个元素，每个元素是一个关节的世界坐标，它的类型定义如下：
+
+```typescript
+type Position = {
+  x: number;
+  y: number;
+  z: number;
+}
+```
+
+20个元素分别代表的含义：
+
+| 手关节 ID | 索引值 |
+| --- | --- |
+| `WRIST` | 0 |
+| `THUMB_CMC` | 1 |
+| `THUMB_MCP` | 2 |
+| `THUMB_IP` | 3 |
+| `THUMB_TIP` | 4 |
+| `INDEX_FINGER_MCP` | 5 |
+| `INDEX_FINGER_PIP` | 6 |
+| `INDEX_FINGER_DIP` | 7 |
+| `INDEX_FINGER_TIP` | 8 |
+| `MIDDLE_FINGER_MCP` | 9 |
+| `MIDDLE_FINGER_PIP ` | 10 |
+| `MIDDLE_FINGER_DIP ` | 11 |
+| `MIDDLE_FINGER_TIP ` | 12 |
+| `RING_FINGER_MCP ` | 13 |
+| `RING_FINGER_PIP ` | 14 |
+| `RING_FINGER_DIP ` | 15 |
+| `RING_FINGER_TIP ` | 16 |
+| `PINKY_MCP ` | 17 |
+| `PINKY_PIP ` | 18 |
+| `PINKY_DIP ` | 19 |
+| `PINKY_TIP ` | 20 |
+
+与 WebXR 的对应关系可以参考 [WebXR Hand Input Profiles](https://immersive-web.github.io/webxr-hand-input/#hand-joints)。

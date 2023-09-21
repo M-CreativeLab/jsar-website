@@ -28,19 +28,14 @@ const plane = MeshBuilder.CreatePlane('plane', { size: 2 }, scene);
 Babylon.js 支持通过 `MeshBuilder` 创建如下的预制网格：
 
 - [Box](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/box)
-- [Tiled Box](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/tiled_box)
 - [Sphere](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/sphere)
 - [Cylinder](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/cylinder)
 - [Capsule](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/capsule)
 - [Plane](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/plane)
-- [Tiled Plane](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/tiled_plane)
 - [Disc](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/disc)
 - [Torus](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/torus)
 - [Torus Knot](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/torus_knot)
 - [Ground](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/ground)
-- [Ground From a Height Map](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/ground_hmap)
-- [Tiled Ground](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/tiled_ground)
-- [3D Text](https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/text)
 
 由于以上都是 Babylon.js APIs，因此本节就不重复介绍了，有兴趣的读者可以点击上面的链接查看具体的使用方法。
 
@@ -201,4 +196,17 @@ boxClone.position = new Vector3(1, 2, 3);
 
 在动态场景中，物体会移动并与彼此互动。为了获得最佳的渲染效果，您需要知道您的网格何时与彼此接触。本小节会介绍如何使用 Babylon.js 的碰撞检测功能。
 
-> TODO
+```ts
+const balloon1 = BABYLON.Mesh.CreateSphere('balloon1', 10, 2.0, scene);
+const plan1 = BABYLON.Mesh.CreatePlane('plane1', 20, scene);
+
+if (balloon1.intersectsMesh(plan1, false)) {
+  (balloon1.material as BABYLON.StandardMaterial).emissiveColor = new BABYLON.Color3(1, 0, 0);
+} else {
+  (balloon1.material as BABYLON.StandardMaterial).emissiveColor = new BABYLON.Color3(1, 1, 1);
+}
+```
+
+上面的代码中，我们创建了一个 `balloon1` 网格和一个 `plan1` 网格，然后判断 `balloon1` 网格是否与 `plan1` 网格相交，如果相交，则将 `balloon1` 网格的颜色设置为红色，否则设置为白色。
+
+可以通过在线示例：[碰撞检查](/playground?id=jsar-gallery-mesh-collision) 和对应的源码：[M-CreativeLab/jsar-gallery-mesh-collision](https://github.com/M-CreativeLab/jsar-gallery-mesh-collision) 来了解更多关于碰撞检测的使用方法。
