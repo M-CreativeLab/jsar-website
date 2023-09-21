@@ -22,7 +22,7 @@ export default function RootLayout({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link href="/">
+          <a href="/">
             <div className="logo" style={{ marginRight: '2.25rem' }}>
               <Image
                 src="logo-jsar.png"
@@ -31,7 +31,7 @@ export default function RootLayout({
                 height={50}
               />
             </div>
-          </Link>
+          </a>
           <Space>
             <Dropdown
               arrow={true}
@@ -61,48 +61,48 @@ export default function RootLayout({
                 items: [{
                   key: 'manual',
                   label: (
-                    <Link href="/manual/introduction">
+                    <a href="/manual/introduction">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-zhinan"></use>
                         </svg>
                         开发者指南
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'apis',
                   label: (
-                    <Link href="/api">
+                    <a href="/api">
                       <Space style={{ fontSize: '16px' }}>
                         <UnorderedListOutlined />
                         API 文档
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'publish',
                   label: (
-                    <Link href="/manual/delivery">
+                    <a href="/manual/delivery">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-package"></use>
                         </svg>
                         发布
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'examples',
                   label: (
-                    <Link href="/examples">
+                    <a href="/playground">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-examples"></use>
                         </svg>
-                        示例
+                        在线体验
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }],
               }}
