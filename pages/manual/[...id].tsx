@@ -135,29 +135,6 @@ const tocOfManual: TocItem[] = [
       title: 'JSAR Canary',
       key: 'jsar-canary',
     }],
-  },
-  {
-    title: '示例',
-    key: 'examples',
-    children: [{
-      title: 'Hello Rokid',
-      key: 'hello-rokid',
-    }, {
-      title: '星系',
-      key: 'ar-drawing-board',
-    }, {
-      title: '小狗',
-      key: 'ar-recognize-words',
-    }, {
-      title: '魔方',
-      key: 'ar-puzzle',
-    }, {
-      title: '棒球',
-      key: 'ar-flip-card',
-    }, {
-      title: '狮子',
-      key: 'ar-ordering',
-    }]
   }
 ]
 

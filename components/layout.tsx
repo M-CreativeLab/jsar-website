@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Button, Divider, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'

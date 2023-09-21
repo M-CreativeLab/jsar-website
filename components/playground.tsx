@@ -1,4 +1,5 @@
-import { Divider, Tabs, Typography } from 'antd'
+import { Descriptions, Divider, Tabs, Typography } from 'antd'
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react'
 import { CodeBlock, github } from 'react-code-blocks'
 
@@ -23,12 +24,32 @@ const examples = [
 ]
 let isTransmuteInitialized = false
 let unityInstance: any = null
-let sceneScript: HTMLScriptElement | null = null
 
 export default function Playground() {
-  const [selectedExample, setSelectedExample] = useState(examples[0])
+  const router = useRouter()
+  const selectedExampleRef = useRef(examples[0])
+  const [selectedExample, setSelectedExample] = useState(selectedExampleRef.current)
   const [entrySource, setEntrySource] = useState('')
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    return () => {
+      if (unityInstance) {
+        unityInstance.Module.pauseMainLoop()
+        unityInstance.Quit()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (router.isReady && router.query.id) {
+      const selected = examples.find((item) => item.key === router.query.id)
+      if (selected) {
+        selectedExampleRef.current = selected
+        setSelectedExample(selected)
+      }
+    }
+  }, [router.query])
 
   useEffect(() => {
     if (canvasRef.current && !isTransmuteInitialized) {
@@ -50,7 +71,7 @@ export default function Playground() {
         },
       }
 
-      const script = sceneScript = document.createElement('script')
+      const script = document.createElement('script')
       script.src = '/js/playground-scene.js'
       script.onload = () => {
         try {
@@ -68,7 +89,7 @@ export default function Playground() {
           window.postMessage({
             command: 'TransmuteWebGLInterface.OnExecuteScriptAsURI',
             args: [{
-              'Uri': selectedExample.url,
+              'Uri': selectedExampleRef.current.url,
               'DestroyPresent': true,
             }]
           })
@@ -76,15 +97,6 @@ export default function Playground() {
       })
     }
   }, [canvasRef.current])
-
-  useEffect(() => {
-    return () => {
-      if (unityInstance) {
-        unityInstance.Module.pauseMainLoop()
-        unityInstance.Quit()
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if (selectedExample?.url) {
@@ -154,6 +166,7 @@ export default function Playground() {
             onChange={(key) => {
               const selected = examples.find((item) => item.key === key)
               if (selected) {
+                selectedExampleRef.current = selected
                 setSelectedExample(selected)
               }
             }}
@@ -193,12 +206,26 @@ export default function Playground() {
               style={{
                 width: '30vw',
               }}
-              defaultActiveKey="code"
+              defaultActiveKey="meta"
             >
               <Tabs.TabPane tab="基础信息" key="meta">
-                <p>{selectedExample.url}</p>
+                <Descriptions
+                  layout="horizontal"
+                  size="small"
+                  bordered={true}
+                  column={1}
+                  labelStyle={{ width: '100px', textAlign: 'right' }}
+                >
+                  <Descriptions.Item label="名称">{selectedExample.label}</Descriptions.Item>
+                  <Descriptions.Item label="代码仓库">
+                    <a target="_blank"
+                      href={`https://github.com/M-CreativeLab/${selectedExample.key}`}>
+                      M-CreativeLab/{selectedExample.key}</a>
+                  </Descriptions.Item>
+                  <Descriptions.Item label="入口文件">{selectedExample.url}</Descriptions.Item>
+                </Descriptions>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="代码" key="code">
+              <Tabs.TabPane tab="XSML代码" key="code">
                 <CodeBlock
                   language="xml"
                   theme={github}
@@ -209,6 +236,9 @@ export default function Playground() {
                   }}
                   codeContainerStyle={{
                     width: '30vw',
+                  }}
+                  codeBlockStyle={{
+                    fontSize: '1rem',
                   }}
                 />
               </Tabs.TabPane>
