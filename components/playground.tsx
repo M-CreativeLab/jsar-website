@@ -53,7 +53,7 @@ export default function Playground() {
 
   useEffect(() => {
     if (canvasRef.current && !isTransmuteInitialized) {
-      const buildUrl = '/playground'
+      const buildUrl = 'https://ar.rokidcdn.com/web-assets/pages/jsar/playground'
       let mutableWindow = window as any
       mutableWindow['module'] = {}
       mutableWindow['__transmuteLoaderUrl'] = buildUrl + '/TransmuteEditor.loader.js'
@@ -72,7 +72,7 @@ export default function Playground() {
       }
 
       const script = document.createElement('script')
-      script.src = '/js/playground-scene.js'
+      script.src = 'https://ar.rokidcdn.com/web-assets/pages/jsar/js/playground-scene.js'
       script.onload = () => {
         try {
           __transmuteRenderUnityScene()
@@ -189,6 +189,7 @@ export default function Playground() {
                 style={{
                   width: '100%',
                   height: `${canvasHeight}px`,
+                  borderRadius: '0.5rem',
                 }}
                 ref={canvasRef}></canvas>
               <div id="unity-loading-bar">
