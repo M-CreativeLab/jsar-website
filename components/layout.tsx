@@ -1,13 +1,25 @@
+import { useEffect, useRef, useState } from 'react'
 import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Button, Divider, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'
-import Link from 'next/link'
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const [isTop, setIsTop] = useState(true)
+  function handleScroll() {
+    setIsTop(window.scrollY === 0)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <Layout>
       <Layout.Header
@@ -19,6 +31,8 @@ export default function RootLayout({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          animation: 'fade-in 0.5s',
+          filter: isTop ? 'none' : 'drop-shadow(30px 10px 4px #eeeeee)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
