@@ -177,7 +177,7 @@ export default function Page() {
             >
               版本：
               <Select value="latest" style={{ flex: 1 }}>
-                <Select.Option value="latest">latest</Select.Option>
+                <Select.Option value="latest">v0.1.0 (最新)</Select.Option>
               </Select>
             </div>
             <Divider />

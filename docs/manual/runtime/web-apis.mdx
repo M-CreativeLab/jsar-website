@@ -6,9 +6,9 @@ JSAR 作为可嵌入空间的 Web 运行时，会优先考虑通过 Web APIs 为
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `import` | 未实现（优先级高） |  |
-| `export` | 未实现（优先级高） |  |
-| `import.meta` | 未实现（优先级低） |  |
+| `import` | 未实现（优先级高） | 导入 TypeScript 或 JavaScript 模块 |
+| `export` | 未实现（优先级高） | 导出模块 |
+| `import.meta` | 未实现（优先级低） | - |
 
 当前版本中，我们还无法通过 `import` 和 `export` 语法来导入和导出模块，但是我们已经在计划中，优先级较高，预计在未来几个版本中实现，比如：
 
@@ -17,11 +17,26 @@ import { foo } from './foo.js';
 export const bar = foo + 1;
 ```
 
+## Navigator API
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `navigator` | 部分实现 | - |
+| `navigator.userAgent` | 已实现 | 获取运行时客户端信息 |
+| `navigator.vendor` | 已实现 | 厂商信息 |
+| `navigator.vendorSub` | 已实现 | 子厂商信息 |
+
+可通过 `navigator.userAgent` 获取当前 JSAR 运行时版本号，比如：
+
+```typescript
+console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
+```
+
 ## fetch API
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `fetch` | 已实现 | 由 Node.js 实现 |
+| `fetch` | 已实现 | 发送网络请求 |
 
 在 Node.js v18.0.0 版本中，Node.js 已经实现了 [Fetch API](https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch) 用于发送网络请求，因此开发者可直接使用，具体使用方法请参考 [MDN fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)。
 
@@ -35,10 +50,10 @@ fetch('https://example.com')
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `setTimeout` | 已实现 | 由 JSAR 实现 |
-| `clearTimeout` | 已实现 | 由 JSAR 实现 |
-| `setInterval` | 已实现 | 由 JSAR 实现 |
-| `clearInterval` | 已实现 | 由 JSAR 实现 |
+| `setTimeout` | 已实现 | 创建一个计时器 |
+| `clearTimeout` | 已实现 | 取消一个计时器 |
+| `setInterval` | 已实现 | 创建一个周期性计时器 |
+| `clearInterval` | 已实现 | 取消一个周期性计时器 |
 
 JSAR 实现了以上计时器相关的 API。
 
@@ -50,14 +65,14 @@ const interval = setInterval(() => console.log('interval'), 1000);
 clearInterval(interval);
 ```
 
-当子空间被移除时，JSAR 会自动清理该空间内部的计时器。
+当空间小程序被用户移除时，JSAR 会自动清理该空间内部的计时器。
 
 ## <s>requestAnimationFrame API</s>
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `requestAnimationFrame` | 不会实现 |  |
-| `cancelAnimationFrame` | 不会实现 |  |
+| `requestAnimationFrame` | 不会实现 | - |
+| `cancelAnimationFrame` | 不会实现 | - |
 
 `requestAnimationFrame` 和 `cancelAnimationFrame` 一般是用于处理 Web 中 2D 动画的 API，但是在 JSAR 中，使用 `XRSession` 是更好的选择，后者的实现是针对空间渲染而言，而非 2D。因此建议开发者通过使用 `XRSession` 来实现同样的功能，以下是一个简单的使用示例：
 
@@ -75,34 +90,34 @@ xr.requestSession('immersive-vr')
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `AudioContext` | 已实现 | 由 JSAR 实现 |
-| `AudioBuffer` | 已实现 | 由 JSAR 实现 |
-| `AudioBufferSourceNode` | 已实现 | 由 JSAR 实现 |
-| `AudioDestinationNode` | 已实现 | 由 JSAR 实现 |
-| `AudioListener` | 已实现 | 由 JSAR 实现 |
-| `AudioParam` | 已实现 | 由 JSAR 实现 |
-| `AudioWorklet` | 未实现 |  |
-| `AudioWorkletNode` | 未实现 |  |
-| `BaseAudioContext` | 已实现 | 由 JSAR 实现 |
-| `BiquadFilterNode` | 未实现 |  |
-| `ChannelMergerNode` | 未实现 |  |
-| `ChannelSplitterNode` | 未实现 |  |
-| `ConstantSourceNode` | 未实现 |  |
-| `ConvolverNode` | 未实现 |  |
-| `DelayNode` | 未实现 |  |
-| `DynamicsCompressorNode` | 未实现 |  |
-| `GainNode` | 未实现 |  |
-| `IIRFilterNode` | 未实现 |  |
-| `MediaElementAudioSourceNode` | 未实现 |  |
-| `MediaStreamAudioDestinationNode` | 未实现 |  |
-| `MediaStreamAudioSourceNode` | 未实现 |  |
-| `OfflineAudioContext` | 未实现 |  |
-| `OscillatorNode` | 未实现 |  |
-| `PannerNode` | 未实现 |  |
-| `PeriodicWave` | 未实现 |  |
-| `ScriptProcessorNode` | 未实现 |  |
-| `StereoPannerNode` | 未实现 |  |
-| `WaveShaperNode` | 未实现 |  |
+| `AudioContext` | 已实现 | 音频上下文 |
+| `AudioBuffer` | 已实现 | 代表一个音频缓冲数据流 |
+| `AudioBufferSourceNode` | 已实现 | 代表一个输入源，用于生产音频流 |
+| `AudioDestinationNode` | 已实现 | 代表一个音频消费节点 |
+| `AudioListener` | 未实现 | 代表一个音频接收者，用于空间音频中表达声音接收方的属性和坐标 |
+| `AudioParam` | 已实现 | 音频参数 |
+| `AudioWorklet` | 未实现 | - |
+| `AudioWorkletNode` | 未实现 | - |
+| `BaseAudioContext` | 已实现 | 音频上下文的基础类 |
+| `BiquadFilterNode` | 未实现 | - |
+| `ChannelMergerNode` | 未实现 | - |
+| `ChannelSplitterNode` | 未实现 | - |
+| `ConstantSourceNode` | 未实现 | - |
+| `ConvolverNode` | 未实现 | - |
+| `DelayNode` | 未实现 | - |
+| `DynamicsCompressorNode` | 未实现 | - |
+| `GainNode` | 未实现 | - |
+| `IIRFilterNode` | 未实现 | - |
+| `MediaElementAudioSourceNode` | 未实现 | - |
+| `MediaStreamAudioDestinationNode` | 未实现 | - |
+| `MediaStreamAudioSourceNode` | 未实现 | - |
+| `OfflineAudioContext` | 未实现 | - |
+| `OscillatorNode` | 未实现 | - |
+| `PannerNode` | 未实现 | - |
+| `PeriodicWave` | 未实现 | - |
+| `ScriptProcessorNode` | 未实现 | - |
+| `StereoPannerNode` | 未实现 | - |
+| `WaveShaperNode` | 未实现 | - |
 
 我们计划在未来实现全部的 Web Audio API，但是目前只实现了部分，包含了基本的播放和音量控制，具体使用方法请参考 [MDN Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)。
 
