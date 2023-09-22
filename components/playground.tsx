@@ -57,6 +57,31 @@ export default function Playground() {
   }, [])
 
   useEffect(() => {
+    if (router.isReady) {
+      if (router.query.id) {
+        const selected = examples.find((item) => item.key === router.query.id)
+        if (selected) {
+          selectedExampleRef.current = selected
+          setSelectedExample(selected)
+        }
+      } else if (router.query.url) {
+        const selected = examples.find((item) => item.url === router.query.url)
+        if (selected) {
+          selectedExampleRef.current = selected
+          setSelectedExample(selected)
+        } else {
+          const newExample = {
+            key: 'custom-example',
+            label: '自定义',
+            url: router.query.url as string,
+          }
+          examples.push(newExample)
+          selectedExampleRef.current = newExample
+          setSelectedExample(newExample)
+        }
+      }
+    }
+
     if (router.isReady && router.query.id) {
       const selected = examples.find((item) => item.key === router.query.id)
       if (selected) {
@@ -142,7 +167,6 @@ export default function Playground() {
         justifyContent: 'flex-start',
         marginTop: '64px',
         alignItems: 'center',
-        // minHeight: 'calc(100vh - 64px)',
         width: '100%',
         overflowX: 'hidden',
       }}
@@ -160,6 +184,10 @@ export default function Playground() {
         }}
       >
         <Typography.Title level={2} style={{ alignSelf: 'flex-start' }}>在线演示</Typography.Title>
+        <Typography.Paragraph>
+          该页面用于预览官方/社区提供的示例，您可以通过点击左侧的示例列表来切换不同的示例。<br/>
+          注：首次加载可能需要较长时间，请耐心等待。
+        </Typography.Paragraph>
         <Divider />
         <section
           style={{
