@@ -1,9 +1,11 @@
-import { Affix, Layout, Table, Tree, TreeDataNode, Typography } from 'antd'
+import { Affix, Divider, Layout, Select, Tree, TreeDataNode, Typography } from 'antd'
 import { useRouter } from 'next/router'
 import type { MDXProps } from 'mdx/types'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { CodeBlock, github } from 'react-code-blocks'
+
+import latestTocOfManual from '../../../docs/manual/toc.json'
 
 type TocItem = {
   key: string
@@ -12,131 +14,7 @@ type TocItem = {
 }
 
 const fontSize = '16px'
-const tocOfManual: TocItem[] = [
-  {
-    title: '介绍',
-    key: 'introduction',
-  },
-  {
-    title: '快速入门',
-    key: 'quick-start',
-    children: [{
-      title: '配置环境',
-      key: 'configuration',
-    }, {
-      title: '创建项目',
-      key: 'create-project',
-    }, {
-      title: '运行',
-      key: 'run-project',
-    }, {
-      title: '打包',
-      key: 'build-project',
-    }, {
-      title: '发布',
-      key: 'publish-project',
-    }]
-  },
-  {
-    title: '基础概念',
-    key: 'basic-concepts',
-    children: [{
-      title: '空间小程序',
-      key: 'space-widget',
-    }, {
-      title: '可嵌入空间',
-      key: 'subspace',
-    }, {
-      title: 'XSML',
-      key: 'intro-xsml',
-    }, {
-      title: 'SCSS',
-      key: 'intro-scss',
-    }, {
-      title: 'TypeScript',
-      key: 'typescript',
-    }]
-  },
-  {
-    title: '基础功能',
-    key: 'features',
-    children: [
-      {
-        title: '网格与模型',
-        key: 'meshes-and-models',
-      },
-      {
-        title: '材质',
-        key: 'materials',
-      },
-      {
-        title: '动画',
-        key: 'animations',
-      },
-      {
-        title: '音频',
-        key: 'audio',
-      },
-      {
-        title: '输入事件',
-        key: 'input-events',
-      },
-    ],
-  },
-  {
-    title: '开发者工具',
-    key: 'developer-tools',
-    children: [
-      {
-        title: '工具介绍',
-        key: 'introduction',
-      },
-      {
-        title: '子空间预览',
-        key: 'subspace-preview',
-      },
-      {
-        title: '子空间调试',
-        key: 'subspace-debugging',
-      },
-      {
-        title: '打包',
-        key: 'packaging',
-      }
-    ],
-  },
-  {
-    title: '运行时',
-    key: 'runtime',
-    children: [{
-      title: 'Babylon.js APIs',
-      key: 'babylonjs-apis',
-    }, {
-      title: 'Web APIs',
-      key: 'web-apis',
-    }, {
-      title: 'JSAR APIs',
-      key: 'jsar-internal-apis',
-    }, {
-      title: '资源缓存',
-      key: 'resource-cache',
-    }, {
-      title: '模块系统',
-      key: 'module-system',
-    }],
-  },
-  {
-    title: '发布与分发',
-    key: 'delivery',
-    children: [{
-      title: 'Rokid AR 商店',
-      key: 'rokid-arstore',
-    }, {
-      title: 'JSAR Canary',
-      key: 'jsar-canary',
-    }],
-  }
-]
+const tocOfManual: TocItem[] = latestTocOfManual
 
 function toMenuTreeData(toc: TocItem[], parentKey: string | null, selectedKey?: string): any {
   return toc.map((item: TocItem) => {
@@ -167,7 +45,7 @@ export default function Page() {
   let markdownChildren = null
   if (router.isReady) {
     docPath = router.query.id instanceof Array ? router.query.id.join('/') : router.query.id
-    const MarkdownContent: React.ComponentType<MDXProps> = require(`../../docs/manual/${docPath}.mdx`).default
+    const MarkdownContent: React.ComponentType<MDXProps> = require(`../../../docs/manual/${docPath}.mdx`).default
     markdownChildren = <MarkdownContent components={{
       h1: createHeaderRenderer(1),
       h2: createHeaderRenderer(2),
@@ -187,11 +65,13 @@ export default function Page() {
         return <Typography.Paragraph style={{ fontSize, margin: '1rem 0' }}>{props.children}</Typography.Paragraph>
       },
       a: (props) => {
-        return (
-          <Link href={props.href || ''}>
-            {props.children}
-          </Link>
-        )
+        let href = props.href
+        if (href?.startsWith('https://') || href?.startsWith('http://')) {
+          return <a href={href} target="_blank">{props.children}</a>
+        } else {
+          href = `/manual/${router.query.ver}/${href}`
+          return <Link href={href}>{props.children}</Link>
+        }
       },
       img: (props) => {
         return <img {...props} style={{ maxWidth: '60%' }} />
@@ -286,47 +166,63 @@ export default function Page() {
         }}
       >
         <Affix offsetTop={120}>
-          <Tree
-            autoExpandParent={true}
-            showLine={false}
-            blockNode={true}
-            checkStrictly={false}
-            treeData={treeData}
-            expandedKeys={expandedKeys}
-            selectedKeys={docPath ? [docPath] : []}
-            onSelect={(selectedKeys) => {
-              if (selectedKeys.length > 0) {
-                const key = selectedKeys[0] as string
-                router.push(`/manual/${key}`)
-                setExpandedKeys([key])
-              }
-            }}
-            onExpand={(expandedKeys) => {
-              setExpandedKeys(expandedKeys as string[])
-            }}
-            titleRender={(nodeData: TreeDataNode) => {
-              let title: React.ReactNode
-              if (typeof nodeData.title === 'function') {
-                title = nodeData.title(nodeData)
-              } else {
-                title = nodeData.title
-              }
-              return (
-                <span
-                  style={{
-                    fontSize: '16px',
-                    padding: '0 0.5rem',
-                    lineHeight: '2',
-                  }}
-                >
-                  {title}
-                </span>
-              )
-            }}
-            style={{
-              fontSize: '18px',
-            }}
-          />
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                fontSize: '16px',
+              }}
+            >
+              版本：
+              <Select value="latest" style={{ flex: 1 }}>
+                <Select.Option value="latest">latest</Select.Option>
+              </Select>
+            </div>
+            <Divider />
+            <Tree
+              autoExpandParent={true}
+              showLine={false}
+              blockNode={true}
+              checkStrictly={false}
+              treeData={treeData}
+              expandedKeys={expandedKeys}
+              selectedKeys={docPath ? [docPath] : []}
+              onSelect={(selectedKeys) => {
+                if (selectedKeys.length > 0) {
+                  const key = selectedKeys[0] as string
+                  router.push(`/manual/${router.query.ver}/${key}`)
+                  setExpandedKeys([key])
+                }
+              }}
+              onExpand={(expandedKeys) => {
+                setExpandedKeys(expandedKeys as string[])
+              }}
+              titleRender={(nodeData: TreeDataNode) => {
+                let title: React.ReactNode
+                if (typeof nodeData.title === 'function') {
+                  title = nodeData.title(nodeData)
+                } else {
+                  title = nodeData.title
+                }
+                return (
+                  <span
+                    style={{
+                      fontSize: '16px',
+                      padding: '0 0.5rem',
+                      lineHeight: '2',
+                    }}
+                  >
+                    {title}
+                  </span>
+                )
+              }}
+              style={{
+                fontSize: '18px',
+              }}
+            />
+          </div>
         </Affix>
       </Layout.Sider>
       <Layout.Content

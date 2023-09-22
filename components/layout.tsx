@@ -75,7 +75,7 @@ export default function RootLayout({
                 items: [{
                   key: 'manual',
                   label: (
-                    <a href="/manual/introduction">
+                    <a href="/manual/latest/introduction">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-zhinan"></use>
@@ -97,7 +97,7 @@ export default function RootLayout({
                 }, {
                   key: 'publish',
                   label: (
-                    <a href="/manual/delivery">
+                    <a href="/manual/latest/delivery">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-package"></use>
