@@ -22,6 +22,11 @@ const examples = [
     url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-flatten-lion@main/lib/lion.xsml',
   },
   {
+    key: 'jsar-gallery-poker',
+    label: '扑克牌（双面渲染）',
+    url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-poker@main/main.xsml',
+  },
+  {
     key: 'jsar-gallery-mesh-collision',
     label: '碰撞检测',
     url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-mesh-collision@main/main.xsml',
