@@ -210,3 +210,17 @@ if (balloon1.intersectsMesh(plan1, false)) {
 上面的代码中，我们创建了一个 `balloon1` 网格和一个 `plan1` 网格，然后判断 `balloon1` 网格是否与 `plan1` 网格相交，如果相交，则将 `balloon1` 网格的颜色设置为红色，否则设置为白色。
 
 可以通过在线示例：[碰撞检查](/playground?id=jsar-gallery-mesh-collision) 和对应的源码：[M-CreativeLab/jsar-gallery-mesh-collision](https://github.com/M-CreativeLab/jsar-gallery-mesh-collision) 来了解更多关于碰撞检测的使用方法。
+
+## 网格轮廓
+
+JSAR 支持网格轮廓的显示，可以通过 `outlineWidth` 和 `outlineColor` 来设置轮廓的宽度和颜色，如下所示：
+
+```ts
+const { Vector3 } = BABYLON;
+const scene = spatialDocument.scene as BABYLON.Scene;
+
+const box = MeshBuilder.CreateBox('box', { size: 2 }, scene);
+box.renderOutline = true;
+box.outlineWidth = 2;
+box.outlineColor = new Vector3(1, 0, 0);
+```

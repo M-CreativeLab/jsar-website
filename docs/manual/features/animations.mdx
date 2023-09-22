@@ -1,3 +1,98 @@
 # 动画系统
 
-动画系统是一个非常重要的系统，它可以让我们的游戏更加生动，更加有趣。在游戏中，动画系统的作用主要有两个：
+在 JSAR 中，开发者可以使用 Babylon.js 的动画系统来创建动画，或者使用 Babylon.js 的动画系统来播放模型文件中的动画。
+
+## 从0开始创建动画
+
+如果你想从0开始创建动画，你需要创建一个动画，添加关键帧，将动画添加到物体中，然后播放动画，具体步骤如下。
+
+### 创建动画
+
+你可以使用 Babylon.js 的动画系统来创建动画，这里有一个简单的例子：
+
+```ts
+const frameRate = 10;
+const xSlide = new BABYLON.Animation(
+  'xSlide',
+  'position.x',
+  frameRate,
+  BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+  BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+);
+```
+
+这里的代码创建了一个名为 `xSlide` 的动画，它会改变 `position.x` 的值。`frameRate` 是动画的帧率，`ANIMATIONTYPE_FLOAT` 表示动画的类型是浮点数，`ANIMATIONLOOPMODE_CYCLE` 表示动画循环播放。
+
+### 添加关键帧
+
+创建动画之后，你需要添加关键帧来定义动画的行为。这里有一个例子：
+
+```ts
+const keyFrames = []; 
+keyFrames.push({
+  frame: 0,
+  value: 2
+});
+keyFrames.push({
+  frame: frameRate,
+  value: -2
+});
+keyFrames.push({
+  frame: 2 * frameRate,
+  value: 2
+});
+xSlide.setKeys(keyFrames);
+```
+
+这里的代码添加了三个关键帧，第一个关键帧的帧数是 0，值是 2，第二个关键帧的帧数是 `frameRate`，值是 -2，第三个关键帧的帧数是 `2 * frameRate`，值是 2。最后，我们使用 `setKeys` 方法将关键帧添加到动画中。
+
+### 添加动画到物体
+
+创建动画之后，你需要将动画添加到物体中。这里有一个例子：
+
+```ts
+const box = BABYLON.MeshBuilder.CreateBox('box', {});
+box.position.x = 2;
+box.animations.push(xSlide);
+```
+
+这里的代码将动画添加到了 `box` 物体中。
+
+### 播放动画
+
+当你需要播放时，你可以使用 `scene.beginAnimation` 方法来播放动画。这里有一个例子：
+
+```ts
+scene.beginAnimation(box, 0, 2 * frameRate, true);
+```
+
+## 播放模型文件中的动画
+
+如果你想播放模型文件中的动画，你需要先加载模型文件，然后播放动画。具体步骤如下。
+
+### 加载模型文件
+
+```html
+<xsml version="1.0">
+  <head>
+    <link id="model" rel="mesh" type="octstream/glb" href="./model/welcome.glb" />
+  </head>
+  <space>
+    <mesh id="model" ref="model" selector="__root__" />
+  </space>
+</xsml>
+```
+
+通过上面的 XSML 中我们导入了模型，并实例化了它，接下来就是播放动画了：
+
+```ts
+const scene = spaceDocument.scene as BABYLON.Scene;
+const defaultAnim = scene.getAnimationGroupByName('animation0/#model');
+defaultAnim.play(true);
+```
+
+上面的代码，通过 `scene.getAnimationGroupByName()` 获取了模型中的动画，然后调用 `play()` 方法播放动画。
+
+这里需要注意一个细节，即动画名称，它的格式是 "动画名称/#mesh-id"。这是因为加载的模型和动画需要被克隆后才能在场景中使用，那么为了能唯一确定某个被克隆的模型中的动画，JSAR 内部采用了这样的命名规则。
+
+> JSAR 团队也会持续优化这个细节，让开发者不需要关心这个细节，只需要传入动画名称即可，如果开发者有好的建议欢迎提交到 [GitHub Discussion](https://github.com/M-CreativeLab/jsar-website/discussions/new/choose)。
