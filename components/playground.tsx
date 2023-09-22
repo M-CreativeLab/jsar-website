@@ -30,7 +30,12 @@ const examples = [
     key: 'jsar-gallery-mesh-collision',
     label: '碰撞检测',
     url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-mesh-collision@main/main.xsml',
-  }
+  },
+  {
+    key: 'jsar-gallery-animation-easing',
+    label: '动画缓动',
+    url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-animation-easing@main/main.xsml',
+  },
 ]
 let isTransmuteInitialized = false
 let unityInstance: any = null
