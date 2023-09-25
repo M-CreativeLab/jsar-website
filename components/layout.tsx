@@ -63,6 +63,21 @@ export default function RootLayout({
                       </Space>
                     </a>
                   ),
+                }, {
+                  key: 'jsar-canary',
+                  label: (
+                    <a href="/installer/jsar-canary-latest.apk">
+                      <Space style={{ fontSize: '16px' }}>
+                        <Image
+                          src="logo-jsar.png"
+                          alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
+                          width={12}
+                          height={12}
+                        />
+                        JSAR Canary
+                      </Space>
+                    </a>
+                  ),
                 }],
               }}
             >

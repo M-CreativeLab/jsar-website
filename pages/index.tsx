@@ -128,7 +128,7 @@ export default function Home() {
                 </svg>
               }>下载 VSCode 插件</Button>
             </a>
-            <Link href="manual/introduction">
+            <Link href="manual/latest/introduction">
               <Button shape="round" size="large">
                 开发者文档
                 <ArrowRightOutlined />
@@ -231,7 +231,7 @@ export default function Home() {
           <Typography.Paragraph style={textStyle}>
             JSAR 运行时在执行小程序时，可直接解析 TypeScript 代码，因此开发者无需任何编译和配置即可运行 TypeScript 代码。
           </Typography.Paragraph>
-          <Link href="manual/basic-concepts/typescript">
+          <Link href="manual/latest/basic-concepts/typescript">
             <Button size="large" shape="round">
               在 JSAR 中使用 TypeScript
               <ArrowRightOutlined />
@@ -297,7 +297,7 @@ export default function Home() {
             <Typography.Paragraph style={textStyle}>
               JSAR 实现了 Babylon.js <code>Engine</code> 部分的接口，因此开发者可直接使用 Babylon.js 的 API 进行开发（不过还存在不完全支持的情况）。
             </Typography.Paragraph>
-            <Link href="manual/runtime/babylonjs-apis">
+            <Link href="manual/latest/runtime/babylonjs-apis">
               <Button size="large" shape="round">
                 在 JSAR 中使用 Babylon.js
                 <ArrowRightOutlined />
