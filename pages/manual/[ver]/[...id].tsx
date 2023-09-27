@@ -74,7 +74,11 @@ export default function Page() {
         }
       },
       img: (props) => {
-        return <img {...props} style={{ width: '60%', maxWidth: '680px' }} />
+        return (
+          <Typography.Paragraph>
+            <img {...props} style={{ maxWidth: 'min(60%, 680px)' }} />
+          </Typography.Paragraph>
+        )
       },
       pre: (props) => {
         const lang = (props.children as any)?.props.className?.replace('language-', '')
