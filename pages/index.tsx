@@ -220,7 +220,9 @@ export default function Home() {
           <Typography.Paragraph style={textStyle}>
             同样地，JSAR 使用 TypeScript / JavaScript 作为空间小程序的脚本语言。
           </Typography.Paragraph>
-          <Button size="large" shape="round" type="default">了解更多<ArrowRightOutlined /></Button>
+          <Link href="manual/latest/basic-concepts/intro-xsml">
+            <Button size="large" shape="round" type="default">了解更多<ArrowRightOutlined /></Button>
+          </Link>
         </Space>
       </Space>
       <Divider />
@@ -322,7 +324,9 @@ export default function Home() {
               使用 JSAR 开发的空间组件可以在任何一个 Unity 场景中运行，我们提供了 JSAR UPM 插件，按需实现底层数据接口，即可在你的 Unity 应用中使用 JSAR 空间小程序。
             </Typography.Paragraph>
             <Space>
-              <Button size="large" shape="round" type="primary">申请 JSAR UPM 试用</Button>
+              <Tooltip title="即将开放">
+                <Button size="large" shape="round" type="primary" disabled>申请 JSAR UPM 试用</Button>
+              </Tooltip>
               <Button size="large" shape="round">
                 Unity 集成指南
                 <ArrowRightOutlined />

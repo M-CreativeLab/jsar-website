@@ -74,7 +74,7 @@ export default function Page() {
         }
       },
       img: (props) => {
-        return <img {...props} style={{ maxWidth: '60%' }} />
+        return <img {...props} style={{ width: '60%', maxWidth: '680px' }} />
       },
       pre: (props) => {
         const lang = (props.children as any)?.props.className?.replace('language-', '')
