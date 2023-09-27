@@ -76,7 +76,7 @@ export default function Page() {
       img: (props) => {
         return (
           <Typography.Paragraph>
-            <img {...props} style={{ maxWidth: 'min(60%, 680px)' }} />
+            <img {...props} style={{ maxWidth: 'min(60%, 780px)' }} />
           </Typography.Paragraph>
         )
       },

@@ -22,10 +22,6 @@
       {
         "title": "打包",
         "key": "build-project"
-      },
-      {
-        "title": "发布",
-        "key": "publish-project"
       }
     ]
   },
@@ -82,16 +78,20 @@
     "key": "developer-tools",
     "children": [
       {
-        "title": "工具介绍",
-        "key": "introduction"
+        "title": "功能",
+        "key": "intro-features"
       },
       {
-        "title": "子空间预览",
-        "key": "subspace-preview"
+        "title": "界面",
+        "key": "intro-gui"
       },
       {
-        "title": "子空间调试",
-        "key": "subspace-debugging"
+        "title": "预览",
+        "key": "preview"
+      },
+      {
+        "title": "调试",
+        "key": "debugging"
       },
       {
         "title": "打包",
