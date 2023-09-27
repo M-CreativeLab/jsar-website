@@ -2,6 +2,21 @@ import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs'
 import Document, { Html, Head, Main, NextScript, type DocumentContext } from 'next/document'
 
 function SiteDocument() {
+  let externalScript = null
+  if (process.env['GTAG']) {
+    externalScript = (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env['GTAG']}`}></script>
+        <script>{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', '${process.env['GTAG']}');
+        `}</script>
+      </>
+    )
+  }
+
   return (
     <Html lang="en">
       <Head>
@@ -23,6 +38,7 @@ function SiteDocument() {
       <body>
         <Main />
         <NextScript />
+        {externalScript}
       </body>
     </Html>
   )
