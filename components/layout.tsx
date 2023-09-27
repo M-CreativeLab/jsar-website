@@ -102,7 +102,7 @@ export default function RootLayout({
                 }, {
                   key: 'apis',
                   label: (
-                    <a href="/api">
+                    <a href="/manual/latest/api-reference">
                       <Space style={{ fontSize: '16px' }}>
                         <UnorderedListOutlined />
                         API 文档

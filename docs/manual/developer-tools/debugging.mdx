@@ -1,0 +1,35 @@
+# 调试
+
+在 [界面]() 中介绍了如何通过场景树和属性查看器来查看你代码在真实环境中的表现，本节就不再进行说明。
+
+## 查看本地日志
+
+查看本地日志有以下两种方式。
+
+### 通过 VSCode Output 查看
+
+![](/vscode-extension-howto-scene-logs.png)
+
+如上图所示，JSAR DevTools 提供了一个独立的输出通道用于帮助开发者查看应用日志，具体使用方法如下：
+
+1. 通过 `console` 打印日志并保存
+2. 打开 Visual Studio Code 的终端（Terminal）面板
+3. 选择输出（Output）面板
+4. 选择输出通道为："JSAR Scene Logs"
+5. 重新运行一次 XSML
+
+### 通过 Chrome DevTools 查看
+
+通过上面的方法虽然可以看到空间小程序的独立日志，但 Visual Studio Code 的输出（Output）面板定位是用于查看文本类日志，如果你希望像 Chrome DevTools 的 Console 一样查看 JavaScript 对象，可以使用如下方法：
+
+1. 通过 Cmd + Shift + P 打开命令面板
+2. 输入 "Developer: Open Webview Developer Tools" 并回车（请确保你打开了预览窗口）
+3. 此时可以看到弹出了一个 Chrome DevTools
+4. 切换到 Console
+5. 重新运行一次 XSML
+
+通过这种方式，就可以交互式地查看 JavaScript 对象了，但缺点是这里面会包含所有的日志信息，你需要添加一些标识来自行过滤。
+
+## 真机调试
+
+> 待补充

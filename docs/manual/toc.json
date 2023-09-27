@@ -138,5 +138,9 @@
         "key": "jsar-canary"
       }
     ]
+  },
+  {
+    "title": "API Reference",
+    "key": "api-reference"
   }
 ]
