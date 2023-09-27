@@ -145,7 +145,7 @@ export default function RootLayout({
                 items: [{
                   key: 'rokid-forum',
                   label: (
-                    <a href="#" target="_blank">
+                    <a href="https://forum.rokid.com/index" target="_blank">
                       <Space style={{ fontSize: '16px' }}>
                         <CommentOutlined />
                         开发者论坛
