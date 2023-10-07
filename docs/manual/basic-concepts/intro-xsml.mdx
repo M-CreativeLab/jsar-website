@@ -4,7 +4,7 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 
 以下是一个 XSML 的示例：
 
-```html
+```xml
 <xsml version="1.0">
   <head>
     <title>Rokid Jungle</title>
@@ -45,7 +45,31 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 
 在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
 
-> 在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件。
+在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件，具体支持情况如下。
+
+| `rel` | 描述 | 是否支持 |
+| --- | --- | --- |
+| `mesh` | 当前文档会使用的 3D 模型 | 是 |
+| `alternate` | 当前文档的替代文档 | 否 |
+| `author` | 当前文档的作者 | 否 |
+| `bookmark` | 当前文档的书签 | 否 |
+| `canonical` | 当前文档的规范地址 | 否 |
+| `dns-prefetch` | 当前文档的 DNS 预获取 | 否 |
+| `help` | 当前文档的帮助 | 否 |
+| `icon` | 当前文档的图标 | 否 |
+| `license` | 当前文档的许可证 | 否 |
+| `manifest` | 当前文档的清单 | 否 |
+| `modulepreload` | 当前文档的模块预加载 | 否 |
+| `next` | 当前文档的下一个 | 否 |
+| `pingback` | 当前文档的 PingBack | 否 |
+| `preconnect` | 当前文档的预连接 | 否 |
+| `prefetch` | 当前文档的预获取 | 否 |
+| `preload` | 当前文档的预加载 | 否 |
+| `prerender` | 当前文档的预渲染 | 否 |
+| `prev` | 当前文档的上一个 | 否 |
+| `search` | 当前文档的搜索 | 否 |
+| `stylesheet` | 当前文档的样式表 | 否 |
+| `tag` | 当前文档的标签 | 否 |
 
 #### script
 
@@ -67,7 +91,7 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 
 以下是一个 `<style>` 标签的示例：
 
-```html
+```xml
 <xsml version="1.0">
   <head>
     <style type="text/scss">
