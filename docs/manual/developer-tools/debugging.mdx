@@ -32,4 +32,28 @@
 
 ## 真机调试
 
-> 待补充
+JSAR 可以在 Rokid AR Studio 的桌面进行真机调试，具体步骤如下。
+
+首先，打开桌面的快捷设置，并选择设置。
+
+![](device-debugging-00.png)
+
+打开设置后，选择开发者选项，并打开 JSAR 调试。
+
+![](device-debugging-01.png)
+
+然后在应用列表划过负一屏，即可看到当前空间小程序处于调试模式。
+
+![](device-debugging-02.png)
+
+接下来，使用 Visual Studio Code 打开任何一个空间小程序项目，通过以下两种方式即可安装项目到设备上，即可调试运行。
+
+1. 通过 Cmd + Shift + P 打开命令面板，输入 "JSAR: Install to Connected Device" 并回车，按照提示选择设备即可
+2. 通过 Explorer 面板，右键点击空白处，选择 "JSAR: Install to Connected Device"，按照提示选择设备即可
+
+注：该功能依赖本地安装 adb 来与 AOSP 设备进行交互，基础 adb 信息如下：
+
+```
+Android Debug Bridge version 1.0.41
+Version 34.0.1-9979309
+```

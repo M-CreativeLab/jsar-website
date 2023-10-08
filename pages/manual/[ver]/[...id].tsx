@@ -1,4 +1,4 @@
-import { Affix, Divider, Layout, Select, Tree, TreeDataNode, Typography } from 'antd'
+import { Affix, Divider, Layout, Select, Space, Tree, TreeDataNode, Typography } from 'antd'
 import { useRouter } from 'next/router'
 import type { MDXProps } from 'mdx/types'
 import { useEffect, useState } from 'react'
@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { CodeBlock, github } from 'react-code-blocks'
 
 import latestTocOfManual from '../../../docs/manual/toc.json'
+import { DownOutlined, LinkOutlined, RightOutlined } from '@ant-design/icons'
 
 type TocItem = {
   key: string
@@ -38,7 +39,28 @@ export default function Page() {
     margin: '1rem 0',
   }
   const createHeaderRenderer = (level?: 1 | 2 | 3 | 4 | 5) => {
-    return (props: any) => <Typography.Title level={level} style={segmentStyle}>{props.children}</Typography.Title>
+    return (props: any) =>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.5rem',
+        }}
+      >
+        <Typography.Title
+          level={level}
+          style={{
+            ...segmentStyle,
+            position: 'relative',
+          }}
+        >
+          <a id={props.children} style={{ position: 'absolute', top: '-90px' }}></a>
+          {props.children}
+        </Typography.Title>
+        <Link href={`#${props.children}`} style={{ display: 'flex' }}>
+          <LinkOutlined style={{ fontSize: 18, color: 'unset' }} />
+        </Link>
+      </div>
   }
 
   let docPath: string | undefined = undefined
@@ -187,11 +209,16 @@ export default function Page() {
             <Divider />
             <Tree
               autoExpandParent={true}
-              showLine={false}
+              showLine={true}
+              showIcon={false}
               blockNode={true}
               checkStrictly={false}
               treeData={treeData}
               expandedKeys={expandedKeys}
+              expandAction="click"
+              switcherIcon={
+                <DownOutlined />
+              }
               selectedKeys={docPath ? [docPath] : []}
               onSelect={(selectedKeys) => {
                 if (selectedKeys.length > 0) {
