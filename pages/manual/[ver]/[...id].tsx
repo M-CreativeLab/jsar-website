@@ -92,7 +92,7 @@ export default function Page() {
           return <a href={href} target="_blank">{props.children}</a>
         } else {
           href = `/manual/${router.query.ver}/${href}`
-          return <Link href={href}>{props.children}</Link>
+          return <a href={href}>{props.children}</a>
         }
       },
       img: (props) => {
@@ -171,6 +171,22 @@ export default function Page() {
   useEffect(() => {
     if (router.isReady) {
       setExpandedKeys([docPath as string])
+
+      setTimeout(() => {
+        const hashPath = location.hash
+        if (hashPath) {
+          const id = decodeURIComponent(hashPath.replace('#', '')) as string
+          console.info(`scroll to ${id}`)
+          const el = window.document.getElementById(id)
+          if (el) {
+            const rect = el.getBoundingClientRect()
+            window.top?.scroll({
+              top: window.scrollY + rect.top,
+              behavior: 'smooth',
+            })
+          }
+        }
+      }, 100)
     }
   }, [router.isReady])
 
