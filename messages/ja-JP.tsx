@@ -81,6 +81,22 @@ export default {
       ]
     }
   },
+  "PlaygroundPage": {
+    "title": "プレイグラウンド",
+    "description": [
+      "このページは公式/コミュニティによって提供される例をプレビューするために使用されます。左側の例リストをクリックして、異なる例に切り替えることができます。",
+      "注意：初期の読み込みには時間がかかる場合がありますので、お待ちいただければ幸いです。"
+    ],
+    "metadata": {
+      "base": "情報",
+      "xsmlCode": "XSML コード",
+      "attributes": {
+        "name": "名前",
+        "repository": "リポジトリ",
+        "entryUrl": "エントリーURL"
+      }
+    }
+  },  
   "ManualPages": {
     "version": "バージョン",
     "latest": "最新版",

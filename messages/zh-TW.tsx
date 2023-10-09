@@ -81,6 +81,22 @@ export default {
       ]
     }
   },
+  "PlaygroundPage": {
+    "title": "線上體驗",
+    "description": [
+      "此頁面用於預覽由官方/社群提供的示例。您可以通過點擊左側的示例列表來切換不同的示例。",
+      "註：初始加載可能需要一些時間，請耐心等待。"
+    ],
+    "metadata": {
+      "base": "信息",
+      "xsmlCode": "XSML 代碼",
+      "attributes": {
+        "name": "名稱",
+        "repository": "存儲庫",
+        "entryUrl": "進入網址"
+      }
+    }
+  },  
   "ManualPages": {
     "version": "版本",
     "latest": "最新版"

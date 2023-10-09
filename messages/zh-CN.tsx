@@ -81,6 +81,22 @@ export default {
       ]
     }
   },
+  "PlaygroundPage": {
+    "title": "在线演示",
+    "description": [
+      "该页面用于预览官方/社区提供的示例，您可以通过点击左侧的示例列表来切换不同的示例。",
+      "注：首次加载可能需要较长时间，请耐心等待。"
+    ],
+    "metadata": {
+      "base": "基础信息",
+      "xsml": "XSML代码",
+      "attributes": {
+        "name": "名称",
+        "repository": "代码仓库",
+        "entryUrl": "入口文件",
+      }
+    },
+  },
   "ManualPages": {
     "version": "版本",
     "latest": "最新",

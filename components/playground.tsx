@@ -1,4 +1,5 @@
 import { Descriptions, Divider, Tabs, Typography } from 'antd'
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react'
 import { CodeBlock, github } from 'react-code-blocks'
@@ -41,6 +42,7 @@ let isTransmuteInitialized = false
 let unityInstance: any = null
 
 export default function Playground() {
+  const t = useTranslations('PlaygroundPage')
   const router = useRouter()
   const selectedExampleRef = useRef(examples[0])
   const [selectedExample, setSelectedExample] = useState(selectedExampleRef.current)
@@ -169,6 +171,7 @@ export default function Playground() {
         alignItems: 'center',
         width: '100%',
         overflowX: 'hidden',
+        minHeight: '500px',
       }}
     >
       <section
@@ -183,10 +186,9 @@ export default function Playground() {
           padding: '2rem',
         }}
       >
-        <Typography.Title level={2} style={{ alignSelf: 'flex-start' }}>在线演示</Typography.Title>
+        <Typography.Title level={2} style={{ alignSelf: 'flex-start' }}>{t('title')}</Typography.Title>
         <Typography.Paragraph>
-          该页面用于预览官方/社区提供的示例，您可以通过点击左侧的示例列表来切换不同的示例。<br/>
-          注：首次加载可能需要较长时间，请耐心等待。
+          {t('description.0')}<br/>{t('description.1')}
         </Typography.Paragraph>
         <Divider />
         <section
@@ -252,7 +254,7 @@ export default function Playground() {
               }}
               defaultActiveKey="meta"
             >
-              <Tabs.TabPane tab="基础信息" key="meta">
+              <Tabs.TabPane tab={t('metadata.base')} key="meta">
                 <Descriptions
                   layout="horizontal"
                   size="small"
@@ -260,16 +262,16 @@ export default function Playground() {
                   column={1}
                   labelStyle={{ width: '100px', textAlign: 'right' }}
                 >
-                  <Descriptions.Item label="名称">{selectedExample.label}</Descriptions.Item>
-                  <Descriptions.Item label="代码仓库">
+                  <Descriptions.Item label={t('metadata.attributes.name')}>{selectedExample.label}</Descriptions.Item>
+                  <Descriptions.Item label={t('metadata.attributes.repository')}>
                     <a target="_blank"
                       href={`https://github.com/M-CreativeLab/${selectedExample.key}`}>
                       M-CreativeLab/{selectedExample.key}</a>
                   </Descriptions.Item>
-                  <Descriptions.Item label="入口文件">{selectedExample.url}</Descriptions.Item>
+                  <Descriptions.Item label={t('metadata.attributes.entryUrl')}>{selectedExample.url}</Descriptions.Item>
                 </Descriptions>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="XSML代码" key="code">
+              <Tabs.TabPane tab={t('metadata.xsmlCode')} key="code">
                 <CodeBlock
                   language="xml"
                   theme={github}

@@ -3,8 +3,7 @@ import { useTranslations } from 'next-intl'
 import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Button, Divider, Dropdown, Layout, Space, Typography } from 'antd'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import LocaleCode from 'locale-code'
 
 function getLanguageName(code: string): string {
@@ -14,6 +13,14 @@ function getLanguageName(code: string): string {
     return '繁体中文'
   } else {
     return LocaleCode.getLanguageNativeName(code)
+  }
+}
+
+function getLocaleHref(router: NextRouter, href: string): string {
+  if (router.locale === router.defaultLocale) {
+    return href
+  } else {
+    return `/${router.locale}${href}`
   }
 }
 
@@ -52,7 +59,7 @@ export default function RootLayout({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <a href="/">
+          <a href={getLocaleHref(router, '/')}>
             <div className="logo" style={{ marginRight: '2.25rem' }}>
               <Image
                 src="logo-jsar.png"
@@ -106,48 +113,48 @@ export default function RootLayout({
                 items: [{
                   key: 'manual',
                   label: (
-                    <Link href="/manual/latest/introduction">
+                    <a href={getLocaleHref(router, '/manual/latest/introduction')}>
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-zhinan"></use>
                         </svg>
                         {t('menuSubItems.document.manual')}
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'apis',
                   label: (
-                    <Link href="/manual/latest/api-reference">
+                    <a href={getLocaleHref(router, '/manual/latest/api-reference')}>
                       <Space style={{ fontSize: '16px' }}>
                         <UnorderedListOutlined />
                         {t('menuSubItems.document.apiReference')}
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'publish',
                   label: (
-                    <Link href="/manual/latest/delivery">
+                    <a href={getLocaleHref(router, '/manual/latest/delivery')}>
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-package"></use>
                         </svg>
                         {t('menuSubItems.document.publish')}
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }, {
                   key: 'examples',
                   label: (
-                    <Link href="/playground">
+                    <a href={getLocaleHref(router, '/playground')} target="_blank">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-examples"></use>
                         </svg>
                         {t('menuSubItems.document.playground')}
                       </Space>
-                    </Link>
+                    </a>
                   )
                 }],
               }}
@@ -201,7 +208,7 @@ export default function RootLayout({
         style={{
           textAlign: 'center',
           background: '#fff',
-          marginTop: '20px',
+          marginTop: '50px',
           paddingTop: '50px',
         }}
       >
@@ -218,11 +225,11 @@ export default function RootLayout({
         >
           <div style={{ textAlign: 'left', width: '20vw' }}>
             <Typography.Title level={4}>{t('footer.languages')}</Typography.Title>
-            <Space>
+            <Space size={18}>
               {router.locales?.map((locale) => (
-                <Link href="/" locale={locale} key={locale}>
+                <a href={`/${locale}`} key={locale}>
                   {getLanguageName(locale)}
-                </Link>
+                </a>
               ))}
             </Space>
           </div>
@@ -234,12 +241,12 @@ export default function RootLayout({
                 fontSize: 20,
               }}
             >
-              <Link href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
+              <a href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
                 <GithubOutlined />
-              </Link>
-              <Link href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
+              </a>
+              <a href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
                 <CommentOutlined />
-              </Link>
+              </a>
             </Space>
           </div>
         </section>
