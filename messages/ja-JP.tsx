@@ -96,9 +96,44 @@ export default {
         "entryUrl": "エントリーURL"
       }
     }
-  },  
+  },
   "ManualPages": {
     "version": "バージョン",
     "latest": "最新版",
+    "toc": {
+      "INTRODUCTION": "はじめに",
+      "QUICK_START": "クイックスタート",
+      "PROJECT_CONFIGURATION": "プロジェクト設定",
+      "PROJECT_CREATE": "プロジェクトの作成",
+      "PROJECT_RUN": "プロジェクトの実行",
+      "PROJECT_BUILD": "プロジェクトのビルド",
+      "BASIC_CONCEPTS": "基本的なコンセプト",
+      "SPACE_MINIAPPS": "スペースミニアプリ",
+      "XSML": "XSML",
+      "SCSS": "SCSS",
+      "TYPESCRIPT": "TypeScript",
+      "FEATURES": "機能",
+      "MESHES_AND_MODELS": "メッシュとモデル",
+      "MATERIALS": "マテリアル",
+      "ANIMATIONS": "アニメーション",
+      "AUDIO": "オーディオ",
+      "INPUT_EVENTS": "入力イベント",
+      "DEVTOOLS": "開発ツール",
+      "DEVTOOLS_FEATURES": "機能",
+      "DEVTOOLS_GUI": "ユーザーインターフェース",
+      "DEVTOOLS_PREVIEW": "プレビュー",
+      "DEVTOOLS_DEBUGGING": "デバッグ",
+      "DEVTOOLS_PACKAGING": "パッケージング",
+      "RUNTIME": "ランタイム",
+      "RUNTIME_BABYLONJS_APIS": "Babylon.js API",
+      "RUNTIME_WEB_APIS": "Web API",
+      "RUNTIME_JSAR_APIS": "JSAR API",
+      "RUNTIME_RESOURCE_CACHE": "リソースキャッシュ",
+      "RUNTIME_MODULE_SYSTEM": "モジュールシステム",
+      "DELIVERY": "配信",
+      "DELIVERY_ROKID_ARSTORE": "Rokid AR ストア",
+      "DELIVERY_JSAR_CANARY": "JSAR キャナリー",
+      "API_REFERENCE": "API リファレンス"
+    }
   }
 }

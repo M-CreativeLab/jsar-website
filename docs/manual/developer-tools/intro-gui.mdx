@@ -1,38 +1,37 @@
-# 界面
+# Interface
 
-
-拓展界面如下图所示，主要包含5个区域：
+The extension interface is shown in the image below, mainly consisting of 5 areas:
 
 ![](vscode-extension-gui.png)
 
-1. 目录树，用于查看你项目的文件和代码
-2. 编辑区，用于编辑单个文件的代码
-3. 预览区，或场景预览，用于预览单个 XSML 文件
-4. 场景树，用于查看当前运行的场景结构
-5. 属性查看器，用于查看你选中的对象属性
+1. Directory Tree: Used to view files and code in your project.
+2. Editing Area: Used to edit code for a single file.
+3. Preview Area: or Scene Preview: Used to preview a single XSML file.
+4. Scene Tree: Used to view the structure of the currently running scene.
+5. Property Inspector: Used to view the properties of selected objects.
 
-## 目录树
+## Directory Tree
 
-如果你熟悉 VSCode 获取其他代码编辑器，一定不陌生，它是 VSCode 自带的功能，用于查看你的项目文件。
+If you are familiar with VSCode or other code editors, you will be no stranger to this. It is a built-in feature of VSCode used to view files in your project.
 
-## 编辑区
+## Editing Area
 
-同目录树一样，它也是 VSCode 自带的功能，用于编辑你的代码，但 JSAR 拓展会提供与 XSML/SCSS 语言相关的支持 —— 语法高亮与智能提示。
+Like the directory tree, this is also a built-in feature of VSCode used for code editing. However, the JSAR extension provides support related to the XSML/SCSS languages, including syntax highlighting and IntelliSense.
 
-## 预览区
+## Preview Area
 
-当你打开一个以 `*.xsml` 结尾的文件，会在右上角发现一个预览按钮，点击它就可以打开一个预览区，并读取你当前的 XSML 文件内容，用于渲染场景，开发者可通过它对场景进行预览。
+When you open a file ending in `*.xsml`, you will find a preview button in the upper right corner. Clicking it will open a preview area and load the content of your current XSML file for rendering a scene. Developers can use it to preview the scene.
 
-## 场景树
+## Scene Tree
 
-当每次在预览区加载一个 XSML 时，会将中间的内容也同步给道 Scene Hierachy，用于查看当前场景的结构，开发者可通过它查看场景中节点的层级关系，以及节点的属性。
+Whenever an XSML file is loaded in the preview area, the content is synchronized to the Scene Hierarchy in the middle. This is used to view the structure of the current scene. Developers can use it to see the hierarchy of nodes in the scene and the properties of nodes.
 
-## 属性查看器
+## Property Inspector
 
-需要与场景树配合使用，通过场景树选择对象后，可在属性查看器中查看当前选中对象的属性，包含：
+This is used in conjunction with the Scene Tree. After selecting an object in the Scene Tree, you can view the properties of the currently selected object in the Property Inspector, including:
 
-- 基础属性
-- 位置、旋转、缩放属性
-- 材质属性
+- Basic properties
+- Position, rotation, and scale properties
+- Material properties
 
-> 未来会支持通过属性查看器修改对象属性，并同步到代码中。
+> In the future, modifying object properties through the Property Inspector and synchronizing them to the code will be supported.

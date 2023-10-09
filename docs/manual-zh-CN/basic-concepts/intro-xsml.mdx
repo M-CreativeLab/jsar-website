@@ -1,0 +1,233 @@
+# XSML
+
+XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它沿用了 HTML 的一些标签定义，比如 `head`、`title`、`script`、`style`、`div` 等，同时也增加了一些标签用于表示空间，比如 `body` 替换为 `space`，使用 `cube` 表示一个立方体等。
+
+以下是一个 XSML 的示例：
+
+```xml
+<xsml version="1.0">
+  <head>
+    <title>Rokid Jungle</title>
+    <link id="model" rel="mesh" type="octstream/glb" href="./model/welcome.glb" />
+    <script src="./lib/main.ts"></script>
+  </head>
+  <space>
+    <mesh id="model" ref="model" selector="__root__" />
+  </space>
+</xsml>
+```
+
+## XSML 标签
+
+以下对当前 XSML 做简要说明。
+
+### xsml
+
+`<xsml>` 标签是 XSML 的根标签，它的属性有：
+
+- `version`：表示 XSML 的版本号，目前只支持 `1.0`。
+
+### head
+
+`<head>` 标签用于定义 XSML 的头部信息，它的子标签有：`title`、`link`、`script` 等。
+
+#### title
+
+`<title>` 标签用于定义 XSML 的标题，它的内容为字符串。
+
+#### link
+
+`<link>` 标签用于定义 XSML 的链接信息，它的属性有：
+
+- `id`：表示链接的唯一标识符，它的值为字符串。
+- `rel`：表示链接的关系，它的值为字符串，目前只支持 `mesh`。
+- `type`：表示链接的类型，它的值为字符串，目前只支持 `octstream/glb`。
+
+在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
+
+在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件，具体支持情况如下。
+
+| `rel` | 描述 | 是否支持 |
+| --- | --- | --- |
+| `mesh` | 当前文档会使用的 3D 模型 | 是 |
+| `alternate` | 当前文档的替代文档 | 否 |
+| `author` | 当前文档的作者 | 否 |
+| `bookmark` | 当前文档的书签 | 否 |
+| `canonical` | 当前文档的规范地址 | 否 |
+| `dns-prefetch` | 当前文档的 DNS 预获取 | 否 |
+| `help` | 当前文档的帮助 | 否 |
+| `icon` | 当前文档的图标 | 否 |
+| `license` | 当前文档的许可证 | 否 |
+| `manifest` | 当前文档的清单 | 否 |
+| `modulepreload` | 当前文档的模块预加载 | 否 |
+| `next` | 当前文档的下一个 | 否 |
+| `pingback` | 当前文档的 PingBack | 否 |
+| `preconnect` | 当前文档的预连接 | 否 |
+| `prefetch` | 当前文档的预获取 | 否 |
+| `preload` | 当前文档的预加载 | 否 |
+| `prerender` | 当前文档的预渲染 | 否 |
+| `prev` | 当前文档的上一个 | 否 |
+| `search` | 当前文档的搜索 | 否 |
+| `stylesheet` | 当前文档的样式表 | 否 |
+| `tag` | 当前文档的标签 | 否 |
+
+#### script
+
+`<script>` 标签用于定义 XSML 的脚本信息，它的属性有：
+
+- `src`：表示脚本的链接地址，它的值为字符串。
+
+在 XSML 中，`<script>` 标签除了可以引入 JavaScript 文件外，还可以引入 TypeScript 文件，但需要在 `src` 属性中指定文件的后缀名为 `.ts`，引入 TypeScript 脚本无需额外的代码编译。
+
+> 当前版本中，我们还不支持 CommonJS 或 ECMAScript Module 等模块系统，但你可以通过挂载全局变量 `global.spaceDocument` 来实现不同文件之间的引用，但仍然不推荐这么做，因为这样会导致代码的可读性变差。
+
+> 我们会尽快在 JSAR 中支持 ECMAScript Module。
+
+#### style
+
+`<style>` 标签用于定义 XSML 的样式信息，它与 HTML 中的 style 有同样的用途，它的属性有：
+
+- `type`：表示样式的类型，它的值为字符串，目前只支持 `text/scss`。
+
+以下是一个 `<style>` 标签的示例：
+
+```xml
+<xsml version="1.0">
+  <head>
+    <style type="text/scss">
+      @material yellow {
+        diffuse-color: #fdd276;
+        backface-culling: false;
+        side-orientation: frontside;
+      }
+      #lion {
+        rotation: 0 0 0;
+      }
+      #lion_body {
+        material: "yellow";
+        position: 0 -30 -60;
+      }
+      #lion_head {
+        y: 60;
+        z: -50;
+      }
+      #lion_face {
+        material: "yellow";
+        position: 0 0 135;
+      }
+      #lion_mane {
+        position: 0 -10 80;
+      }
+    </style>
+  </head>
+  <space>
+    <!-- 空间结构 -->
+  </space>
+</xsml>
+```
+
+可以看到通过 `<style>` 标签内部的内容，可以像 CSS 一样定义样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+
+比如我们通过原来 `@font-family` 和 `@keyframes` 的语法定义了 3D 中的材质，在 `@material` 中你可以设置材质类型、颜色、贴图等，然后在具体的元素中通过 material 属性来使用对应的材质定义。
+
+同样，我们也拓展了原有的样式定义，比如增加了 `position`、`rotation`、`scale` 等属性，用于定义 3D 元素的位置、旋转、缩放等。
+
+> 注：当前版本仅支持按照 id 查询，后续会兼容 CSS 的按照元素标签和 class 查询。
+
+> 更多关于 `<style>` 标签的内容，可以参考 [SCSS](./basic-concepts/intro-scss)。
+
+### space
+
+`<space>` 标签用于定义 XSML 的空间结构，它的子标签有：`mesh`、`cube`、`sphere`、`cylinder`、`cone`、`plane`、`text`、`image`、`video`、`audio` 等。
+
+#### mesh
+
+`<mesh>` 标签用于定义 XSML 的网格元素，它的属性有：
+
+- `id`：表示网格元素的唯一标识符，它的值为字符串。
+- `ref`：表示网格元素的引用，它的值为字符串，目前只支持 `model`。
+- `selector`：表示网格元素的选择器，它的值为字符串。
+
+该标签用于将 `<head>` 标签中的 `<link>` 标签引入的 3D 模型文件，渲染到空间中，通过 ref 属性指定引入的 3D 模型文件的 id，通过 selector 属性指定引入的 3D 模型文件的节点。
+
+#### cube
+
+`<cube>` 标签用于定义 XSML 的立方体元素，它的属性有：
+
+- `id`：表示立方体元素的唯一标识符，它的值为字符串。
+- `width`：表示立方体元素的宽度，它的值为数字。
+- `height`：表示立方体元素的高度，它的值为数字。
+- `depth`：表示立方体元素的深度，它的值为数字。
+- `size`：表示立方体元素的大小，它的值为数字。
+
+该标签用于定义一个立方体元素，通过 `width`、`height`、`depth` 属性指定立方体元素的宽度、高度、深度。
+
+#### plane
+
+`<plane>` 标签用于定义 XSML 的平面元素，它的属性有：
+
+- `id`：表示平面元素的唯一标识符，它的值为字符串。
+- `width`：表示平面元素的宽度，它的值为数字。
+- `height`：表示平面元素的高度，它的值为数字。
+- `size`：表示平面元素的大小，它的值为数字。
+
+该标签用于定义一个平面元素，通过 `width`、`height` 属性指定平面元素的宽度、高度。
+
+#### sphere
+
+`<sphere>` 标签用于定义 XSML 的球体元素，它的属性有：
+
+- `id`：表示球体元素的唯一标识符，它的值为字符串。
+- `segments`：表示球体元素的分段数，它的值为数字。
+- `diameter`：表示球体元素的直径，它的值为数字。
+- `diameterX`：表示球体元素的 X 轴直径，它的值为数字。
+- `diameterY`：表示球体元素的 Y 轴直径，它的值为数字。
+- `diameterZ`：表示球体元素的 Z 轴直径，它的值为数字。
+- `arc`：表示球体元素的弧度，它的值为数字。
+- `slice`：表示球体元素的切片数，它的值为数字。
+
+该标签用于定义一个球体元素，通过 `segments` 属性指定球体元素的分段数，通过 `diameter`、`diameterX`、`diameterY`、`diameterZ` 属性指定球体元素的直径，通过 `arc` 属性指定球体元素的弧度，通过 `slice` 属性指定球体元素的切片数。
+
+#### cylinder
+
+`<cylinder>` 标签用于定义 XSML 的圆柱体元素，它的属性有：
+
+- `id`：表示圆柱体元素的唯一标识符，它的值为字符串。
+- `height`：表示圆柱体元素的高度，它的值为数字。
+- `diameter`：表示圆柱体元素的直径，它的值为数字。
+- `diameterTop`：表示圆柱体元素的顶部直径，它的值为数字。
+- `diameterBottom`：表示圆柱体元素的底部直径，它的值为数字。
+- `tessellation`：表示圆柱体元素的分段数，它的值为数字。
+
+该标签用于定义一个圆柱体元素，通过 `height` 属性指定圆柱体元素的高度，通过 `diameter`、`diameterTop`、`diameterBottom` 属性指定圆柱体元素的直径，通过 `tessellation` 属性指定圆柱体元素的分段数。
+
+#### capsule
+
+`<capsule>` 标签用于定义 XSML 的胶囊体元素，它的属性有：
+
+- `id`：表示胶囊体元素的唯一标识符，它的值为字符串。
+- `height`：表示胶囊体元素的高度，它的值为数字。
+- `radius`：表示胶囊体元素的半径，它的值为数字。
+- `radiusTop`：表示胶囊体元素的顶部半径，它的值为数字。
+- `radiusBottom`：表示胶囊体元素的底部半径，它的值为数字。
+
+该标签用于定义一个胶囊体元素，通过 `height` 属性指定胶囊体元素的高度，通过 `radius`、`radiusTop`、`radiusBottom` 属性指定胶囊体元素的半径。
+
+#### torus
+
+`<torus>` 标签用于定义 XSML 的圆环体元素，它的属性有：
+
+- `id`：表示圆环体元素的唯一标识符，它的值为字符串。
+- `diameter`：表示圆环体元素的直径，它的值为数字。
+- `thickness`：表示圆环体元素的厚度，它的值为数字。
+- `tessellation`：表示圆环体元素的分段数，它的值为数字。
+
+#### bound
+
+`<bound>` 标签用于定义 XSML 的边界元素，即 Bounding Box，它的属性有：
+
+- `id`：表示边界元素的唯一标识符，它的值为字符串。
+
+该标签用于定义一个边界元素，它的大小与其父元素的大小一致，通过 `id` 属性指定边界元素的唯一标识符。
+
+> `<bound>` 不能手动声明大小，而是通过计算子元素得到，在内部它是一个 Babylon.js TransformNode 对象。

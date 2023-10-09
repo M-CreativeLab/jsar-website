@@ -1,9 +1,9 @@
-# 打包（Package）
+# Packaging
 
-空间组件运行并调试通过后，可以将其打包成一个独立的文件，以便后续发布和真机调试。
+After successfully running and debugging the space component, you can package it into a standalone file for future publishing and real-device debugging.
 
-> 当前打包的空间小程序需小于10MB，打包时若拓展发现空间小程序超过，会提示打包失败，开发者可以通过 [`gltf-transform`](https://gltf-transform.dev/) 工具进行模型压缩，或者通过其他方式优化你的包内容大小。
+> Currently, packaged space widgets must be less than 10MB. If the extension detects that a space widget exceeds this size during packaging, it will prompt for a failed package. Developers can use the [`gltf-transform`](https://gltf-transform.dev/) tool for model compression or other methods to optimize the size of the package content.
 
 ![howto-pack-project](./howto-pack-project.png)
 
-如上图所示，在项目的空白处右键，选择 "JSAR: Package" 即可打包项目，然后就能在当前目录下看到一个 `{name}-{version}.zip` 的文件，其中，`name` 和 `version` 分别是配置在 `package.json` 中的名称和版本号。
+As shown in the image above, right-click in the empty space of your project, select "JSAR: Package," and it will package your project. You will then find a `{name}-{version}.zip` file in the current directory, where `name` and `version` are the name and version number configured in `package.json`.

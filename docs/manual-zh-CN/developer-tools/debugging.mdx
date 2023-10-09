@@ -1,0 +1,59 @@
+# 调试
+
+在 [界面](developer-tools/intro-gui) 中介绍了如何通过场景树和属性查看器来查看你代码在真实环境中的表现，本节就不再进行说明。
+
+## 查看本地日志
+
+查看本地日志有以下两种方式。
+
+### 通过 VSCode Output 查看
+
+![](/vscode-extension-howto-scene-logs.png)
+
+如上图所示，JSAR DevTools 提供了一个独立的输出通道用于帮助开发者查看应用日志，具体使用方法如下：
+
+1. 通过 `console` 打印日志并保存
+2. 打开 Visual Studio Code 的终端（Terminal）面板
+3. 选择输出（Output）面板
+4. 选择输出通道为："JSAR Scene Logs"
+5. 重新运行一次 XSML
+
+### 通过 Chrome DevTools 查看
+
+通过上面的方法虽然可以看到空间小程序的独立日志，但 Visual Studio Code 的输出（Output）面板定位是用于查看文本类日志，如果你希望像 Chrome DevTools 的 Console 一样查看 JavaScript 对象，可以使用如下方法：
+
+1. 通过 Cmd + Shift + P 打开命令面板
+2. 输入 "Developer: Open Webview Developer Tools" 并回车（请确保你打开了预览窗口）
+3. 此时可以看到弹出了一个 Chrome DevTools
+4. 切换到 Console
+5. 重新运行一次 XSML
+
+通过这种方式，就可以交互式地查看 JavaScript 对象了，但缺点是这里面会包含所有的日志信息，你需要添加一些标识来自行过滤。
+
+## 真机调试
+
+JSAR 可以在 Rokid AR Studio 的桌面进行真机调试，具体步骤如下。
+
+首先，打开桌面的快捷设置，并选择设置。
+
+![](device-debugging-00.png)
+
+打开设置后，选择开发者选项，并打开空间小程序调试。
+
+![](device-debugging-01.png)
+
+然后在应用列表划过负一屏，即可看到当前空间小程序处于调试模式。
+
+![](device-debugging-02.png)
+
+接下来，使用 Visual Studio Code 打开任何一个空间小程序项目，通过以下两种方式即可安装项目到设备上，即可调试运行。
+
+1. 通过 Cmd + Shift + P 打开命令面板，输入 "JSAR: Install to Connected Device" 并回车，按照提示选择设备即可
+2. 通过 Explorer 面板，右键点击空白处，选择 "JSAR: Install to Connected Device"，按照提示选择设备即可
+
+注：该功能依赖本地安装 adb 来与 AOSP 设备进行交互，基础 adb 信息如下：
+
+```
+Android Debug Bridge version 1.0.41
+Version 34.0.1-9979309
+```

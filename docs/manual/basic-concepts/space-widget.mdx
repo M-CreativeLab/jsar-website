@@ -1,64 +1,60 @@
-# 空间小程序
+# Space Mini-Apps
 
-本节将介绍空间小程序以及与其相关的基本概念。
+This section will introduce space widgets and related fundamental concepts.
 
-## 空间
+## Space
 
-在增强现实（AR）的场景中，空间是指现实世界中的一个区域，这个区域可以是一个平面，也可以是一个立体的物体。用户通过空间小程序来获取空间的信息，比如空间的大小、空间的位置、空间的旋转角度等等，而在一般的 AR 应用开发中，我们都会使用一个场景来承载空间。
+In the context of augmented reality (AR), a space refers to an area in the real world, which can be a flat surface or a three-dimensional object. Users interact with space widgets to obtain information about the space, such as its size, position, rotation, and more. In AR application development, a scene is typically used to represent and encapsulate a space.
 
-![](intro-subspace-in-deskstop.png)
+![Space Example](intro-subspace-in-deskstop.png)
 
-比如在 YodaOS-Master 系统中，系统桌面（如上图）就是一个空间，在这个空间中用户可以看到一系列环绕在空间中的虚拟屏幕，同时也可以看到对应的一些独立的物体，这些都是桌面空间中的实体。
+For instance, in the YodaOS-Master system, the system desktop (as shown in the image above) is a space. Users can see a series of virtual screens arranged in the space, and there may also be independent objects within the space. All of these elements collectively constitute the desktop space.
 
-## 空间自由度
+## Degrees of Freedom (DoF)
 
-在增强现实和虚拟现实领域，一般都会使用自由度（DoF）来描述空间的真实程度，自由度越高，空间越真实。
+In the field of augmented reality and virtual reality, the term "degrees of freedom" (DoF) is often used to describe the level of realism in a space. Higher degrees of freedom indicate a more realistic space.
 
-通常意义上，物体在空间中可以通过位置（Position）、姿态（Rotation）来定量表述其位姿（Pose）。那么在表述物体在空间中移动时，就可以将物体的移动分解为：位移、姿态。那么在 XYZ 坐标系下，位移可以表示为 X 轴偏量、Y 轴偏量、Z 轴偏量，旋转可以表征为 X 轴旋转角度（俯仰角）、Y轴旋转角度（偏航角）、Z轴旋转角度（翻滚角）。那么对于空间中的物体，若其在空间中自由移动，就会产生移动带来的 XYZ 轴3个轴向上的变化和姿态变化带来的角度变化，这种用于表述物体在空间中的位姿变化的自由度就表述为 DoF。
+In general, the movement of an object in space can be described in terms of position and rotation. Position includes the offset along the X, Y, and Z axes, while rotation involves the angles of rotation around these axes (pitch, yaw, and roll). Therefore, when an object moves in space, it exhibits changes in position and orientation. The number of parameters used to describe these changes is referred to as degrees of freedom (DoF).
 
-### 0Dof
+### 0 DoF
 
-0DoF（Zero Degree of Freedom）指的是当前空间中的观察者以固定视角观察虚拟空间。
+0 DoF (Zero Degree of Freedom) refers to a space where the observer has a fixed viewpoint and cannot move or change their perspective.
 
-![](space-0dof.gif)
+![0 DoF Space](space-0dof.gif)
 
-### 3Dof
+### 3 DoF
 
-3DoF（Three Degree of Freedom）指的是当前空间中观察者可使用3 个自由度，通常情况下，这3 个自由度指的是空间的姿态。
+3 DoF (Three Degrees of Freedom) refers to a space where the observer has three degrees of freedom, typically related to the space's orientation.
 
-> 现实的空间中，产生位姿变化的是运动的物体和观察者自身。
->
-> 在虚拟空间中，通过摄像机（Camera）作为观察者记录空间中的物体变化。
+In virtual spaces, if a camera or observer only changes its orientation while maintaining a fixed position, the space is said to have 3 DoF. This means that objects within the virtual space can move programmatically, but the observer's position remains fixed, and they observe the virtual space from different orientations.
 
-在虚拟空间中，若摄像机（Camera）仅做姿态变化，就可表示当前空间具有3自由度 —— 即 3DoF，这意味着虚拟空间中物体按照程序控制实现其自身位于空间中的变化，而观察者的位置始终位于空间原点，并通过不同的姿态（Rotation）观察这个虚拟空间。
+![3 DoF Space](space-3dof.gif)
 
-![](space-3dof.gif)
+### 6 DoF
 
-### 6Dof
+6 DoF (Six Degrees of Freedom) refers to a space where the observer has six degrees of freedom, including both position and orientation.
 
-6DoF（Six Degree of Freedom）指的是当前空间中观察者可以使用6个自由度，即位置（Position）和姿态（Rotation）加在一起共计6个。
+In virtual spaces, if a camera or observer can change both its position and orientation, the space is said to have 6 DoF. The observer can freely move and rotate within the space, providing a high level of realism.
 
-当虚拟空间中的摄像机（Camera）可以产生位置（Position）和姿态（Rotation）的变化，就可表示当前空间具有6自由度 —— 即 6DoF。观察者（摄像机）可以在空间中以任意位姿（Pose）观察这个虚拟空间。
+![6 DoF Space](space-6dof.gif)
 
-![](space-6dof.gif)
+## Embeddable Spaces
 
-## 可嵌入空间
+So, what are embeddable spaces, also known as subspaces?
 
-上面提到了空间，那么什么是可嵌入空间呢？
+An embeddable space, or subspace, is a complete space containing objects that can be embedded within another space as a component. This allows us to:
 
-可嵌入空间，或称为子空间，指的是一个完整的空间，它包含了一些物体，然后可以将这个空间嵌入到另一个空间中，作为另一个空间的一个组件。这样，我们可以：
+- Move, rotate, and scale the embedded space within the parent space.
+- Interact with objects within the embedded space directly.
+- Combine multiple embedded spaces within a parent space to create more complex spatial experiences.
 
-- 在父空间内，随意地对子空间进行移动、旋转、缩放
-- 在父空间内，可以直接与子空间的物体进行交互
-- 在父空间内，可以将多个子空间组合在一起，形成更复杂的空间
+The key technical challenge in embeddable spaces is how to embed one space (a standalone application) into another space (the main application) without interfering with the main application's operation. This is referred to as space safety. In a sense, it's similar to:
 
-而可嵌入空间的技术关键点在于，如何将一个空间（独立的应用）嵌入到另一个空间（主应用）中，而不影响到主应用的运行，我们将这称为空间安全性，更形象的比较就像：
+1. Different web pages running in the same web browser without interfering with each other, demonstrating browser security.
+2. Multiple windows operating on the same screen in a windowing system, where each window does not disrupt the others, demonstrating windowing system security.
 
-1. 在一个浏览器中，不同的网页运行在同一个 Web 浏览器中互不干扰，这就是浏览器的安全性。
-2. 在一个窗口操作程序中，不同的窗口运行在同一个屏幕上，窗口和窗口之间互不干扰，这就是窗口操作程序的安全性。
+These are the basic concepts of embeddable spaces and space widgets.
 
-以上，这就是可嵌入空间的基础概念。
+## Space Mini-Apps
 
-## 空间小程序
-
-在了解了空间和可嵌入空间后，那么就很容易了解什么是空间小程序了，它就是用于开发可嵌入空间的技术方案，在本页顶部的图片中，蓝色小方块的部分就是空间小程序（即 JSAR）希望去嵌入到主空间中的部分，它可以是一个闹钟、一个日历、一本漫画书、一个小黄鸭等等。
+Now that we understand the concepts of space and embeddable spaces, it becomes easy to grasp the concept of space widgets. Space mini-apps are the technology solution for developing embeddable spaces. In the image at the top of this page, the blue rectangular area represents the part of the space widget (JSAR) that developers want to embed within the main space. This widget could be an alarm clock, a calendar, a comic book, a rubber duck, and more.

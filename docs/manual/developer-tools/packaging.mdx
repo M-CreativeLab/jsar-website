@@ -1,9 +1,9 @@
-# 打包
+# Packaging
 
-通过 JSAR DevTools 可以将空间小程序打包成一个独立的文件，以便后续分发。
+With JSAR DevTools, you can package your spatial app into a standalone file for future distribution.
 
-> 当前打包的空间小程序需小于10MB，打包时若拓展发现空间小程序超过，会提示打包失败，开发者可以通过 [`gltf-transform`](https://gltf-transform.dev/) 工具进行模型压缩，或者通过其他方式优化你的包内容大小。
+> Currently, the packaged spatial app must be smaller than 10MB. If the extension detects that the app exceeds this limit during packaging, it will prompt for packaging failure. Developers can use the [`gltf-transform`](https://gltf-transform.dev/) tool for model compression or other optimization methods to reduce the size of the app.
 
 ![howto-pack-project](./howto-pack-project.png)
 
-如上图所示，在项目的空白处右键，选择 "JSAR: Package" 即可打包项目，然后就能在当前目录下看到一个 `{name}-{version}.zip` 的文件，其中，`name` 和 `version` 分别是配置在 `package.json` 中的名称和版本号。
+As shown in the image above, right-click in the empty space of your project, and select "JSAR: Package" to package the project. Afterward, you'll find a `{name}-{version}.zip` file in the current directory, where `name` and `version` are the name and version specified in your `package.json` file.

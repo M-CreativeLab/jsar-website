@@ -1,29 +1,29 @@
 # TypeScript
 
-在 JSAR 中，默认使用 TypeScript 作为开发语言，因此，你需要了解一些 TypeScript 的基础知识。
+In JSAR, TypeScript is the default programming language, so you need to understand some basic TypeScript concepts.
 
-## 为什么选择 TypeScript
+## Why Choose TypeScript
 
-在 3D 空间开发领域，它的对象关系更复杂，因此对于 JavaScript 来说，类型检查是必不可少的。而 TypeScript 作为 JavaScript 的超集，它提供了类型检查，这使得我们可以在开发过程中，更早的发现错误，提高开发效率。同时也正因为 TypeScript 是 JavaScript 的超集，支持 TypeScript 的同时意味着也支持 JavaScript，对于一些不希望使用 TypeScript 的开发者来说，也是一个不错的选择。
+In the 3D spatial development field, object relationships are more complex. Therefore, type checking is essential for JavaScript. TypeScript, as a superset of JavaScript, provides type checking, allowing us to discover errors earlier in the development process, thus improving development efficiency. Additionally, TypeScript being a superset of JavaScript means that it supports JavaScript as well, making it a good choice for developers who may not want to use TypeScript.
 
-## TypeScript 基础
+## TypeScript Basics
 
-如果你是 TypeScript 新手，可前往 https://www.typescriptlang.org/ TypeScript 官网学习 TypeScript 基础知识，本节就不再赘述。
+If you are new to TypeScript, you can learn the basics of TypeScript on the [TypeScript official website](https://www.typescriptlang.org/). This section will not go into detail on TypeScript basics.
 
-## 在 XSML 中使用 TypeScript
+## Using TypeScript in XSML
 
-在 XSML 中，通过使用 `<script>` 标签，可以在 XSML 中使用 TypeScript。
+In XSML, you can use TypeScript by adding a `<script>` tag to your XSML document.
 
 ```html
 <script src="./main.ts"></script>
 ```
 
-然后添加 main.ts 文件，内容如下：
+Then, create a `main.ts` file with the following content:
 
-```ts
+```typescript
 const scene = spatialDocument.scene as BABYLON.Scene;
 ```
 
-具体的使用方法，可以参考[运行时](./runtime)中介绍 API 的部分。
+For specific usage examples, you can refer to the API section in the [runtime](./runtime) documentation.
 
-> 注：当前 JSAR 还不支持 ECMAScript Module，因此还无法使用 `import` 来导入其他脚本，这是因此前期的空间小程序逻辑部分比较小，可以在单个文件中完成，因此暂时没有支持模块化。不过为了开发者体验，JSAR 团队会高优先级支持 ECMAScript Module 系统。
+> Note: Currently, JSAR does not support ECMAScript Modules, so you cannot use `import` to import other scripts. This is because the initial logic for spatial applications is relatively small and can be accomplished in a single file. However, for the developer experience, the JSAR team plans to prioritize supporting the ECMAScript Module system in the future.

@@ -1,24 +1,24 @@
-# 创建项目
+# Create a Project
 
-JSAR 可以通过多种方式初始化项目，包括：
+JSAR allows you to initialize a project in various ways, including:
 
-- 通过 Npm 命令本地创建
-- 通过 GitHub Template 创建为 GitHub 项目
+- Locally creating a project using npm commands.
+- Creating a GitHub project from a template.
 
-## 通过 Npm 创建
+## Create via npm
 
-开发者可以通过 Npm 创建，但需要先安装 [Node.js](https://nodejs.org/en/)，安装完成后，打开终端，执行如下命令：
+Developers can create a project using npm after installing [Node.js](https://nodejs.org/en/). Once Node.js is installed, open a terminal and run the following command:
 
 ```bash
 $ npm init @yodaos-jsar/widget
 ```
 
-该命令会按照下面的步骤初始化项目：
+This command initializes the project by performing the following steps:
 
-- 下载最新的模版项目 [M-CreativeLab/template-for-jsar-widget](https://github.com/M-CreativeLab/template-for-jsar-widget)
-- 根据你的输入更新 package.json 中的项目名称
+- Downloads the latest template project from [M-CreativeLab/template-for-jsar-widget](https://github.com/M-CreativeLab/template-for-jsar-widget).
+- Updates the project name in the `package.json` file based on your input.
 
-运行成功后，会获得一个 `package.json`，可以按照如下编写：
+After running the command successfully, you will have a `package.json` file. Here's an example of how to configure it:
 
 ```json
 {
@@ -44,58 +44,58 @@ $ npm init @yodaos-jsar/widget
 }
 ```
 
-初始化成功后，为了让项目正常运行，还需要安装依赖：
+After successfully initializing the project, you need to install dependencies to enable type checking and auto-completion during development:
 
 ```bash
 $ npm install
 ```
 
-它用于安装空间小程序的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+This installs the type definition files for space widgets, allowing you to benefit from type checking and auto-completion during development.
 
-## 通过 GitHub Template 创建
+## Create via GitHub Template
 
-> 如果你希望通过本地创建项目，请忽略这一小节。
+> If you prefer to create a project locally, you can skip this section.
 
-打开 [M-CreativeLab/template-for-jsar-widget](https://github.com/M-CreativeLab/template-for-jsar-widget) 后，点击 `Use this template` 按钮，创建一个新的 GitHub 项目。
+Open [M-CreativeLab/template-for-jsar-widget](https://github.com/M-CreativeLab/template-for-jsar-widget) and click the "Use this template" button to create a new GitHub project.
 
 ![use this template](./howto-use-github-template-01.png)
 
-点击 `Create repository from template` 按钮，将开始创建一个新的 GitHub 项目，或者也可以直接[点击这里](https://github.com/new?template_name=template-for-jsar-widget&template_owner=M-CreativeLab)。
+Click the "Create repository from template" button to start creating a new GitHub project. Alternatively, you can click [here](https://github.com/new?template_name=template-for-jsar-widget&template_owner=M-CreativeLab) directly.
 
 ![use this template](./howto-use-github-template-02.png)
 
-按照上图所示，填写相关信息即可，这样创建好的项目就是一个 JSAR 空间小程序项目，它同样包含我们模版项目中的文件，以下是一些通过 GitHub Template 创建的项目：
+As shown in the image above, fill in the required information to create a new GitHub project. The created project will be a JSAR space widget project and will contain files from our template project. Here are some projects created using GitHub Templates:
 
 - https://github.com/M-CreativeLab/jsar-gallery-solar-system
 - https://github.com/M-CreativeLab/jsar-gallery-flatten-lion
 
-> 如果通过 GitHub 项目创建的 JSAR 空间小程序，推荐为你的项目添加 "jsar-widget" 的主题（Topic），这样可以方便 JSAR 开发团队以及社区在 [GitHub #jsar-widget](https://github.com/topics/jsar-widget) 上发现你的项目。
+> For JSAR space widget projects created through GitHub, we recommend adding the "jsar-widget" topic to your project. This will make it easier for the JSAR development team and the community to discover your project on [GitHub #jsar-widget](https://github.com/topics/jsar-widget).
 
-## package.json 字段说明
+## Explanation of package.json Fields
 
-| 字段 | 类型 | 必填 | 说明 |
+| Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `name` | string | 是 | 项目名称，必须是小写字母，可以包含连字符和下划线，不能包含空格。 |
-| `displayName` | string | 是 | 项目显示名称，可以包含中文。 |
-| `version` | string | 是 | 项目版本号，遵循 [语义化版本](https://semver.org/lang/zh-CN/) 规范。 |
-| `description` | string | 是 | 项目描述。 |
-| `main` | string | 是 | 项目入口文件，必须是 xsml 文件。 |
-| `files` | string[] | 是 | 项目文件列表，包含 xsml 文件、icon 图片、模型文件等，只有添加到 `files` 字段中的文件或文件夹才会被打包到 JSAR 空间小程序的包中。 |
-| `icon3d` | object | 是 | 项目 3D 图标配置，包含 `base` 和 `size` 两个字段，其中 `base` 是模型文件路径，`size` 是模型文件的尺寸，单位是米。 |
-| `author` | string | 否 | 项目作者，可以是姓名和邮箱。 |
-| `license` | string | 否 | 项目许可证，遵循 [SPDX](https://spdx.org/licenses/) 规范。 |
-| `devDependencies` | object | 否 | 项目开发依赖，包含 `@yodaos-jsar/types`，这是 JSAR 空间小程序的类型定义文件。 |
+| `name` | string | Yes | Project name, must be in lowercase letters and may include hyphens and underscores, but no spaces. |
+| `displayName` | string | Yes | Project display name, can include Chinese characters. |
+| `version` | string | Yes | Project version number, following [Semantic Versioning](https://semver.org/) guidelines. |
+| `description` | string | Yes | Project description. |
+| `main` | string | Yes | Project entry file, must be an xsml file. |
+| `files` | string[] | Yes | Project file list, including xsml files, icon images, model files, etc. Only files or folders added to the `files` field will be packaged into the JSAR space mini-program. |
+| `icon3d` | object | Yes | 3D icon configuration for the project, including `base` and `size` fields. `base` is the model file path, and `size` is the size of the model file in meters. |
+| `author` | string | No | Project author, can include name and email. |
+| `license` | string | No | Project license, following the [SPDX](https://spdx.org/licenses/) guidelines. |
+| `devDependencies` | object | No | Project development dependencies, including `@yodaos-jsar/types`, which contains type definition files for JSAR space mini-programs. |
 
-特别注意事项：
+Important notes:
 
-1. `name` 字段必须是小写字母，不支持 [scoped package](https://docs.npmjs.com/cli/v10/using-npm/scope)，例如 `@rokid/jsar-gallery-rokid-jungle` 是不支持的。
-2. `main` 字段必须是 xsml 文件，不支持 JavaScript 文件。
-3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在商店及小程序列表。
-4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了空间小程序的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
+1. The `name` field must consist of lowercase letters and does not support [scoped packages](https://docs.npmjs.com/cli/v10/using-npm/scope). For example, `@rokid/jsar-gallery-rokid-jungle` is not supported.
+2. The `main` field must point to an xsml file and does not support JavaScript files.
+3. The `files` field must include xsml files and `icon.png`, which is used for display in the store and the list of mini-programs.
+4. Be sure to add the `@yodaos-jsar/types` dependency. It contains type definition files for space mini-programs, enabling type checking and autocompletion during development.
 
-## 使用 TypeScript 智能提示
+## Enable TypeScript IntelliSense
 
-为了使用 JSAR 的 TypeScript 智能提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
+To enable TypeScript IntelliSense for JSAR, you need to create a `tsconfig.json` file in the project's root directory with the following content:
 
 ```json
 {

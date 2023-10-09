@@ -1,8 +1,8 @@
 # XSML
 
-XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它沿用了 HTML 的一些标签定义，比如 `head`、`title`、`script`、`style`、`div` 等，同时也增加了一些标签用于表示空间，比如 `body` 替换为 `space`，使用 `cube` 表示一个立方体等。
+XSML is a markup language very similar to HTML. Its full name is eXtensible Spatial Markup Language, and it extends HTML by reusing some of its tags, such as `head`, `title`, `script`, `style`, `div`, and introduces additional tags for spatial representation, such as replacing `body` with `space` and using `cube` to represent a cube, among others.
 
-以下是一个 XSML 的示例：
+Here is an example of XSML:
 
 ```xml
 <xsml version="1.0">
@@ -17,79 +17,79 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 </xsml>
 ```
 
-## XSML 标签
+## XSML Tags
 
-以下对当前 XSML 做简要说明。
+Below is a brief explanation of the current XSML tags.
 
 ### xsml
 
-`<xsml>` 标签是 XSML 的根标签，它的属性有：
+The `<xsml>` tag is the root tag of XSML, and it has the following attribute:
 
-- `version`：表示 XSML 的版本号，目前只支持 `1.0`。
+- `version`: Indicates the version of XSML, currently only supports `1.0`.
 
 ### head
 
-`<head>` 标签用于定义 XSML 的头部信息，它的子标签有：`title`、`link`、`script` 等。
+The `<head>` tag is used to define the header information of XSML. It has child tags such as `title`, `link`, `script`, and more.
 
 #### title
 
-`<title>` 标签用于定义 XSML 的标题，它的内容为字符串。
+The `<title>` tag is used to define the title of XSML, and its content is a string.
 
 #### link
 
-`<link>` 标签用于定义 XSML 的链接信息，它的属性有：
+The `<link>` tag is used to define the link information in XSML. It has attributes like:
 
-- `id`：表示链接的唯一标识符，它的值为字符串。
-- `rel`：表示链接的关系，它的值为字符串，目前只支持 `mesh`。
-- `type`：表示链接的类型，它的值为字符串，目前只支持 `octstream/glb`。
+- `id`: Represents the unique identifier of the link, and its value is a string.
+- `rel`: Indicates the relationship of the link, and its value is a string. Currently, only `mesh` is supported.
+- `type`: Specifies the type of the link, and its value is a string. Currently, only `octstream/glb` is supported.
 
-在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
+In HTML, the `<link>` tag is typically used to reference CSS files. However, in XSML, the `<link>` tag is used to reference 3D model files, such as `glb` format 3D model files.
 
-在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件，具体支持情况如下。
+In future versions, we will also support using this tag to import SCSS and other model file formats. The specific support is as follows:
 
-| `rel` | 描述 | 是否支持 |
+| `rel` | Description | Supported |
 | --- | --- | --- |
-| `mesh` | 当前文档会使用的 3D 模型 | 是 |
-| `alternate` | 当前文档的替代文档 | 否 |
-| `author` | 当前文档的作者 | 否 |
-| `bookmark` | 当前文档的书签 | 否 |
-| `canonical` | 当前文档的规范地址 | 否 |
-| `dns-prefetch` | 当前文档的 DNS 预获取 | 否 |
-| `help` | 当前文档的帮助 | 否 |
-| `icon` | 当前文档的图标 | 否 |
-| `license` | 当前文档的许可证 | 否 |
-| `manifest` | 当前文档的清单 | 否 |
-| `modulepreload` | 当前文档的模块预加载 | 否 |
-| `next` | 当前文档的下一个 | 否 |
-| `pingback` | 当前文档的 PingBack | 否 |
-| `preconnect` | 当前文档的预连接 | 否 |
-| `prefetch` | 当前文档的预获取 | 否 |
-| `preload` | 当前文档的预加载 | 否 |
-| `prerender` | 当前文档的预渲染 | 否 |
-| `prev` | 当前文档的上一个 | 否 |
-| `search` | 当前文档的搜索 | 否 |
-| `stylesheet` | 当前文档的样式表 | 否 |
-| `tag` | 当前文档的标签 | 否 |
+| `mesh` | The 3D model used in the current document | Yes |
+| `alternate` | Alternate document for the current document | No |
+| `author` | Author of the current document | No |
+| `bookmark` | Bookmark for the current document | No |
+| `canonical` | Canonical address of the current document | No |
+| `dns-prefetch` | DNS prefetch for the current document | No |
+| `help` | Help for the current document | No |
+| `icon` | Icon for the current document | No |
+| `license` | License for the current document | No |
+| `manifest` | Manifest for the current document | No |
+| `modulepreload` | Module preload for the current document | No |
+| `next` | Next document for the current document | No |
+| `pingback` | PingBack for the current document | No |
+| `preconnect` | Preconnect for the current document | No |
+| `prefetch` | Prefetch for the current document | No |
+| `preload` | Preload for the current document | No |
+| `prerender` | Prerender for the current document | No |
+| `prev` | Previous document for the current document | No |
+| `search` | Search for the current document | No |
+| `stylesheet` | Stylesheet for the current document | No |
+| `tag` | Tag for the current document | No |
 
 #### script
 
-`<script>` 标签用于定义 XSML 的脚本信息，它的属性有：
+The `<script>` tag is used to define script information in XSML, and it has the following attribute:
 
-- `src`：表示脚本的链接地址，它的值为字符串。
+- `src`: Represents the URL of the script, and its value is a string.
 
-在 XSML 中，`<script>` 标签除了可以引入 JavaScript 文件外，还可以引入 TypeScript 文件，但需要在 `src` 属性中指定文件的后缀名为 `.ts`，引入 TypeScript 脚本无需额外的代码编译。
+In XSML, the `<script>` tag can be used to import both JavaScript and TypeScript files. If you are importing a TypeScript file, you can specify the file extension as `.ts` in the `src` attribute. Importing TypeScript scripts does not require additional code compilation.
 
-> 当前版本中，我们还不支持 CommonJS 或 ECMAScript Module 等模块系统，但你可以通过挂载全局变量 `global.spaceDocument` 来实现不同文件之间的引用，但仍然不推荐这么做，因为这样会导致代码的可读性变差。
+In the current version, XSML does not yet support CommonJS or ECMAScript Module systems. However, you can achieve cross-file referencing by attaching the global variable `global.spaceDocument`. This approach is not recommended as it can decrease code readability.
 
-> 我们会尽快在 JSAR 中支持 ECMAScript Module。
+We plan to add support for ECMAScript Modules in JSAR in the future.
 
 #### style
 
-`<style>` 标签用于定义 XSML 的样式信息，它与 HTML 中的 style 有同样的用途，它的属性有：
+The `<style>` tag is used to define style information in XSML. It serves a similar purpose to the `style` tag in HTML and has the following attribute:
 
-- `type`：表示样式的类型，它的值为字符串，目前只支持 `text/scss`。
+- `type`: Specifies the style's type, and its value is a string. Currently, only `text/scss` is supported.
 
-以下是一个 `<style>` 标签的示例：
+Here's an example of a `<style>` tag in XSML:
 
 ```xml
 <xsml version="1.0">
@@ -121,113 +121,111 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
     </style>
   </head>
   <space>
-    <!-- 空间结构 -->
+    <!-- Spatial structure -->
   </space>
 </xsml>
 ```
 
-可以看到通过 `<style>` 标签内部的内容，可以像 CSS 一样定义样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+You can see that by using the `<style>` tag's content, you can define styles just like CSS. You can find elements using CSS selectors and apply styles to those selected elements. The difference is that you're now defining 3D styles instead of flat styles.
 
-比如我们通过原来 `@font-family` 和 `@keyframes` 的语法定义了 3D 中的材质，在 `@material` 中你可以设置材质类型、颜色、贴图等，然后在具体的元素中通过 material 属性来使用对应的材质定义。
+For example, we use the syntax of `@font-family` and `@keyframes` to define materials in 3D. In the `<material>` tag, you can set material types, colors, textures, and more. Then, in specific elements, you can use the `material` attribute to apply the corresponding material definition.
 
-同样，我们也拓展了原有的样式定义，比如增加了 `position`、`rotation`、`scale` 等属性，用于定义 3D 元素的位置、旋转、缩放等。
+Similarly, we have extended the original style definitions by adding properties like `position`, `rotation`, `scale`, etc., to define the position, rotation, and scale of 3D elements.
 
-> 注：当前版本仅支持按照 id 查询，后续会兼容 CSS 的按照元素标签和 class 查询。
+> Note: The current version only supports querying by id, and later versions will also support CSS queries by element tag and class.
 
-> 更多关于 `<style>` 标签的内容，可以参考 [SCSS](./basic-concepts/intro-scss)。
+> For more information about the `<style>` tag, you can refer to [SCSS](./basic-concepts/intro-scss).
 
 ### space
 
-`<space>` 标签用于定义 XSML 的空间结构，它的子标签有：`mesh`、`cube`、`sphere`、`cylinder`、`cone`、`plane`、`text`、`image`、`video`、`audio` 等。
+The `<space>` tag is used to define the spatial structure of XSML. Its child tags include `mesh`, `cube`, `sphere`, `cylinder`, `cone`, `plane`, `text`, `image`, `video`, `audio`, etc.
 
 #### mesh
 
-`<mesh>` 标签用于定义 XSML 的网格元素，它的属性有：
+The `<mesh>` tag is used to define XSML mesh elements. It has the following attributes:
 
-- `id`：表示网格元素的唯一标识符，它的值为字符串。
-- `ref`：表示网格元素的引用，它的值为字符串，目前只支持 `model`。
-- `selector`：表示网格元素的选择器，它的值为字符串。
+- `id`: Represents the unique identifier of the mesh element, with its value being a string.
+- `ref`: Represents the reference of the mesh element, with its value as a string, currently only supporting `model`.
+- `selector`: Represents the selector of the mesh element, with its value being a string.
 
-该标签用于将 `<head>` 标签中的 `<link>` 标签引入的 3D 模型文件，渲染到空间中，通过 ref 属性指定引入的 3D 模型文件的 id，通过 selector 属性指定引入的 3D 模型文件的节点。
+This tag is used to render 3D model files imported via the `<link>` tags in the `<head>` tag into the space. The `ref` attribute specifies the id of the imported 3D model file, and the `selector` attribute specifies the node of the imported 3D model file.
 
 #### cube
 
-`<cube>` 标签用于定义 XSML 的立方体元素，它的属性有：
+The `<cube>` tag is used to define XSML cube elements. It has the following attributes:
 
-- `id`：表示立方体元素的唯一标识符，它的值为字符串。
-- `width`：表示立方体元素的宽度，它的值为数字。
-- `height`：表示立方体元素的高度，它的值为数字。
-- `depth`：表示立方体元素的深度，它的值为数字。
-- `size`：表示立方体元素的大小，它的值为数字。
+- `id`: Represents the unique identifier of the cube element, with its value being a string.
+- `width`: Represents the width of the cube element, with its value being a number.
+- `height`: Represents the height of the cube element, with its value being a number.
+- `depth`: Represents the depth of the cube element, with its value being a number.
+- `size`: Represents the size of the cube element, with its value being a number.
 
-该标签用于定义一个立方体元素，通过 `width`、`height`、`depth` 属性指定立方体元素的宽度、高度、深度。
+This tag is used to define a cube element, with the `width`, `height`, and `depth` attributes specifying the width, height, and depth of the cube element.
 
 #### plane
 
-`<plane>` 标签用于定义 XSML 的平面元素，它的属性有：
+The `<plane>` tag is used to define XSML plane elements. It has the following attributes:
 
-- `id`：表示平面元素的唯一标识符，它的值为字符串。
-- `width`：表示平面元素的宽度，它的值为数字。
-- `height`：表示平面元素的高度，它的值为数字。
-- `size`：表示平面元素的大小，它的值为数字。
+- `id`: Represents the unique identifier of the plane element, with its value being a string.
+- `width`: Represents the width of the plane element, with its value being a number.
+- `height`: Represents the height of the plane element, with its value being a number.
+- `size`: Represents the size of the plane element, with its value being a number.
 
-该标签用于定义一个平面元素，通过 `width`、`height` 属性指定平面元素的宽度、高度。
+This tag is used to define a plane element, with the `width` and `height` attributes specifying the width and height of the plane element.
 
 #### sphere
 
-`<sphere>` 标签用于定义 XSML 的球体元素，它的属性有：
+The `<sphere>` tag is used to define XSML sphere elements. It has the following attributes:
 
-- `id`：表示球体元素的唯一标识符，它的值为字符串。
-- `segments`：表示球体元素的分段数，它的值为数字。
-- `diameter`：表示球体元素的直径，它的值为数字。
-- `diameterX`：表示球体元素的 X 轴直径，它的值为数字。
-- `diameterY`：表示球体元素的 Y 轴直径，它的值为数字。
-- `diameterZ`：表示球体元素的 Z 轴直径，它的值为数字。
-- `arc`：表示球体元素的弧度，它的值为数字。
-- `slice`：表示球体元素的切片数，它的值为数字。
+- `id`: Represents the unique identifier of the sphere element, with its value being a string.
+- `segments`: Represents the number of segments of the sphere element, with its value being a number.
+- `diameter`: Represents the diameter of the sphere element, with its value being a number.
+- `diameterX`: Represents the X-axis diameter of the sphere element, with its value being a number.
+- `diameterY`: Represents the Y-axis diameter of the sphere element, with its value being a number.
+- `diameterZ`: Represents the Z-axis diameter of the sphere element, with its value being a number.
+- `arc`: Represents the arc of the sphere element, with its value being a number.
+- `slice`: Represents the number of slices of the sphere element, with its value being a number.
 
-该标签用于定义一个球体元素，通过 `segments` 属性指定球体元素的分段数，通过 `diameter`、`diameterX`、`diameterY`、`diameterZ` 属性指定球体元素的直径，通过 `arc` 属性指定球体元素的弧度，通过 `slice` 属性指定球体元素的切片数。
+This tag is used to define a sphere element, with the `segments` attribute specifying the number of segments, and the `diameter`, `diameterX`, `diameterY`, `diameterZ`, `arc`, and `slice` attributes specifying the diameter, dimensions, arc, and slices of the sphere element.
 
 #### cylinder
 
-`<cylinder>` 标签用于定义 XSML 的圆柱体元素，它的属性有：
+The `<cylinder>` tag is used to define XSML cylinder elements. It has the following attributes:
 
-- `id`：表示圆柱体元素的唯一标识符，它的值为字符串。
-- `height`：表示圆柱体元素的高度，它的值为数字。
-- `diameter`：表示圆柱体元素的直径，它的值为数字。
-- `diameterTop`：表示圆柱体元素的顶部直径，它的值为数字。
-- `diameterBottom`：表示圆柱体元素的底部直径，它的值为数字。
-- `tessellation`：表示圆柱体元素的分段数，它的值为数字。
+- `id`: Represents the unique identifier of the cylinder element, with its value being a string.
+- `height`: Represents the height of the cylinder element, with its value being a number.
+- `diameter`: Represents the diameter of the cylinder element, with its value being a number.
+- `diameterTop`: Represents the top diameter of the cylinder element, with its value being a number.
+- `diameterBottom`: Represents the bottom diameter of the cylinder element, with its value being a number.
+- `tessellation`: Represents the number of tessellations of the cylinder element, with its value being a number.
 
-该标签用于定义一个圆柱体元素，通过 `height` 属性指定圆柱体元素的高度，通过 `diameter`、`diameterTop`、`diameterBottom` 属性指定圆柱体元素的直径，通过 `tessellation` 属性指定圆柱体元素的分段数。
+This tag is used to define a cylinder element, with the `height` attribute specifying the height, and the `diameter`, `diameterTop`, `diameterBottom`, and `tessellation` attributes specifying the diameters and tessellations of the cylinder element.
 
 #### capsule
 
-`<capsule>` 标签用于定义 XSML 的胶囊体元素，它的属性有：
+The `<capsule>` tag is used to define XSML capsule elements. It has the following attributes:
 
-- `id`：表示胶囊体元素的唯一标识符，它的值为字符串。
-- `height`：表示胶囊体元素的高度，它的值为数字。
-- `radius`：表示胶囊体元素的半径，它的值为数字。
-- `radiusTop`：表示胶囊体元素的顶部半径，它的值为数字。
-- `radiusBottom`：表示胶囊体元素的底部半径，它的值为数字。
+- `id`: Represents the unique identifier of the capsule element, with its value being a string.
+- `height`: Represents the height of the capsule element, with its value being a number.
+- `radius`: Represents the radius of the capsule element, with its value being a number.
+- `radiusTop`: Represents the top radius of the capsule element, with its value being a number.
+- `radiusBottom`: Represents the bottom radius of the capsule element, with its value being a number.
 
-该标签用于定义一个胶囊体元素，通过 `height` 属性指定胶囊体元素的高度，通过 `radius`、`radiusTop`、`radiusBottom` 属性指定胶囊体元素的半径。
+This tag is used to define a capsule element, with the `height` attribute specifying the height, and the `radius`, `radiusTop`, and `radiusBottom` attributes specifying the radii of the capsule element.
 
 #### torus
 
-`<torus>` 标签用于定义 XSML 的圆环体元素，它的属性有：
+The `<torus>` tag is used to define XSML torus elements. It has the following attributes:
 
-- `id`：表示圆环体元素的唯一标识符，它的值为字符串。
-- `diameter`：表示圆环体元素的直径，它的值为数字。
-- `thickness`：表示圆环体元素的厚度，它的值为数字。
-- `tessellation`：表示圆环体元素的分段数，它的值为数字。
+- `id`: Represents the unique identifier of the torus element, with its value being a string.
+- `diameter`: Represents the diameter of the torus element, with its value being a number.
+- `thickness`: Represents the thickness of the torus element, with its value being a number.
+- `tessellation`: Represents the number of tessellations of the torus element, with its value being a number.
 
 #### bound
 
-`<bound>` 标签用于定义 XSML 的边界元素，即 Bounding Box，它的属性有：
+The `<bound>` tag is used to define XSML bounding box elements. It represents the bounding box of its parent element, and its attributes include:
 
-- `id`：表示边界元素的唯一标识符，它的值为字符串。
+- `id`: Represents the unique identifier of the bounding box element, with its value being a string.
 
-该标签用于定义一个边界元素，它的大小与其父元素的大小一致，通过 `id` 属性指定边界元素的唯一标识符。
-
-> `<bound>` 不能手动声明大小，而是通过计算子元素得到，在内部它是一个 Babylon.js TransformNode 对象。
+This tag is used to define a bounding box element, and its size is calculated based on its child elements. Internally, it is a Babylon.js TransformNode object.

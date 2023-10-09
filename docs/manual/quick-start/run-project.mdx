@@ -1,56 +1,58 @@
-# 运行
+# Running
 
-在上一章节中已经可以创建了一个项目，但是还没有运行起来，接下来我们就来看下如何运行项目，JSAR 提供了三种方式：
+In the previous section, you've created a project, but it hasn't been run yet. Next, let's see how to run the project. JSAR provides three ways to run your project:
 
-1. VSCode 拓展
-2. Web 浏览器
+1. VSCode Extension
+2. Web Browser
 3. Rokid AR Studio
 
-## VSCode 拓展
+## VSCode Extension
 
 ![screenshot](howto-run-project.png)
 
-- 首先，打开任何 `*.xsml` 文件
-- 并选中打开的 Tab 页，在右上角可以找到打开场景视图的按钮
-- 点击按钮，就可以打开场景视图
+- First, open any `*.xsml` file.
+- Select the opened tab page, and in the upper-right corner, you can find the button to open the scene view.
+- Click the button to open the scene view.
 
-在打开场景视图后，有两个功能按钮：
+Once the scene view is open, there are two functional buttons:
 
-- 重置位置，将场景视图的位置重置到原点
-- 刷新，重新加载场景视图
+- Reset Position: Resets the position of the scene view to the origin.
+- Refresh: Reloads the scene view.
 
-你可以在需要时，点击这两个按钮。另外，当你通过编辑器修改了项目文件时，场景视图会自动刷新。
+You can click these two buttons as needed. Additionally, when you make changes to project files through the editor, the scene view will automatically refresh.
 
-> 开发者也可以通过拓展进行真机调试来运行你的项目，具体方法请参考 [开发者工具/调试#真机调试](developer-tools/debugging#真机调试)
+> Developers can also use the extension for real-device debugging to run your project. For specific methods, please refer to [Developer Tools / Debugging / Real-Device Debugging](developer-tools/debugging#real-device-debugging).
 
-## Web 浏览器
+## Web Browser
 
-JSAR 提供了一个在浏览器中即可打开的场景视图，来运行你的项目，使用：
+JSAR provides a scene view that can be opened directly in a web browser to run your project. Use the following URL format:
 
 ```
-https://jsar.netlify.app/playground?url={你的XSML地址}
+https://jsar.netlify.app/playground?url={Your_XSML_URL}
 ```
 
-比如：
 
-- 通过 GitHub Raw https://jsar.netlify.app/playground?url=https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-rokid-jungle/main/main.xsml
-- 通过 jsDelivr https://jsar.netlify.app/playground?url=https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml
+For example:
 
-另外，JSAR Playground 也支持运行你本地的项目，但是需要在本地启动一个 http 服务，比如：
+- Using GitHub Raw: https://jsar.netlify.app/playground?url=https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-rokid-jungle/main/main.xsml
+- Using jsDelivr: https://jsar.netlify.app/playground?url=https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml
+
+JSAR Playground also supports running your local project, but you need to start an HTTP server locally. For example:
 
 ```
 $ npm install serve -g
 ```
 
-安装 `serve` 后，进入你的项目目录，运行：
+After installing `serve`, navigate to your project directory and run:
 
 ```
 $ serve -p 8080 --cors
 ```
 
-> 注：请务必添加 `--cors` 参数，否则会存在跨域访问问题，这是因为 localhost 域名和 jsar.netlify.app 域名不同。
 
-然后验证你的服务是否正常运行，通过浏览器访问 `http://localhost:8080/main.xsml`，显示如下：
+> Note: Be sure to add the `--cors` parameter, as there may be cross-origin access issues without it. This is because the localhost domain and the jsar.netlify.app domain are different.
+
+Then, verify if your service is running correctly by accessing `http://localhost:8080/main.xsml` through your browser. It should display the following XML content:
 
 ```xml
 <xsml version="1.0">
@@ -63,6 +65,6 @@ $ serve -p 8080 --cors
 </xsml>
 ```
 
-具体的路径需根据你的项目结构而定，如果你的 URL 如上一样正常返回了 XSML 内容，那么就可以将 `url` 参数改为你本地 HTTP 服务的 XSML 地址，比如：
+The specific path may vary depending on your project structure. If your URL returns XSML content as shown above, you can change the url parameter to the XSML address of your local HTTP server, such as:
 
 - https://jsar.netlify.app/playground?url=http://localhost:8080/main.xsml

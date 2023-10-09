@@ -1,36 +1,36 @@
 [
   {
-    "title": "介绍",
+    "title": "INTRODUCTION",
     "key": "introduction"
   },
   {
-    "title": "快速入门",
+    "title": "QUICK_START",
     "key": "quick-start",
     "children": [
       {
-        "title": "配置环境",
+        "title": "PROJECT_CONFIGURATION",
         "key": "configuration"
       },
       {
-        "title": "创建项目",
+        "title": "PROJECT_CREATE",
         "key": "create-project"
       },
       {
-        "title": "运行",
+        "title": "PROJECT_RUN",
         "key": "run-project"
       },
       {
-        "title": "打包",
+        "title": "PROJECT_BUILD",
         "key": "build-project"
       }
     ]
   },
   {
-    "title": "基础概念",
+    "title": "BASIC_CONCEPTS",
     "key": "basic-concepts",
     "children": [
       {
-        "title": "空间小程序",
+        "title": "SPACE_MINIAPPS",
         "key": "space-widget"
       },
       {
@@ -42,105 +42,105 @@
         "key": "intro-scss"
       },
       {
-        "title": "TypeScript",
+        "title": "TYPESCRIPT",
         "key": "typescript"
       }
     ]
   },
   {
-    "title": "基础功能",
+    "title": "FEATURES",
     "key": "features",
     "children": [
       {
-        "title": "网格与模型",
+        "title": "MESHES_AND_MODELS",
         "key": "meshes-and-models"
       },
       {
-        "title": "材质",
+        "title": "MATERIALS",
         "key": "materials"
       },
       {
-        "title": "动画",
+        "title": "ANIMATIONS",
         "key": "animations"
       },
       {
-        "title": "音频",
+        "title": "AUDIO",
         "key": "audio"
       },
       {
-        "title": "输入事件",
+        "title": "INPUT_EVENTS",
         "key": "input-events"
       }
     ]
   },
   {
-    "title": "开发者工具",
+    "title": "DEVTOOLS",
     "key": "developer-tools",
     "children": [
       {
-        "title": "功能",
+        "title": "DEVTOOLS_FEATURES",
         "key": "intro-features"
       },
       {
-        "title": "界面",
+        "title": "DEVTOOLS_GUI",
         "key": "intro-gui"
       },
       {
-        "title": "预览",
+        "title": "DEVTOOLS_PREVIEW",
         "key": "preview"
       },
       {
-        "title": "调试",
+        "title": "DEVTOOLS_DEBUGGING",
         "key": "debugging"
       },
       {
-        "title": "打包",
+        "title": "DEVTOOLS_PACKAGING",
         "key": "packaging"
       }
     ]
   },
   {
-    "title": "运行时",
+    "title": "RUNTIME",
     "key": "runtime",
     "children": [
       {
-        "title": "Babylon.js APIs",
+        "title": "RUNTIME_BABYLONJS_APIS",
         "key": "babylonjs-apis"
       },
       {
-        "title": "Web APIs",
+        "title": "RUNTIME_WEB_APIS",
         "key": "web-apis"
       },
       {
-        "title": "JSAR APIs",
+        "title": "RUNTIME_JSAR_APIS",
         "key": "jsar-internal-apis"
       },
       {
-        "title": "资源缓存",
+        "title": "RUNTIME_RESOURCE_CACHE",
         "key": "resource-cache"
       },
       {
-        "title": "模块系统",
+        "title": "RUNTIME_MODULE_SYSTEM",
         "key": "module-system"
       }
     ]
   },
   {
-    "title": "发布与分发",
+    "title": "DELIVERY",
     "key": "delivery",
     "children": [
       {
-        "title": "Rokid AR 商店",
+        "title": "DELIVERY_ROKID_ARSTORE",
         "key": "rokid-arstore"
       },
       {
-        "title": "JSAR Canary",
+        "title": "DELIVERY_JSAR_CANARY",
         "key": "jsar-canary"
       }
     ]
   },
   {
-    "title": "API Reference",
+    "title": "API_REFERENCE",
     "key": "api-reference"
   }
 ]

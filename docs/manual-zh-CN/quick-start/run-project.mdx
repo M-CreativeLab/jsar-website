@@ -1,0 +1,68 @@
+# 运行
+
+在上一章节中已经可以创建了一个项目，但是还没有运行起来，接下来我们就来看下如何运行项目，JSAR 提供了三种方式：
+
+1. VSCode 拓展
+2. Web 浏览器
+3. Rokid AR Studio
+
+## VSCode 拓展
+
+![screenshot](howto-run-project.png)
+
+- 首先，打开任何 `*.xsml` 文件
+- 并选中打开的 Tab 页，在右上角可以找到打开场景视图的按钮
+- 点击按钮，就可以打开场景视图
+
+在打开场景视图后，有两个功能按钮：
+
+- 重置位置，将场景视图的位置重置到原点
+- 刷新，重新加载场景视图
+
+你可以在需要时，点击这两个按钮。另外，当你通过编辑器修改了项目文件时，场景视图会自动刷新。
+
+> 开发者也可以通过拓展进行真机调试来运行你的项目，具体方法请参考 [开发者工具/调试#真机调试](developer-tools/debugging#真机调试)
+
+## Web 浏览器
+
+JSAR 提供了一个在浏览器中即可打开的场景视图，来运行你的项目，使用：
+
+```
+https://jsar.netlify.app/playground?url={你的XSML地址}
+```
+
+比如：
+
+- 通过 GitHub Raw https://jsar.netlify.app/playground?url=https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-rokid-jungle/main/main.xsml
+- 通过 jsDelivr https://jsar.netlify.app/playground?url=https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml
+
+另外，JSAR Playground 也支持运行你本地的项目，但是需要在本地启动一个 http 服务，比如：
+
+```
+$ npm install serve -g
+```
+
+安装 `serve` 后，进入你的项目目录，运行：
+
+```
+$ serve -p 8080 --cors
+```
+
+> 注：请务必添加 `--cors` 参数，否则会存在跨域访问问题，这是因为 localhost 域名和 jsar.netlify.app 域名不同。
+
+然后验证你的服务是否正常运行，通过浏览器访问 `http://localhost:8080/main.xsml`，显示如下：
+
+```xml
+<xsml version="1.0">
+  <head>
+    <title>Poker</title>
+    <script src="./lib/main.ts"></script>
+  </head>
+  <space>
+  </space>
+</xsml>
+```
+
+具体的路径需根据你的项目结构而定，如果你的 URL 如上一样正常返回了 XSML 内容，那么就可以将 `url` 参数改为你本地 HTTP 服务的 XSML 地址，比如：
+
+- https://jsar.netlify.app/playground?url=http://localhost:8080/main.xsml

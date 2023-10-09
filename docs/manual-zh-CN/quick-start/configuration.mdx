@@ -1,0 +1,47 @@
+import { Typography } from 'antd'
+
+# 配置开发环境
+
+![screenshot](vscode-extension-screenshot.png)
+
+通过安装 JSAR DevTools for Visual Studio Code 配置 JSAR 空间组件的开发环境，拓展的安装方式有两种：
+
+- 通过 VS Code 的拓展商店安装（暂未支持）
+- 通过 VS Code 的拓展安装包（`.vsix`）安装
+
+## 安装 Visual Studio Code
+
+> 如何你已经安装了 Visual Studio Code，可以跳过这一步。
+
+前往 [https://code.visualstudio.com/](https://code.visualstudio.com/) 下载安装 Visual Studio Code。
+
+> 请确保你的 Visual Studio Code 版本大于等于 1.80.0。
+
+## 安装 Node.js
+
+> 如何你已经安装了 Node.js，可以跳过这一步。
+
+前往 [https://nodejs.org/](https://nodejs.org/) 下载安装 Node.js。
+
+安装成功后，通过以下命令查看 Node.js 和 npm 版本：
+
+```bash
+$ node -v
+$ npm -v
+```
+
+> 请确保你的 Node.js 版本大于等于 18.0.0，或选择最新的 LTS 版本。
+
+## 安装 JSAR DevTools
+
+### 通过商店安装
+
+> 暂未通过商店发布，后续更新
+
+### 通过 `.vsix` 安装
+
+- 首先，下载最新的 `.vsix` 安装包，下载地址：[vscode-jsar-devtools-latest.vsix](https://jsar.netlify.app/installer/vscode-jsar-devtools-latest.vsix)
+- 然后，打开 Visual Studio Code
+- 按下 <Typography.Text keyboard>Ctrl + Shift + P</Typography.Text>，输入 "Extensions: Install from VSIX..."
+- 选择刚刚下载的 `.vsix` 安装包
+- 点击确定

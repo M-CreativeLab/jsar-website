@@ -1,0 +1,41 @@
+# JSAR Canary
+
+JSAR Canary 是由 JSAR 团队发布在 Rokid AR Studio 中一个独立的空间应用（意味着不在桌面空间），它提供最新的 JSAR 运行时的预览版功能，用户可以通过在应用内扫码访问任何一个 XSML 文档，并在空间中初始化。
+
+## 下载安装
+
+通过以下链接下载 JSAR Canary 的安装包：[jsar-canary.apk](https://ar.rokidcdn.com/web-assets/pages/jsar-canary/jsar-canary-latest.apk)，然后通过 `adb install jsar-canary.apk` 安装到 Rokid AR Studio 中。
+
+## 如何使用
+
+通过 AR 实验室进入 JSAR Canary 空间，然后按照提示，使用计算终端扫描 XSML 链接的二维码，即可在空间中加载应用。
+
+## 发布
+
+在 JSAR Canary 中，打开一个空间小程序只需一个 XSML 文档的链接即可，因此只需要部署一个 Web 服务，并让 Rokid AR Studio 可以访问到该服务即可。
+
+以下会介绍几种常用的 Web 服务部署及使用方式。
+
+### GitHub
+
+借助于 [jsdelivr][] 我们可以直接通过 URL 访问到 GitHub 仓库的文件，比如：
+
+```
+https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml
+```
+
+指向的是 [M-CreativeLab/jsar-gallery-rokid-jungle](https://github.com/M-CreativeLab/jsar-gallery-rokid-jungle/tree/main) 仓库的 main 分支下的 main.xsml 文件。如果你是 GitHub 用户，那么你可以将你的空间小程序发布到 GitHub Repository，并通过 jsdelivr URL 生成二维码给 JSAR Canary 扫描即可。
+
+### Npm
+
+与 GitHub 同理，[jsdelivr][] 也支持映射 npm 包的文件，比如：
+
+```
+https://cdn.jsdelivr.net/npm/jsar-gallery-rokid-jungle/main.xsml
+```
+
+[jsdelivr]: https://www.jsdelivr.com/
+
+### 其他方式
+
+基于 JSAR 通过 URL 加载的原理，你可以使用任何你喜欢的方式部署 Web 服务，只要能够通过 URL 访问到 XSML 文档即可，除了静态文件，你也可以如网页一般，让 Web 服务动态渲染 XSML 内容，这样每次打开空间小程序都会是不同的内容。

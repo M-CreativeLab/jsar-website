@@ -29,7 +29,6 @@ const nextConfig = {
     locales: [
       'en-US',
       'zh-CN',
-      'zh-TW',
       'ja-JP',
     ],
     defaultLocale: 'en-US'

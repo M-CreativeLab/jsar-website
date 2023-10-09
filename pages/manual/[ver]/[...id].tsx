@@ -213,8 +213,15 @@ export default function Page() {
     if (router.isReady) {
       const newDocPath = getDocumentPath(router)
       setDocPath(newDocPath)
+
       // set content
-      const MarkdownContent: React.ComponentType<MDXProps> = require(`../../../docs/manual/${newDocPath}.mdx`).default
+      let MarkdownContent: React.ComponentType<MDXProps>
+      // load language version
+      try {
+        MarkdownContent = require(`../../../docs/manual-${router.locale}/${newDocPath}.mdx`).default
+      } catch (_e) {
+        MarkdownContent = require(`../../../docs/manual/${newDocPath}.mdx`).default
+      }
       setMarkdownChildren(<MarkdownContent components={createCustomMdxComponents(router)} />)
     }
 
@@ -285,6 +292,11 @@ export default function Page() {
                 } else {
                   title = nodeData.title
                 }
+
+                if (typeof title === 'string') {
+                  title = t(`toc.${title}`)
+                }
+
                 return (
                   <span
                     style={{

@@ -1,0 +1,21 @@
+# 运行时
+
+JSAR 在运行时主要依赖 Node.js、Babylon.js 以及自己实现的 Web-standard APIs：
+
+![jsar-architecture](jsar-architecture.png)
+
+以下是 JSAR 运行时依赖的版本信息：
+
+| 依赖 | 版本 |
+| --- | --- |
+| Node.js | v18.12.1 |
+| Babylon.js | v6.8.0 |
+
+> 以上信息会随着 JSAR 的版本更新而更新。
+
+接下来就分为以下几个部分分别展开介绍：
+
+- [Babylon.js APIs](./runtime/babylonjs-apis)
+- [Web-standard APIs](./runtime/web-apis)
+- [JSAR APIs](./runtime/jsar-internal-apis)
+- [模块系统](./runtime/module-system)

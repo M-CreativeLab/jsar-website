@@ -1,0 +1,9 @@
+# 打包
+
+通过 JSAR DevTools 可以将空间小程序打包成一个独立的文件，以便后续分发。
+
+> 当前打包的空间小程序需小于10MB，打包时若拓展发现空间小程序超过，会提示打包失败，开发者可以通过 [`gltf-transform`](https://gltf-transform.dev/) 工具进行模型压缩，或者通过其他方式优化你的包内容大小。
+
+![howto-pack-project](./howto-pack-project.png)
+
+如上图所示，在项目的空白处右键，选择 "JSAR: Package" 即可打包项目，然后就能在当前目录下看到一个 `{name}-{version}.zip` 的文件，其中，`name` 和 `version` 分别是配置在 `package.json` 中的名称和版本号。
