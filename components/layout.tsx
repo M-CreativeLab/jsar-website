@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Button, Divider, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('PageLayout')
   const [isTop, setIsTop] = useState(true)
   function handleScroll() {
     setIsTop(window.scrollY === 0)
@@ -59,7 +62,7 @@ export default function RootLayout({
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-vscode"></use>
                         </svg>
-                        VSCode 插件
+                        {t('menuSubItems.download.vscodeExtension')}
                       </Space>
                     </a>
                   ),
@@ -74,14 +77,14 @@ export default function RootLayout({
                           width={12}
                           height={12}
                         />
-                        JSAR Canary
+                        {t('menuSubItems.download.JSARCanary')}
                       </Space>
                     </a>
                   ),
                 }],
               }}
             >
-              <Button shape="round" type="text" size="large">下载</Button>
+              <Button shape="round" type="text" size="large">{t('menuNames.download')}</Button>
             </Dropdown>
             <Dropdown
               arrow={true}
@@ -90,53 +93,53 @@ export default function RootLayout({
                 items: [{
                   key: 'manual',
                   label: (
-                    <a href="/manual/latest/introduction">
+                    <Link href="/manual/latest/introduction">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-zhinan"></use>
                         </svg>
-                        开发者指南
+                        {t('menuSubItems.document.manual')}
                       </Space>
-                    </a>
+                    </Link>
                   )
                 }, {
                   key: 'apis',
                   label: (
-                    <a href="/manual/latest/api-reference">
+                    <Link href="/manual/latest/api-reference">
                       <Space style={{ fontSize: '16px' }}>
                         <UnorderedListOutlined />
-                        API 文档
+                        {t('menuSubItems.document.apiReference')}
                       </Space>
-                    </a>
+                    </Link>
                   )
                 }, {
                   key: 'publish',
                   label: (
-                    <a href="/manual/latest/delivery">
+                    <Link href="/manual/latest/delivery">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-package"></use>
                         </svg>
-                        发布
+                        {t('menuSubItems.document.publish')}
                       </Space>
-                    </a>
+                    </Link>
                   )
                 }, {
                   key: 'examples',
                   label: (
-                    <a href="/playground">
+                    <Link href="/playground">
                       <Space style={{ fontSize: '16px' }}>
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-examples"></use>
                         </svg>
-                        在线体验
+                        {t('menuSubItems.document.playground')}
                       </Space>
-                    </a>
+                    </Link>
                   )
                 }],
               }}
             >
-              <Button shape="round" type="text" size="large">文档</Button>
+              <Button shape="round" type="text" size="large">{t('menuNames.document')}</Button>
             </Dropdown>
             <Dropdown
               arrow={true}
@@ -148,7 +151,7 @@ export default function RootLayout({
                     <a href="https://forum.rokid.com/index" target="_blank">
                       <Space style={{ fontSize: '16px' }}>
                         <CommentOutlined />
-                        开发者论坛
+                        {t('menuSubItems.community.forum')}
                       </Space>
                     </a>
                   ),
@@ -158,14 +161,14 @@ export default function RootLayout({
                     <a href="https://github.com/M-CreativeLab/jsar-website/discussions" target="_blank">
                       <Space style={{ fontSize: '16px' }}>
                         <GithubOutlined />
-                        GitHub Discussion
+                        {t('menuSubItems.community.githubDiscussion')}
                       </Space>
                     </a>
                   ),
                 }]
               }}
             >
-              <Button shape="round" type="text" size="large">社区</Button>
+              <Button shape="round" type="text" size="large">{t('menuNames.community')}</Button>
             </Dropdown>
           </Space>
         </div>

@@ -25,6 +25,15 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  i18n: {
+    locales: [
+      'en-US',
+      'zh-CN',
+      'zh-TW',
+      'ja-JP',
+    ],
+    defaultLocale: 'zh-CN'
+  }
 }
 
 export default withMDX(nextConfig)

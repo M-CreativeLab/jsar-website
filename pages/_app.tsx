@@ -1,4 +1,5 @@
 import { ConfigProvider, theme } from 'antd'
+import { NextIntlClientProvider } from 'next-intl'
 import Layout from '../components/layout'
 import 'antd/dist/reset.css'
 import '../globals.css'
@@ -17,26 +18,44 @@ export function reportWebVitals({ id, name, label, value }: any) {
 
 export default function App({ Component, pageProps }: any) {
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.defaultAlgorithm,
-        token: {
-          fontSize: 14,
-        },
-        components: {
-          Menu: {
-            itemBg: '#fff',
+    <NextIntlClientProvider
+      formats={{
+        dateTime: {
+          short: {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
           },
-          Layout: {
-            colorBgBase: '#fff',
-            colorBgHeader: '#fff',
-          }
-        }
+        },
+      }}
+      messages={pageProps.messages}
+      now={pageProps.now}
+      timeZone="Asia/Shanghai"
+      defaultTranslationValues={{
+        code: (children) => <code>{children}</code>
       }}
     >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ConfigProvider>
+      <ConfigProvider
+        theme={{
+          algorithm: theme.defaultAlgorithm,
+          token: {
+            fontSize: 14,
+          },
+          components: {
+            Menu: {
+              itemBg: '#fff',
+            },
+            Layout: {
+              colorBgBase: '#fff',
+              colorBgHeader: '#fff',
+            }
+          }
+        }}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ConfigProvider>
+    </NextIntlClientProvider>
   )
 }
