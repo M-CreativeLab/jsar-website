@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Layout, Space } from 'antd'
+import { Button, Divider, Dropdown, Layout, Space, Typography } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import LocaleCode from 'locale-code'
+
+function getLanguageName(code: string): string {
+  if (code === 'zh-CN') {
+    return '简体中文'
+  } else if (code === 'zh-TW') {
+    return '繁体中文'
+  } else {
+    return LocaleCode.getLanguageNativeName(code)
+  }
+}
 
 export default function RootLayout({
   children,
@@ -11,6 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const t = useTranslations('PageLayout')
+  const router = useRouter()
   const [isTop, setIsTop] = useState(true)
   function handleScroll() {
     setIsTop(window.scrollY === 0)
@@ -184,9 +197,63 @@ export default function RootLayout({
       <Layout.Content>
         {children}
       </Layout.Content>
-      <Layout.Footer style={{ textAlign: 'center' }}>
+      <Layout.Footer
+        style={{
+          textAlign: 'center',
+          background: '#fff',
+          marginTop: '20px',
+          paddingTop: '50px',
+        }}
+      >
+        <section
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            boxSizing: 'border-box',
+            paddingLeft: '20%',
+            gap: '2rem',
+            fontSize: '16px',
+          }}
+        >
+          <div style={{ textAlign: 'left', width: '20vw' }}>
+            <Typography.Title level={4}>{t('footer.languages')}</Typography.Title>
+            <Space>
+              {router.locales?.map((locale) => (
+                <Link href="/" locale={locale} key={locale}>
+                  {getLanguageName(locale)}
+                </Link>
+              ))}
+            </Space>
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <Typography.Title level={4}>{t('footer.community')}</Typography.Title>
+            <Space
+              style={{
+                color: '#fff',
+                fontSize: 20,
+              }}
+            >
+              <Link href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
+                <GithubOutlined />
+              </Link>
+              <Link href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
+                <CommentOutlined />
+              </Link>
+            </Space>
+          </div>
+        </section>
         <Divider />
-        Rokid ©2023 Created by <a href="https://github.com/M-CreativeLab">Rokid MCreativeLab</a>
+        <section
+          style={{
+            textAlign: 'left',
+            boxSizing: 'border-box',
+            paddingLeft: '20%',
+            fontSize: 16,
+          }}
+        >
+          <p>Copyright © 2023 <a href="https://github.com/M-CreativeLab">Rokid MCreativeLab</a></p>
+        </section>
       </Layout.Footer>
     </Layout>
   )

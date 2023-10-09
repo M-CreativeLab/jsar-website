@@ -20,6 +20,10 @@ export default {
         "forum": "开发者论坛",
         "githubDiscussion": "Github Discussion"
       }
+    },
+    "footer": {
+      "languages": "多语言",
+      "community": "社区",
     }
   },
   "LandingPage": {

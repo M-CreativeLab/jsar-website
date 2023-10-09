@@ -27,6 +27,7 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "glob": "^10.3.10",
+    "locale-code": "^2.0.2",
     "next": "13.4.12",
     "next-intl": "^2.20.2",
     "postcss": "8.4.27",

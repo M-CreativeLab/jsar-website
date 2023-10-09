@@ -32,7 +32,7 @@ const nextConfig = {
       'zh-TW',
       'ja-JP',
     ],
-    defaultLocale: 'zh-CN'
+    defaultLocale: 'en-US'
   }
 }
 
