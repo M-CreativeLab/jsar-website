@@ -28,10 +28,10 @@ const nextConfig = {
   i18n: {
     locales: [
       'en-US',
-      'zh-CN',
+      'zh',
       'ja-JP',
     ],
-    defaultLocale: 'en-US'
+    defaultLocale: 'zh',
   }
 }
 

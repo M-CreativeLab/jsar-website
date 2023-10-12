@@ -18,12 +18,19 @@ export default {
       },
       "community": {
         "forum": "開発者フォーラム",
+        "discord": "Discord",
         "githubDiscussion": "GitHub ディスカッション"
       }
     },
     "footer": {
       "languages": "言語",
-      "community": "コミュニティ"
+      "community": "コミュニティとサポート",
+      "icons": {
+        "github": "Github",
+        "forum": "フォーラム",
+        "discord": "Discord",
+        "wechatHelp": "Rokid サポート",
+      }
     }
   },
   "LandingPage": {

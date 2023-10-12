@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Layout, Space, Typography } from 'antd'
+import { CommentOutlined, GithubOutlined, UnorderedListOutlined, WechatOutlined } from '@ant-design/icons'
+import { Button, Divider, Dropdown, Layout, Popover, QRCode, Space, Tooltip, Typography } from 'antd'
 import Image from 'next/image'
 import { NextRouter, useRouter } from 'next/router'
 import LocaleCode from 'locale-code'
 
 function getLanguageName(code: string): string {
-  if (code === 'zh-CN') {
+  if (code.startsWith('zh')) {
     return '简体中文'
-  } else if (code === 'zh-TW') {
-    return '繁体中文'
   } else {
     return LocaleCode.getLanguageNativeName(code)
   }
@@ -176,6 +174,18 @@ export default function RootLayout({
                     </a>
                   ),
                 }, {
+                  key: 'discord',
+                  label: (
+                    <a href="https://discord.gg/3HRn5VEWcv" target="_blank">
+                      <Space style={{ fontSize: '16px' }}>
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref="#icon-discord"></use>
+                        </svg>
+                        {t('menuSubItems.community.discord')}
+                      </Space>
+                    </a>
+                  )
+                }, {
                   key: 'github',
                   label: (
                     <a href="https://github.com/M-CreativeLab/jsar-website/discussions" target="_blank">
@@ -239,14 +249,41 @@ export default function RootLayout({
               style={{
                 color: '#fff',
                 fontSize: 20,
+                gap: '1rem',
               }}
             >
-              <a href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
-                <GithubOutlined />
-              </a>
-              <a href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
-                <CommentOutlined />
-              </a>
+              <Tooltip title={t('footer.icons.forum')}>
+                <a href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
+                  <CommentOutlined />
+                </a>
+              </Tooltip>
+              <Tooltip title={t('footer.icons.discord')}>
+                <a href="https://discord.gg/3HRn5VEWcv" target="_blank" style={{ color: '#333' }}>
+                  <svg className="icon" aria-hidden="true">
+                    <use xlinkHref="#icon-discord"></use>
+                  </svg>
+                </a>
+              </Tooltip>
+              <Tooltip title={t('footer.icons.github')}>
+                <a href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
+                  <GithubOutlined />
+                </a>
+              </Tooltip>
+              <Popover
+                content={
+                  <Space direction="vertical" align="center">
+                    <Image
+                      alt="Rokid Support Wechat"
+                      src="/rokid-support-wechat-qrcode.png" width={120} height={120}
+                    />
+                    <p>{t('footer.icons.wechatHelp')}</p>
+                  </Space>
+                }
+                trigger="hover"
+                placement="right"
+              >
+                <WechatOutlined style={{ color: '#333' }} />
+              </Popover>
             </Space>
           </div>
         </section>

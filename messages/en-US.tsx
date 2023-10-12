@@ -17,13 +17,20 @@ export default {
         "playground": "Playground"
       },
       "community": {
-        "forum": "Developer Forum",
+        "forum": "Forum",
+        "discord": "Discord",
         "githubDiscussion": "Github Discussion"
       }
     },
     "footer": {
       "languages": "Languages",
-      "community": "Community",
+      "community": "Community and Support",
+      "icons": {
+        "github": "Github",
+        "forum": "Forum",
+        "discord": "Discord",
+        "wechatHelp": "Rokid Support",
+      }
     }
   },
   "LandingPage": {
