@@ -90,7 +90,7 @@ spatialDocument.addEventListener('{type}', (event) => {
   - `event.inputData.Type` 手的左右，`0` 为左手，`1` 为右手
   - `event.inputData.Joints` 具体的关节数据
 
-关于关节数据，它是一个数组，包含20个元素，每个元素是一个关节的世界坐标，它的类型定义如下：
+关于关节数据，它是一个数组，包含21个元素，每个元素是一个关节的世界坐标，它的类型定义如下：
 
 ```typescript
 type Position = {
@@ -100,7 +100,7 @@ type Position = {
 }
 ```
 
-20个元素分别代表的含义：
+21个元素分别代表的含义：
 
 | 手关节 ID | 索引值 |
 | --- | --- |
