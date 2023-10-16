@@ -203,12 +203,15 @@ export default function RootLayout({
           </Space>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          By&nbsp;&nbsp;<Image
-            src="logo-rokid-ar-platform.png"
-            alt="Rokid AR Platform"
-            width={208}
-            height={21}
-          />
+          By&nbsp;&nbsp;
+          <a href="https://ar.rokid.com/" target="_blank">
+            <Image
+              src="logo-rokid-ar-platform.png"
+              alt="Rokid AR Platform"
+              width={208}
+              height={21}
+            />
+          </a>
         </div>
       </Layout.Header>
       <Layout.Content>
