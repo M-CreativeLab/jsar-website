@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node ./download-versions.js",
     "build": "next build",
     "preexport": "next build",
     "export": "next export",
@@ -37,5 +38,8 @@
     "react-use": "^17.4.0",
     "remark-gfm": "^3.0.1",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "axios": "^1.5.1"
   }
 }

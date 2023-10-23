@@ -177,7 +177,7 @@ function getDocumentPath(router: NextRouter): string | undefined {
   return router.query.id instanceof Array ? router.query.id.join('/') : router.query.id
 }
 
-export default function Page() {
+export default function Page({ versions }: { versions: string[] }) {
   const t = useTranslations('ManualPages')
   const router = useRouter()
   const treeData = toMenuTreeData(tocOfManual, null)
@@ -216,15 +216,19 @@ export default function Page() {
 
       // set content
       let MarkdownContent: React.ComponentType<MDXProps>
+      let verPrefix = 'docs'
+      if (router.query.ver !== 'latest') {
+        verPrefix = `docs-versions/${router.query.ver}`
+      }
+
       // load language version
       try {
-        MarkdownContent = require(`../../../docs/manual-${router.locale}/${newDocPath}.mdx`).default
+        MarkdownContent = require(`../../../${verPrefix}/manual-${router.locale}/${newDocPath}.mdx`).default
       } catch (_e) {
-        MarkdownContent = require(`../../../docs/manual/${newDocPath}.mdx`).default
+        MarkdownContent = require(`../../../${verPrefix}/manual/${newDocPath}.mdx`).default
       }
       setMarkdownChildren(<MarkdownContent components={createCustomMdxComponents(router)} />)
     }
-
   }, [router.asPath])
 
   return (
@@ -256,8 +260,21 @@ export default function Page() {
               }}
             >
               {t('version')}
-              <Select value="latest" style={{ flex: 1 }}>
-                <Select.Option value="latest">v0.1.0 ({t('latest')})</Select.Option>
+              <Select
+                value={router.query.ver}
+                style={{ flex: 1 }}
+                onChange={(ver) => {
+                  router.push(`/manual/${ver}/${getDocumentPath(router)}`, undefined, { shallow: true })
+                }}
+              >
+                <Select.Option value="latest">{t('latest')}</Select.Option>
+                {versions.map((version) => {
+                  return (
+                    <Select.Option key={version} value={version}>
+                      v{version}
+                    </Select.Option>
+                  )
+                })}
               </Select>
             </div>
             <Divider />
@@ -329,12 +346,32 @@ export default function Page() {
   )
 }
 
+import fs from 'node:fs/promises'
+
+async function readJson(path: string) {
+  return JSON.parse(
+    await fs.readFile(path, 'utf8')
+  )
+}
+
+async function getVersions() {
+  return (await fs.readdir(`./docs-versions`)).filter(filename => filename !== '.gitkeep')
+}
+
 export const getStaticPaths = (async (context) => {
-  const documentPaths = getPathsFromMenu(tocOfManual, null)
-  let paths = documentPaths.map(p => `/manual/latest/${p}`)
-  context.locales?.forEach((locale) => {
-    paths = paths.concat(documentPaths.map(p => `/${locale}/manual/latest/${p}`))
-  })
+  let paths = [] as string[]
+  const versions = await getVersions()
+
+  for (let versionStr of ['latest'].concat(versions)) {
+    const isLatest = versionStr === 'latest'
+    const toc = isLatest ? tocOfManual : await readJson(`./docs-versions/${versionStr}/manual/toc.json`)
+    const documentPaths = getPathsFromMenu(toc, null)
+    paths = paths.concat(documentPaths.map(p => `/manual/${versionStr}/${p}`))
+    context.locales?.forEach((locale) => {
+      paths = paths.concat(documentPaths.map(p => `/${locale}/manual/${versionStr}/${p}`))
+    })
+  }
+
   return {
     paths,
     fallback: true,
@@ -342,9 +379,11 @@ export const getStaticPaths = (async (context) => {
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (async (context) => {
+  const versions = await getVersions()
   return {
     props: {
-      messages: (await import(`../../../messages/${context.locale}`)).default
+      messages: (await import(`../../../messages/${context.locale}`)).default,
+      versions,
     }
   }
 }) satisfies GetStaticProps
