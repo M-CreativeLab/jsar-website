@@ -134,6 +134,7 @@ export default {
       "RUNTIME": "运行时",
       "RUNTIME_BABYLONJS_APIS": "Babylon.js APIs",
       "RUNTIME_WEB_APIS": "Web APIs",
+      "RUNTIME_NODEJS_APIS": "Node.js APIs",
       "RUNTIME_JSAR_APIS": "JSAR APIs",
       "RUNTIME_RESOURCE_CACHE": "资源缓存",
       "RUNTIME_MODULE_SYSTEM": "模块系统",

@@ -134,6 +134,7 @@ export default {
       "RUNTIME": "ランタイム",
       "RUNTIME_BABYLONJS_APIS": "Babylon.js API",
       "RUNTIME_WEB_APIS": "Web API",
+      "RUNTIME_NODEJS_APIS": "Node.js APIs",
       "RUNTIME_JSAR_APIS": "JSAR API",
       "RUNTIME_RESOURCE_CACHE": "リソースキャッシュ",
       "RUNTIME_MODULE_SYSTEM": "モジュールシステム",

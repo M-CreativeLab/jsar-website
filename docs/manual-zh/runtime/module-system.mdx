@@ -1,5 +1,55 @@
 # 模块系统
 
-JSAR 当前不支持模块系统。
+JSAR 运行时通过实现 ECMAScript Module 来提供模块系统。
 
-> 很快会支持 ECMAScript Module，但不会支持 CommonJS。
+## 基础使用
+
+声明一个模块：
+
+```js
+export const foo = 3;
+```
+
+使用模块：
+
+```js
+import { foo } from './foo.js';
+```
+
+使用一个文件：
+
+```js
+import dataJson from './data.json';
+console.log(dataJson);
+```
+
+动态加载：
+
+```ts
+import('./foo.js').then(({ foo }) => {
+  console.log(foo);
+});
+```
+
+> 具体方法请阅读 [ECMAScript Modules](./runtime/web-apis#ECMAScript%20Modules)。
+
+## 运行时实现
+
+当 JSAR 解析 `<script>` 标签时，分为两个阶段：解析阶段和执行阶段。
+
+解析阶段，运行时会解析 TypeScript 代码，并收集 `import` 与动态 `import()` 语法来构建模块依赖关系，并将 TypeScript 代码转换为编译后的 JavaScript 代码，在 JavaScript 代码中会将 `import` 和 `export` 转换为内部模块系统调用。
+
+执行阶段则会执行编译后的 JavaScript 代码，它会在 `import` 时动态执行对应的模块代码，或者返回模块数据（如果是 JSON 或数据类型），并将 `export` 的数据存储到模块系统中。
+
+无论是通过 `import` 语法静态导入还是动态导入，当前的实现只对解析阶段的产物（即编译后的 JavaScript 代码）进行缓存，对于执行阶段，被导入模块来将会每次都被重新运行。这是因为我们希望通过这种方式来引导开发者写出更简练的模块依赖代码，而不是导入同一个模块中的不同内容反复使用多条语句来描述，比如：
+
+```typescript
+import { foo } from './foobar';
+import { bar } from './foobar';
+```
+
+尽管这样的代码符合语法规范，且能正常工作，但我们希望通过性能上的引导来鼓励开发者写出更简练的代码：
+
+```typescript
+import { foo, bar } from './foobar';
+```

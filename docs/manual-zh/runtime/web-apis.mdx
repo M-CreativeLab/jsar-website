@@ -6,25 +6,79 @@ JSAR 作为可嵌入空间的 Web 运行时，会优先考虑通过 Web APIs 为
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `import` | 未实现（优先级高） | 导入 TypeScript 或 JavaScript 模块 |
-| `export` | 未实现（优先级高） | 导出模块 |
-| `import.meta` | 未实现（优先级低） | - |
+| `import` | **已实现** | 导入 TypeScript/JavaScript 模块 |
+| `export` | **已实现** | 导出模块 |
+| `import.meta` | 未实现 | - |
+| `import()` | **已实现** | 动态导入模块 |
+| HTTP imports | 不支持 | - |
 
-当前版本中，我们还无法通过 `import` 和 `export` 语法来导入和导出模块，但是我们已经在计划中，优先级较高，预计在未来几个版本中实现，比如：
+在文件 `bar.ts` 中，我们可以通过 `export` 导出模块：
 
 ```typescript
 import { foo } from './foo.js';
 export const bar = foo + 1;
 ```
 
+然后在 `main.ts` 中，我们可以通过 `import` 导入模块：
+
+```typescript
+import { bar } from './bar.js';
+console.log(bar); // 2
+```
+
+JSAR 环境也支持动态 `import()` 导入，用于一些动态加载的需求，例如用户通过不同的输入来加载不同的模块，比如：
+
+```typescript
+// 通过用户输入来加载不同的模块
+async function onUserSelect(id) {
+  const module = await import('./foo/' + id);
+  console.log(module.foo);
+}
+```
+
+除此之外，为了提供更好的端上支持，JSAR 还支持导入其他文件类型，比如：
+
+```typescript
+import dataJson from './data.json';
+import marioBin from './roms/mario.nes.bin';
+console.log(dataJson); // JavaScript Object
+console.log(marioBin); // ArrayBuffer
+```
+
+JSAR 会通过导入的文件拓展名来判断文件类型，并根据不同的文件类型来决定模块返回的内容，目前支持的文件类型有：
+
+| 文件类型 | 返回类型 | 文件拓展名 |
+| --- | --- | --- |
+| 脚本 | `Module` | `.ts`, `.js`, `.mjs` |
+| JSON | `Object` | `.json` |
+| 数据 | `ArrayBuffer` | `.bin`, `.wasm`, `.png`, `.jpeg`, `.webp` |
+
+示例代码如下：
+
+```typescript
+import foo from './foo.js';       // module
+import data from './data.json';   // object
+import bin1 from './bin1.bin';    // ArrayBuffer
+import bin2 from './bin2.wasm';   // ArrayBuffer
+import bin3 from './bin3.png';    // ArrayBuffer
+import bin4 from './bin4.jpeg';   // ArrayBuffer
+import bin5 from './bin5.webp';   // ArrayBuffer
+```
+
+> **为什么不支持 HTTP imports？**
+>
+> 尽管 JSAR 团队希望尽可能地兼容 Web APIs，但我们更需要确保每个发布的空间小程序是版本稳定的，而非像网页随时保持在线的状态。
+>
+> 因此 JSAR 希望开发者能够确保所有代码都在自己的包中，而不是通过网络加载，这样就不会出现因为第三方更改而导致的异常，另一方面，每当开发者发布一个版本后的心智负担也会大大降低。
+
 ## Navigator API
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
 | `navigator` | 部分实现 | - |
-| `navigator.userAgent` | 已实现 | 获取运行时客户端信息 |
-| `navigator.vendor` | 已实现 | 厂商信息 |
-| `navigator.vendorSub` | 已实现 | 子厂商信息 |
+| `navigator.userAgent` | **已实现** | 获取运行时客户端信息 |
+| `navigator.vendor` | **已实现** | 厂商信息 |
+| `navigator.vendorSub` | **已实现** | 子厂商信息 |
 
 可通过 `navigator.userAgent` 获取当前 JSAR 运行时版本号，比如：
 
@@ -36,7 +90,7 @@ console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `fetch` | 已实现 | 发送网络请求 |
+| `fetch` | **已实现** | 发送网络请求 |
 
 在 Node.js v18.0.0 版本中，Node.js 已经实现了 [Fetch API](https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch) 用于发送网络请求，因此开发者可直接使用，具体使用方法请参考 [MDN fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)。
 
@@ -50,10 +104,10 @@ fetch('https://example.com')
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `setTimeout` | 已实现 | 创建一个计时器 |
-| `clearTimeout` | 已实现 | 取消一个计时器 |
-| `setInterval` | 已实现 | 创建一个周期性计时器 |
-| `clearInterval` | 已实现 | 取消一个周期性计时器 |
+| `setTimeout` | **已实现** | 创建一个计时器 |
+| `clearTimeout` | **已实现** | 取消一个计时器 |
+| `setInterval` | **已实现** | 创建一个周期性计时器 |
+| `clearInterval` | **已实现** | 取消一个周期性计时器 |
 
 JSAR 实现了以上计时器相关的 API。
 
@@ -90,15 +144,15 @@ xr.requestSession('immersive-vr')
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `AudioContext` | 已实现 | 音频上下文 |
-| `AudioBuffer` | 已实现 | 代表一个音频缓冲数据流 |
-| `AudioBufferSourceNode` | 已实现 | 代表一个输入源，用于生产音频流 |
-| `AudioDestinationNode` | 已实现 | 代表一个音频消费节点 |
+| `AudioContext` | **已实现** | 音频上下文 |
+| `AudioBuffer` | **已实现** | 代表一个音频缓冲数据流 |
+| `AudioBufferSourceNode` | **已实现** | 代表一个输入源，用于生产音频流 |
+| `AudioDestinationNode` | **已实现** | 代表一个音频消费节点 |
 | `AudioListener` | 未实现 | 代表一个音频接收者，用于空间音频中表达声音接收方的属性和坐标 |
-| `AudioParam` | 已实现 | 音频参数 |
+| `AudioParam` | **已实现** | 音频参数 |
 | `AudioWorklet` | 未实现 | - |
 | `AudioWorkletNode` | 未实现 | - |
-| `BaseAudioContext` | 已实现 | 音频上下文的基础类 |
+| `BaseAudioContext` | **已实现** | 音频上下文的基础类 |
 | `BiquadFilterNode` | 未实现 | - |
 | `ChannelMergerNode` | 未实现 | - |
 | `ChannelSplitterNode` | 未实现 | - |
@@ -129,7 +183,7 @@ xr.requestSession('immersive-vr')
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `HTMLAudioElement` | 已实现 | 由 JSAR 实现，基于 Web Audio API |
+| `HTMLAudioElement` | **已实现** | 由 JSAR 实现，基于 Web Audio API |
 
 Web Audio API 并不提供直接播放音频的能力，因此我们基于 Web Audio API 实现了 `HTMLAudioElement`，可通过 API 进行音频播放：
 
@@ -233,7 +287,7 @@ const frame = session.requestAnimationFrame((time, frame) => {
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `WebAssembly` | 已实现 | 由 v8 实现 |
+| `WebAssembly` | **已实现** | 由 v8 实现 |
 
 JSAR 底层依赖 JavaScript 引擎 v8，因此可以直接使用 v8 提供的 WebAssembly API，请参考 [MDN WebAssembly](https://developer.mozilla.org/en-US/docs/WebAssembly/Using_the_JavaScript_API)。
 

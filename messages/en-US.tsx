@@ -134,6 +134,7 @@ export default {
       "RUNTIME": "Runtime",
       "RUNTIME_BABYLONJS_APIS": "Babylon.js APIs",
       "RUNTIME_WEB_APIS": "Web APIs",
+      "RUNTIME_NODEJS_APIS": "Node.js APIs",
       "RUNTIME_JSAR_APIS": "JSAR APIs",
       "RUNTIME_RESOURCE_CACHE": "Resource Cache",
       "RUNTIME_MODULE_SYSTEM": "Module System",
