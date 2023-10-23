@@ -268,7 +268,7 @@ export default function Page({ versions }: { versions: string[] }) {
                 }}
               >
                 <Select.Option value="latest">{t('latest')}</Select.Option>
-                {versions.map((version) => {
+                {(versions || []).map((version) => {
                   return (
                     <Select.Option key={version} value={version}>
                       v{version}
