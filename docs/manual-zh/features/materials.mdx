@@ -65,14 +65,14 @@ box1.material = material;
 
 | 属性名 | 类型 | 说明 | 是否在 SCSS 中支持 | 是否在 TypeScript 中支持 |
 | --- | --- | --- | --- | --- |
-| `diffuseColor` | Color3 | 漫反射颜色 | 是 | 是 |
-| `diffuseTexture` | Texture | 漫反射贴图 | 否 | 否 |
-| `ambientColor` | Color3 | 环境光颜色 | 否 | 否 |
-| `ambientTexture` | Texture | 环境光贴图 | 否 | 否 |
-| `emissiveColor` | Color3 | 自发光颜色 | 是 | 是 |
-| `emissiveTexture` | Texture | 自发光贴图 | 否 | 否 |
-| `specularColor` | Color3 | 镜面反射颜色 | 否 | 否 |
-| `specularTexture` | Texture | 镜面反射贴图 | 否 | 否 |
+| `diffuseColor` | `BABYLON.Color3` | 漫反射颜色 | 是 | 是 |
+| `diffuseTexture` | `BABYLON.Texture` | 漫反射贴图 | 是 | 否 |
+| `ambientColor` | `BABYLON.Color3` | 环境光颜色 | 否 | 否 |
+| `ambientTexture` | `BABYLON.Texture` | 环境光贴图 | 否 | 否 |
+| `emissiveColor` | `BABYLON.Color3` | 自发光颜色 | 是 | 是 |
+| `emissiveTexture` | `BABYLON.Texture` | 自发光贴图 | 是 | 否 |
+| `specularColor` | `BABYLON.Color3` | 镜面反射颜色 | 否 | 否 |
+| `specularTexture` | `BABYLON.Texture` | 镜面反射贴图 | 否 | 否 |
 
 > 暂不支持贴图设置
 
@@ -82,12 +82,12 @@ box1.material = material;
 
 | 属性名 | 类型 | 说明 | 是否在 SCSS 中支持 | 是否在 TypeScript 中支持 |
 | --- | --- | --- | --- | --- |
-| `albedoColor` | Color3 | 漫反射颜色 | 是 | 是 |
-| `albedoTexture` | Texture | 漫反射贴图 | 否 | 是 |
-| `emissiveColor` | Color3 | 自发光颜色 | 否 | 否 |
-| `emissiveTexture` | Texture | 自发光贴图 | 否 | 否 |
-| `metallic` | number | 金属度 | 是 | 是 |
-| `roughness` | number | 粗糙度 | 是 | 是 |
+| `albedoColor` | `BABYLON.Color3` | 漫反射颜色 | 是 | 是 |
+| `albedoTexture` | `BABYLON.Texture` | 漫反射贴图 | 是 | 是 |
+| `emissiveColor` | `BABYLON.Color3` | 自发光颜色 | 是 | 否 |
+| `emissiveTexture` | `BABYLON.Texture` | 自发光贴图 | 是 | 否 |
+| `metallic` | `number` | 金属度 | 是 | 是 |
+| `roughness` | `number` | 粗糙度 | 是 | 是 |
 
 ### 多材质
 
@@ -110,6 +110,152 @@ model.getChildMeshes().forEach(mesh => {
 
 上面的代码将会把 `model` 中所有的 PBR 材质的金属度设置为 0。
 
+## 贴图
+
+贴图可以更丰富得表达细节，你可以在空间小程序中使用多种贴图，例如：
+
+```typescript
+const roofMat = new BABYLON.StandardMaterial('roofMat');
+roofMat.diffuseTexture = new BABYLON.Texture('https://assets.babylonjs.com/environments/roof.jpg', spatialDocument.scene);
+```
+
+> 关于贴图的简单示例，可以查看 [M-CreativeLabjsar-gallery-poker](https://github.com/M-CreativeLab/jsar-gallery-poker) 项目。
+
+JSAR 目前支持的贴图类型有：
+
+- [x] [`BABYLON.Texture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.Texture) 基础贴图，基于图片 URL
+  - [x] [`BABYLON.DynamicTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.DynamicTexture) 动态贴图，通过 Web Canvas 绘制贴图
+  - [ ] [`BABYLON.ProceduralTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.ProceduralTexture) 过程贴图，通过代码生成贴图
+  - [ ] [`BABYLON.RawTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.RawTexture) 原始贴图，通过二进制数据生成贴图
+  - [ ] [`BABYLON.RawTexture2DArray`](https://doc.babylonjs.com/typedoc/classes/BABYLON.RawTexture2DArray) 二维数组贴图，通过二进制数据生成贴图
+  - [ ] [`BABYLON.RawTexture3D`](https://doc.babylonjs.com/typedoc/classes/BABYLON.RawTexture3D) 三维贴图，通过二进制数据生成贴图
+  - [ ] [`BABYLON.VideoTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.VideoTexture) 视频贴图，通过视频 URL
+  - [ ] [`BABYLON.RenderTargetTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.RenderTargetTexture) 渲染目标贴图，通过渲染目标生成贴图
+- [ ] [`BABYLON.CubeTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.CubeTexture) 立方体贴图，通过图片 URL 数组生成贴图
+- [ ] [`BABYLON.HDRCubeTexture`](https://doc.babylonjs.com/typedoc/classes/BABYLON.HDRCubeTexture) HDR 立方体贴图，通过图片 URL 数组生成贴图
+
+下面就是它们的具体使用方法。
+
+### `BABYLON.Texture`
+
+创建一个基础贴图，可以通过图片 URL 来创建，例如：
+
+```typescript
+const scene = spaceDocument.scene as BABYLON.Scene;
+const model = scene.getNodeById('model');
+const mat = new BABYLON.StandardMaterial('mat', scene);
+mat.diffuseTexture = new BABYLON.Texture('https://assets.babylonjs.com/environments/roof.jpg', scene);
+model.getChildMeshes().forEach(mesh => {
+  mesh.material = mat;
+});
+```
+
+也可通过本地图片来创建，例如：
+
+```typescript
+import textureImageData from './texture.png';
+
+const scene = spaceDocument.scene as BABYLON.Scene;
+const model = scene.getNodeById('model');
+const mat = new BABYLON.StandardMaterial('mat', scene);
+mat.diffuseTexture = new BABYLON.Texture(textureImageData, scene);
+```
+
+> 具体使用方法见 Babylon.js 文档：[Texture](https://doc.babylonjs.com/features/introductionToFeatures/chap2/material)。
+
+### `BABYLON.DynamicTexture`
+
+动态贴图可以让开发者通过 Web Canvas API 来绘制贴图，并更新到物体材质上，例如：
+
+```typescript
+const scene = spaceDocument.scene as BABYLON.Scene;
+const model = scene.getNodeById('model');
+const mat = new BABYLON.StandardMaterial('mat', scene);
+const texture = new BABYLON.DynamicTexture('dynamic-texture', {
+  width: 512,
+  height: 512,
+}, scene, false, BABYLON.Texture.TRILINEAR_SAMPLINGMODE, BABYLON.Engine.TEXTUREFORMAT_RGBA, false);
+const context2d = texture.getContext() as CanvasRenderingContext2D;
+context2d.fillStyle = '#ff0000';
+context2d.fillRect(0, 0, SCREEN_WIDTH, 20);
+texture.update(); // 更新贴图
+```
+
+通过调用 `getContext()` 返回一个 [`OffscreenCanvasRenderingContext2D`](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvasRenderingContext2D) 对象，它在 JSAR 运行时的支持情况如下：
+
+| 方法/属性 | 是否支持 | 描述 |
+| --- | --- | --- |
+| [`reset()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset) | 否 | 重置画布 |
+| [`transform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform) | 是 | 变换画布 |
+| [`clearRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect) | 是 | 清除画布 |
+| [`fillRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect) | 是 | 填充矩形 |
+| [`strokeRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeRect) | 是 | 绘制矩形边框 |
+| [`fillText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText) | 是 | 填充文本 |
+| [`drawText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawText) | 是 | 绘制文本 |
+| [`strokeText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeText) | 是 | 绘制文本边框 |
+| [`measureText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText) | 是 | 测量文本宽度 |
+| [`lineWidth`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth) | 是 | 获取或设置线条宽度 |
+| [`lineCap`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap) | 是 | 获取或设置线条末端样式 |
+| [`lineJoin`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin) | 是 | 获取或设置线条连接样式 |
+| [`miterLimit`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/miterLimit) | 是 | 获取或设置最大斜接长度 |
+| [`lineDashOffset`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset) | 是 | 获取或设置虚线偏移量 |
+| [`getLineDash()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getLineDash) | 是 | 获取虚线样式 |
+| [`setLineDash()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash) | 是 | 设置虚线样式 |
+| [`font`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font) | 是 | 获取或设置字体 |
+| [`textAlign`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textAlign) | 是 | 获取或设置文本对齐方式 |
+| [`textBaseline`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline) | 是 | 获取或设置文本基线对齐方式 |
+| [`direction`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/direction) | 是 | 获取或设置文本方向 |
+| [`fontKerning`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fontKerning) | 是 | 获取或设置字体间距 |
+| [`fillStyle`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle) | 是 | 获取或设置填充样式 |
+| [`strokeStyle`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeStyle) | 是 | 获取或设置边框样式 |
+| [`createConicGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createConicGradient) | 是 | 创建锥形渐变 |
+| [`createLinearGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient) | 是 | 创建线性渐变 |
+| [`createRadialGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient) | 是 | 创建径向渐变 |
+| [`createPattern()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createPattern) | 是 | 创建图案 |
+| [`shadowBlur`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur) | 是 | 获取或设置阴影模糊度 |
+| [`shadowColor`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor) | 是 | 获取或设置阴影颜色 |
+| [`shadowOffsetX`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX) | 是 | 获取或设置阴影 X 轴偏移量 |
+| [`shadowOffsetY`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY) | 是 | 获取或设置阴影 Y 轴偏移量 |
+| [`beginPath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/beginPath) | 是 | 开始路径绘制 |
+| [`closePath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/closePath) | 是 | 结束路径绘制 |
+| [`moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/moveTo) | 是 | 移动路径起点 |
+| [`lineTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineTo) | 是 | 绘制直线 |
+| [`bezierCurveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/bezierCurveTo) | 是 | 绘制贝塞尔曲线 |
+| [`quadraticCurveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/quadraticCurveTo) | 是 | 绘制二次贝塞尔曲线 |
+| [`arc()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc) | 是 | 绘制圆弧 |
+| [`arcTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arcTo) | 是 | 绘制圆弧 |
+| [`ellipse()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse) | 是 | 绘制椭圆 |
+| [`rect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rect) | 是 | 绘制矩形 |
+| [`roundRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/roundRect) | 是 | 绘制圆角矩形 |
+| [`fill()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fill) | 是 | 填充路径 |
+| [`stroke()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke) | 是 | 绘制路径边框 |
+| [`drawFocusIfNeeded()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawFocusIfNeeded) | 是 | 绘制焦点 |
+| [`scrollPathIntoView()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scrollPathIntoView) | 是 | 滚动路径到视图 |
+| [`clip()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip) | 是 | 裁剪路径 |
+| [`isPointInPath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath) | 是 | 判断点是否在路径内 |
+| [`isPointInStroke()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInStroke) | 是 | 判断点是否在路径边框内 |
+| [`getTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getTransform) | 是 | 获取变换矩阵 |
+| [`rotate()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate) | 是 | 旋转画布 |
+| [`scale()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale) | 是 | 缩放画布 |
+| [`translate()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/translate) | 是 | 平移画布 |
+| [`setTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform) | 是 | 设置变换矩阵 |
+| [`resetTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/resetTransform) | 是 | 重置变换矩阵 |
+| [`globalAlpha`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalAlpha) | 是 | 获取或设置全局透明度 |
+| [`globalCompositeOperation`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation) | 是 | 获取或设置全局混合模式 |
+| [`drawImage()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage) | 是 | 绘制图片 |
+| [`createImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createImageData) | 是 | 创建图像数据 |
+| [`getImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData) | 是 | 获取图像数据 |
+| [`putImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putImageData) | 是 | 设置图像数据 |
+| [`imageSmoothingEnabled`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled) | 是 | 获取或设置图像平滑度 |
+| [`imageSmoothingQuality`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingQuality) | 是 | 获取或设置图像平滑质量 |
+| [`save()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save) | 是 | 保存画布状态 |
+| [`restore()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore) | 是 | 恢复画布状态 |
+| [`canvas`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas) | 是 | 获取画布对象 |
+| [`getContextAttributes()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getContextAttributes) | 是 | 获取画布属性 |
+| [`filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) | 是 | 获取或设置滤镜 |
+
+需要注意的是，JSAR 运行时为了减少运行时开销，除了初始化阶段外，在运行过程中需要开发者调用 `texture.update()` 来更新贴图，否则贴图将不会自动更新。
+
 ## Wireframe
 
 在 Babylon.js 中，材质的 `wireframe` 属性可以设置是否显示网格，例如：
@@ -128,7 +274,5 @@ model.getChildMeshes().forEach(mesh => {
 ## 不支持的特性
 
 - 多材质
-- 动态贴图
-- 视频贴图
 - 自定义着色器
 - Node Material
