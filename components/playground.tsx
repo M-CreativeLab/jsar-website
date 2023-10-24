@@ -125,7 +125,8 @@ export default function Playground() {
       }
 
       const script = document.createElement('script')
-      script.src = 'https://ar.rokidcdn.com/web-assets/pages/jsar/js/playground-scene.js'
+      script.type = 'module'
+      script.src = `${buildUrl}/scene.js`
       script.onload = () => {
         try {
           __transmuteRenderUnityScene()
