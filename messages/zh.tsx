@@ -96,7 +96,7 @@ export default {
     ],
     "metadata": {
       "base": "基础信息",
-      "xsml": "XSML代码",
+      "xsmlCode": "XSML代码",
       "attributes": {
         "name": "名称",
         "repository": "代码仓库",

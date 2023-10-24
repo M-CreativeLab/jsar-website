@@ -1,4 +1,4 @@
-import { Descriptions, Divider, Tabs, Typography } from 'antd'
+import { Descriptions, Divider, Select, Space, Tabs, Typography } from 'antd'
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react'
@@ -6,6 +6,10 @@ import { CodeBlock, github } from 'react-code-blocks'
 
 declare var __transmuteRenderUnityScene: any;
 
+const runtimeVersions = [
+  'latest',
+  '0.1.0',
+]
 const examples = [
   {
     key: 'jsar-gallery-rokid-jungle',
@@ -47,6 +51,7 @@ export default function Playground() {
   const selectedExampleRef = useRef(examples[0])
   const [selectedExample, setSelectedExample] = useState(selectedExampleRef.current)
   const [entrySource, setEntrySource] = useState('')
+  const [runtimeVersion, setRuntimeVersion] = useState(runtimeVersions[0])
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -60,6 +65,9 @@ export default function Playground() {
 
   useEffect(() => {
     if (router.isReady) {
+      if (router.query.version) {
+        setRuntimeVersion(router.query.version as string)
+      }
       if (router.query.id) {
         const selected = examples.find((item) => item.key === router.query.id)
         if (selected) {
@@ -94,20 +102,23 @@ export default function Playground() {
   }, [router.query])
 
   useEffect(() => {
-    if (canvasRef.current && !isTransmuteInitialized) {
-      const buildUrl = 'https://ar.rokidcdn.com/web-assets/pages/jsar/playground'
+    if (router.isReady && canvasRef.current && !isTransmuteInitialized) {
+      const ver = router.query['version'] || runtimeVersions[0]
+      const useGzip = ver !== '0.1.0'
+      const seed = Date.now()
+      const buildUrl = `https://ar.rokidcdn.com/web-assets/pages/jsar/playground/${ver}`
       let mutableWindow = window as any
       mutableWindow['module'] = {}
       mutableWindow['__transmuteLoaderUrl'] = buildUrl + '/TransmuteEditor.loader.js'
       mutableWindow['__transmuteConfig'] = {
         scalingCanvas: false,
-        dataUrl: buildUrl + '/TransmuteEditor.data',
-        frameworkUrl: buildUrl + '/TransmuteEditor.framework.js',
-        codeUrl: buildUrl + '/TransmuteEditor.wasm',
+        dataUrl: buildUrl + `/TransmuteEditor.data${useGzip ? '.gz' : ''}?timestamp=${seed}`,
+        frameworkUrl: buildUrl + `/TransmuteEditor.framework.js${useGzip ? '.gz' : ''}?timestamp=${seed}`,
+        codeUrl: buildUrl + `/TransmuteEditor.wasm${useGzip ? '.gz' : ''}?timestamp=${seed}`,
         streamingAssetsUrl: 'StreamingAssets',
-        companyName: 'MCreativeLab Org',
-        productName: 'TransmuteUnityFramework',
-        productVersion: '0.1',
+        companyName: 'Rokid MCreativeLab',
+        productName: 'JSAR Framework',
+        productVersion: ver,
         showBanner: (msg: string, type?: string) => {
           console.info(msg, type)
         },
@@ -138,7 +149,7 @@ export default function Playground() {
         })
       })
     }
-  }, [canvasRef.current])
+  }, [router.isReady, canvasRef.current])
 
   useEffect(() => {
     if (selectedExample?.url) {
@@ -186,9 +197,24 @@ export default function Playground() {
           padding: '2rem',
         }}
       >
-        <Typography.Title level={2} style={{ alignSelf: 'flex-start' }}>{t('title')}</Typography.Title>
+        <Typography.Title level={2} style={{ alignSelf: 'flex-start' }}>
+          <Space size="large">
+            {t('title')}
+            <Select value={runtimeVersion} size="large" onChange={value => {
+              if (value) {
+                const currentUrl = new URL(window.location.href)
+                currentUrl.searchParams.set('version', value)
+                window.open(currentUrl.href, '_current')
+              }
+            }}>
+              {runtimeVersions.map((version) => (
+                <Select.Option value={version} key={version}>{version}</Select.Option>
+              ))}
+            </Select>
+          </Space>
+        </Typography.Title>
         <Typography.Paragraph>
-          {t('description.0')}<br/>{t('description.1')}
+          {t('description.0')}<br />{t('description.1')}
         </Typography.Paragraph>
         <Divider />
         <section

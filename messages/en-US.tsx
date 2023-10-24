@@ -89,7 +89,7 @@ export default {
     }
   },
   "PlaygroundPage": {
-    "title": "Playground",
+    "title": "PLAYGROUND",
     "description": [
       "This page is used to preview examples provided by the official/community. You can switch to different examples by clicking on the examples list on the left.",
       "Note: The initial loading may take some time, please be patient."
