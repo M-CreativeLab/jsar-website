@@ -41,6 +41,12 @@ const examples = [
     label: '动画缓动',
     url: 'https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-animation-easing@main/main.xsml',
   },
+  {
+    key: 'jsar-gallery-nes',
+    label: '超级玛丽',
+    url: 'https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-nes/main/main.xsml',
+    version: 'latest',
+  },
 ]
 let isTransmuteInitialized = false
 let unityInstance: any = null
@@ -231,10 +237,13 @@ export default function Playground() {
             type="card"
             size="large"
             activeKey={selectedExample.key}
-            items={examples.map((item) => ({
-              key: item.key,
-              label: item.label,
-            }))}
+            items={examples
+              .filter(example => !example.version || example.version === runtimeVersion)
+              .map((item) => ({
+                key: item.key,
+                label: item.label,
+              }))
+            }
             onChange={(key) => {
               const selected = examples.find((item) => item.key === key)
               if (selected) {
