@@ -231,3 +231,143 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 该标签用于定义一个边界元素，它的大小与其父元素的大小一致，通过 `id` 属性指定边界元素的唯一标识符。
 
 > `<bound>` 不能手动声明大小，而是通过计算子元素得到，在内部它是一个 Babylon.js TransformNode 对象。
+
+#### HTML 标签
+
+HTML 标签用于定义 XSML 的 2D 容器元素，与 HTML 中的 `<div>` 相同，但不同的是你需要将它插入到一个 3D 物体中，它会作为该物体的贴图渲染，比如：
+
+```xml
+<plane id="gui">
+  <div id="root" style="padding:10px;gap:20px;">
+    <span>
+      <span class="sub">Do</span>
+      <span class="sub">Ri</span>
+      <span class="sub">Mi</span>
+      <span class="sub">Fa</span>
+    </span>
+    <span style="color:white;font-size:70px;line-height:1.3;">
+      空间小程序还原最开始的 Web 开发体验，并所见即所得。
+    </span>
+  </div>
+</plane>
+```
+
+> 需要注意的是，同一个 3D 物体有切只能有一个 HTML 标签，另外在根节点 `<space>` 下不能直接插入 HTML 标签。
+
+与 HTML 中一样，你可以通过设置 "style" 来设置样式，如上所示，当前支持的样式如下：
+
+| 样式 | 描述 | 是否支持 |
+| --- | --- | --- |
+| `background-color` | 背景颜色 | 是 |
+| `background-image` | 背景图片 | 否 |
+| `background-position` | 背景位置 | 否 |
+| `background-repeat` | 背景重复 | 否 |
+| `background-size` | 背景大小 | 否 |
+| `border` | 边框 | 是 |
+| `border-bottom` | 下边框 | 是 |
+| `border-bottom-color` | 下边框颜色 | 是 |
+| `border-bottom-left-radius` | 下左边框圆角 | 否 |
+| `border-bottom-right-radius` | 下右边框圆角 | 否 |
+| `border-bottom-style` | 下边框样式 | 部分支持，支持 `solid`, `dashed` 和 `dotted` |
+| `border-bottom-width` | 下边框宽度 | 是 |
+| `border-color` | 边框颜色 | 是 |
+| `border-left` | 左边框 | 是 |
+| `border-left-color` | 左边框颜色 | 是 |
+| `border-left-style` | 左边框样式 | 部分支持，支持 `solid`, `dashed` 和 `dotted` |
+| `border-left-width` | 左边框宽度 | 是 |
+| `border-radius` | 边框圆角 | 是 |
+| `border-right` | 右边框 | 是 |
+| `border-right-color` | 右边框颜色 | 是 |
+| `border-right-style` | 右边框样式 | 部分支持，支持 `solid`, `dashed` 和 `dotted` |
+| `border-right-width` | 右边框宽度 | 是 |
+| `border-style` | 边框样式 | 部分支持，支持 `solid`, `dashed` 和 `dotted` |
+| `border-top` | 上边框 | 是 |
+| `border-top-color` | 上边框颜色 | 是 |
+| `border-top-left-radius` | 上左边框圆角 | 否 |
+| `border-top-right-radius` | 上右边框圆角 | 否 |
+| `border-top-style` | 上边框样式 | 部分支持，支持 `solid`, `dashed` 和 `dotted` |
+| `border-top-width` | 上边框宽度 | 是 |
+| `border-width` | 边框宽度 | 是 |
+| `box-shadow` | 盒子阴影 | 否 |
+| `box-sizing` | 盒子模型 | 否 |
+| `color` | 文字颜色 | 是 |
+| `display` | 显示方式 | 支持 `flexbox`, `grid` 和 `none` |
+| `flex` | 弹性布局 | 是 |
+| `flex-basis` | 弹性基础 | 是 |
+| `flex-direction` | 弹性方向 | 是 |
+| `flex-flow` | 弹性流 | 是 |
+| `flex-grow` | 弹性增长 | 是 |
+| `flex-shrink` | 弹性收缩 | 是 |
+| `flex-wrap` | 弹性换行 | 是 |
+| `font` | 字体 | 是 |
+| `font-family` | 字体族 | 否，当前仅支持显示默认字体 |
+| `font-size` | 字体大小 | 是 |
+| `font-style` | 字体样式 | 是 |
+| `font-variant` | 字体变体 | 否 |
+| `font-weight` | 字体粗细 | 否 |
+| `gap` | 间隔 | 是 |
+| `height` | 高度 | 是 |
+| `justify-content` | 对齐方式 | 是 |
+| `line-height` | 行高 | 是 |
+| `margin` | 外边距 | 是 |
+| `margin-bottom` | 下外边距 | 是 |
+| `margin-left` | 左外边距 | 是 |
+| `margin-right` | 右外边距 | 是 |
+| `margin-top` | 上外边距 | 是 |
+| `max-height` | 最大高度 | 是 |
+| `max-width` | 最大宽度 | 是 |
+| `min-height` | 最小高度 | 是 |
+| `min-width` | 最小宽度 | 是 |
+| `opacity` | 不透明度 | 否 |
+| `overflow` | 溢出 | 否 |
+| `overflow-x` | 水平溢出 | 否 |
+| `overflow-y` | 垂直溢出 | 否 |
+| `padding` | 内边距 | 是 |
+| `padding-bottom` | 下内边距 | 是 |
+| `padding-left` | 左内边距 | 是 |
+| `padding-right` | 右内边距 | 是 |
+| `padding-top` | 上内边距 | 是 |
+| `position` | 定位 | 否 |
+| `text-align` | 文字对齐 | 是 |
+| `text-decoration` | 文字装饰 | 否 |
+| `text-indent` | 文字缩进 | 否 |
+| `text-overflow` | 文字溢出 | 否 |
+| `text-shadow` | 文字阴影 | 否 |
+| `text-transform` | 文字转换 | 否 |
+| `vertical-align` | 垂直对齐 | 否 |
+
+除此之外，JSAR 在 TypeScript 中提供了 DOM API，你可以通过原生的 DOM API 来实现样式的修改以及事件的监听：
+
+```ts
+const guiPlane = spatialDocument.getSpatialObjectById('gui');
+const panel = guiPlane.shadowRoot;
+
+const subChildren = panel.querySelectorAll('.sub');
+for (let sub of subChildren) {
+  const subElement = sub as HTMLElement;
+  subElement.style.backgroundColor = 'rgba(20,33,33,.95)';
+  subElement.style.height = '200px';
+  subElement.style.width = '200px';
+  subElement.style.marginLeft = '30px';
+  subElement.style.fontSize = '80px';
+  subElement.style.color = '#fff';
+  subElement.style.textAlign = 'center';
+  subElement.style.border = '15px solid yellow';
+  subElement.style.borderRadius = '50px';
+  subElement.style.paddingTop = '20px';
+
+  subElement.addEventListener('mouseenter', () => {
+    subElement.style.backgroundColor = 'rgba(100,0,200,.95)';
+  });
+  subElement.addEventListener('mouseleave', () => {
+    subElement.style.backgroundColor = 'rgba(60,33,33,.95)';
+  });
+}
+```
+
+首先通过 `spatialDocument.getSpatialObjectById()` 获取 3D 物体对象，然后通过 `shadowRoot` 可获取到一个 `ShadowRoot` 的实例，然后通过 `querySelectorAll()` 获取到所有的子元素，然后通过 `style` 属性来修改样式，通过 `addEventListener()` 来监听事件。
+
+当前可使用的 HTML 标签如下：
+
+- `<div>` 用于垂直布局的容器
+- `<span>` 用于水平布局的容器
