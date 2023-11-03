@@ -71,22 +71,11 @@ import bin5 from './bin5.webp';   // ArrayBuffer
 >
 > 因此 JSAR 希望开发者能够确保所有代码都在自己的包中，而不是通过网络加载，这样就不会出现因为第三方更改而导致的异常，另一方面，每当开发者发布一个版本后的心智负担也会大大降低。
 
-## Navigator API
+## 全局函数
 
-| API | 状态 | 备注 |
-| --- | --- | --- |
-| `navigator` | 部分实现 | - |
-| `navigator.userAgent` | **已实现** | 获取运行时客户端信息 |
-| `navigator.vendor` | **已实现** | 厂商信息 |
-| `navigator.vendorSub` | **已实现** | 子厂商信息 |
+在 Web 环境中，提供了一些方便的全局可用的函数，本小节对 JSAR 支持的 Web 全局函数进行介绍。
 
-可通过 `navigator.userAgent` 获取当前 JSAR 运行时版本号，比如：
-
-```typescript
-console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
-```
-
-## fetch API
+### `fetch()`
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
@@ -94,34 +83,94 @@ console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
 
 在 Node.js v18.0.0 版本中，Node.js 已经实现了 [Fetch API](https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch) 用于发送网络请求，因此开发者可直接使用，具体使用方法请参考 [MDN fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)。
 
+使用方法如下：
+
+```typescript
+fetch(resource)
+fetch(resource, options)
+```
+
+下面是一个在 JSAR TypeScript 中的具体例子：
+
 ```typescript
 fetch('https://example.com')
   .then((res) => res.text())
   .then((body) => console.log(body));
 ```
 
-## Timer API
+上面的例子中，通过 `fetch()` 发送了 GET 请求到对应地址，然后获取 `text()` 并打印。
+
+### `setTimeout()`
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
 | `setTimeout` | **已实现** | 创建一个计时器 |
-| `clearTimeout` | **已实现** | 取消一个计时器 |
-| `setInterval` | **已实现** | 创建一个周期性计时器 |
-| `clearInterval` | **已实现** | 取消一个周期性计时器 |
+| 支持添加回调参数 | **已实现** | 可以在创建计时器时，设置回调函数接收的参数 |
+| `clearTimeout` | **已实现** | 取消制定的计时器 |
 
-JSAR 实现了以上计时器相关的 API。
+该函数用于设置一个计时器，用于在一段时间后执行回调函数，使用方法如下：
+
+```typescript
+setTimeout(functionRef)
+setTimeout(functionRef, delay)
+setTimeout(functionRef, delay, param1)
+setTimeout(functionRef, delay, param1, param2)
+setTimeout(functionRef, delay, param1, param2, /* …, */ paramN)
+```
+
+在 JSAR TypeScript 中，你可以有多种方式来使用 `setTimeout()`，比如：
+
+```typescript
+setTimeout(() => console.log('timeout'), 1000);
+```
+
+上面的代码会在 1 秒后打印 `timeout`。
+
+如果需要中途取消计时器，可以使用 `clearTimeout()`，比如：
 
 ```typescript
 const timer = setTimeout(() => console.log('timeout'), 1000);
 clearTimeout(timer);
-
-const interval = setInterval(() => console.log('interval'), 1000);
-clearInterval(interval);
 ```
 
-当空间小程序被用户移除时，JSAR 会自动清理该空间内部的计时器。
+这样，计时器会在刚创建后就被取消，因此不会打印 `timeout`。
 
-## <s>requestAnimationFrame API</s>
+### `setInterval()`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `setInterval` | **已实现** | 创建一个周期计时器 |
+| 支持添加回调参数 | **已实现** | 可以在创建周期计时器时，设置回调函数接收的参数 |
+| `clearInterval` | **已实现** | 取消制定的周期计时器 |
+
+该函数用于创建一个周期计时器，用于周期地执行回调函数，使用方法如下：
+
+```typescript
+setInterval(func)
+setInterval(func, delay)
+setInterval(func, delay, arg1)
+setInterval(func, delay, arg1, arg2)
+setInterval(func, delay, arg1, arg2, /* …, */ argN)
+```
+
+在 JSAR TypeScript 中，你可以有多种方式来使用 `setInterval()`，比如：
+
+```typescript
+setInterval(() => console.log('interval'), 1000);
+```
+
+上面的代码会每隔 1 秒打印一次 `interval`。
+
+如果需要中途取消周期计时器，可以使用 `clearInterval()`，比如：
+
+```typescript
+const interval = setInterval(() => console.log('interval'), 1000);
+setTimeout(() => clearInterval(interval), 5000);
+```
+
+这样，会收到 5 次 `interval`，然后计时器会被取消。
+
+### <s>requestAnimationFrame API</s>
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
@@ -138,6 +187,205 @@ xr.requestSession('immersive-vr')
       // 渲染空间
     });
   });
+```
+
+### `createImageBitmap()`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `createImageBitmap` | **已实现** | 创建图片位图 |
+| 参数 `options.colorSpaceConversion` | 否 | - |
+| 参数 `options.imageOrientation` | 否 | - |
+| 参数 `options.premultiplyAlpha` | 否 | - |
+| 参数 `options.resizeHeight` | 否 | - |
+| 参数 `options.resizeQuality` | 否 | - |
+| 参数 `options.resizeWidth` | 否 | - |
+| 使用 `SVGImageElement` 作为图片源 | 否 | - |
+
+该函数用于创建 [`ImageBitmap`][] 对象，再将 [`ImageBitmap`][] 用于其他用途，如创建原始贴图。
+
+它的使用方法如下：
+
+```typescript
+createImageBitmap(image)
+```
+
+`image` 参数当前仅支持 `Blob` 对象，其他对象待支持：
+
+- [ ] `SVGImageElement`
+- [ ] `HTMLCanvasElement`
+- [ ] `HTMLImageElement`
+- [ ] `ImageData`
+- [ ] `ImageBitmap`
+- [ ] `OffscreenCanvas`
+
+一个简单的示例代码如下：
+
+```typescript
+import jpegBuffer from './image.jpeg';
+
+const blob = new Blob([jpegBuffer], { type: 'image/jpeg' });
+createImageBitmap(blob).then(function (bitmap) {
+  console.log(bitmap);
+  console.log(bitmap.height);
+  console.log(bitmap.width);
+});
+```
+
+## Blob API
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `Blob` | **已实现** | 代表一个二进制数据流 |
+| `Blob()` 构造函数 | **已实现** | 创建一个二进制数据流 |
+| `size` | **已实现** | 获取二进制数据流大小 |
+| `type` | **已实现** | 获取二进制数据流类型 |
+| `arraybuffer()` | **已实现** | 返回 `ArrayBuffer` |
+| `slice()` | **已实现** | 切片二进制数据流 |
+| `stream()` | 未实现 | 返回 `ReadableStream` |
+| `text()` | **已实现** | 返回文本 |
+
+`Blob` 全称为 Binary Large Object，代表一个二进制数据对象，它可以用于存储任意类型的数据，比如图片、音频、视频等，可以配合 ECMAScript Module 的文件加载能力一起使用，使用方法如下：
+
+```typescript
+import data from './data.bin';  // ArrayBuffer
+const blob = new Blob([data], { type: 'image/jpeg' });
+```
+
+> JSAR TypeScript 提供的 `Blob` 由 Node.js 实现，具体使用请参考 [Node.js Blob](https://nodejs.org/api/buffer.html#class-blob)。
+
+## Navigator API
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `navigator` | 部分实现 | - |
+| `navigator.userAgent` | **已实现** | 获取运行时客户端信息 |
+| `navigator.vendor` | **已实现** | 厂商信息 |
+| `navigator.vendorSub` | **已实现** | 子厂商信息 |
+
+可通过 `navigator.userAgent` 获取当前 JSAR 运行时版本号，比如：
+
+```typescript
+console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
+```
+
+## Canvas API
+
+由于 JSAR 是一个 3D 优先的 Web 运行时，因此原生的 Canvas 并不直接适用于它，因为开发者无法直接通过 Canvas 绘制到一个空间中，因此 JSAR 仅提供 `OffscreenCanvas` 的支持，它提供大部分与 Canvas 相同的能力，但开发者需要自己为其制定渲染的目标，可以是一个虚拟的画布，也可以是一个贴图。
+
+### `OffscreenCanvas`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `OffscreenCanvas` | **已实现** | 代表一个离屏画布 |
+| `OffscreenCanvas()` 构造函数 | **已实现** | 创建一个离屏画布 |
+| `contextlost` 事件 | 否 | - |
+| `contextrestored` 事件 | 否 | - |
+| `getContext` | **部分实现** | 获取画布上下文 |
+| `getContext` 支持 `2d` | **已实现** | 用于 2D 图形的绘制，返回 [`OffscreenCanvasRenderingContext2D`][] |
+| `getContext` 支持 `bitmaprenderer` | 否 | - |
+| `getContext` 支持 `webgl` | 否 | - |
+| `getContext` 支持 `webgl2` | 否 | - |
+| `height` 属性 | **已实现** | 获取或设置画布高度 |
+| `width` 属性 | **已实现** | 获取或设置画布宽度 |
+| `transferToImageBitmap()` | 否 | - |
+| `convertToBlob()` | 否 | - |
+
+在 JSAR TypeScript 中，你可以有多种方式来使用 `OffscreenCanvas`，比如：
+
+```typescript
+const canvas = new OffscreenCanvas(100, 100);
+```
+
+> 注：通过 `OffscreenCanvas` 直接创建的画布并不会附加任何渲染目标，因此如果开发者希望看到效果可以使用 Babylon.js 的 `DynamicTexture` 或自行通过 `BABYLON.RawTexture` 创建一个贴图，然后将其作为渲染目标。
+
+也可以通过 Babylon.js API 的 `DynamicTexture` 来创建：
+
+```typescript
+const texture = new BABYLON.DynamicTexture('texture', { width: 100, height: 100 }, scene);
+const canvas = texture.getContext();  // 实际上是返回了一个 `OffscreenCanvasRenderingContext2D` 对象
+```
+
+### `OffscreenCanvasRenderingContext2D`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| [`reset()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset) | 否 | 重置画布 |
+| [`transform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform) | **已实现** | 变换画布 |
+| [`clearRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect) | **已实现** | 清除画布 |
+| [`fillRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect) | **已实现** | 填充矩形 |
+| [`strokeRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeRect) | **已实现** | 绘制矩形边框 |
+| [`fillText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText) | **已实现** | 填充文本 |
+| [`drawText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawText) | **已实现** | 绘制文本 |
+| [`strokeText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeText) | **已实现** | 绘制文本边框 |
+| [`measureText()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText) | **已实现** | 测量文本宽度 |
+| [`lineWidth`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth) | **已实现** | 获取或设置线条宽度 |
+| [`lineCap`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap) | **已实现** | 获取或设置线条末端样式 |
+| [`lineJoin`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin) | **已实现** | 获取或设置线条连接样式 |
+| [`miterLimit`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/miterLimit) | **已实现** | 获取或设置最大斜接长度 |
+| [`lineDashOffset`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset) | **已实现** | 获取或设置虚线偏移量 |
+| [`getLineDash()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getLineDash) | **已实现** | 获取虚线样式 |
+| [`setLineDash()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash) | **已实现** | 设置虚线样式 |
+| [`font`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font) | **已实现** | 获取或设置字体 |
+| [`textAlign`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textAlign) | **已实现** | 获取或设置文本对齐方式 |
+| [`textBaseline`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline) | **已实现** | 获取或设置文本基线对齐方式 |
+| [`direction`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/direction) | **已实现** | 获取或设置文本方向 |
+| [`fontKerning`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fontKerning) | **已实现** | 获取或设置字体间距 |
+| [`fillStyle`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle) | **已实现** | 获取或设置填充样式 |
+| [`strokeStyle`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeStyle) | **已实现** | 获取或设置边框样式 |
+| [`createConicGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createConicGradient) | **已实现** | 创建锥形渐变 |
+| [`createLinearGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient) | **已实现** | 创建线性渐变 |
+| [`createRadialGradient()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient) | **已实现** | 创建径向渐变 |
+| [`createPattern()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createPattern) | **已实现** | 创建图案 |
+| [`shadowBlur`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur) | **已实现** | 获取或设置阴影模糊度 |
+| [`shadowColor`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor) | **已实现** | 获取或设置阴影颜色 |
+| [`shadowOffsetX`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX) | **已实现** | 获取或设置阴影 X 轴偏移量 |
+| [`shadowOffsetY`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY) | **已实现** | 获取或设置阴影 Y 轴偏移量 |
+| [`beginPath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/beginPath) | **已实现** | 开始路径绘制 |
+| [`closePath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/closePath) | **已实现** | 结束路径绘制 |
+| [`moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/moveTo) | **已实现** | 移动路径起点 |
+| [`lineTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineTo) | **已实现** | 绘制直线 |
+| [`bezierCurveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/bezierCurveTo) | **已实现** | 绘制贝塞尔曲线 |
+| [`quadraticCurveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/quadraticCurveTo) | **已实现** | 绘制二次贝塞尔曲线 |
+| [`arc()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc) | **已实现** | 绘制圆弧 |
+| [`arcTo()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arcTo) | **已实现** | 绘制圆弧 |
+| [`ellipse()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse) | **已实现** | 绘制椭圆 |
+| [`rect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rect) | **已实现** | 绘制矩形 |
+| [`roundRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/roundRect) | **已实现** | 绘制圆角矩形 |
+| [`fill()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fill) | **已实现** | 填充路径 |
+| [`stroke()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke) | **已实现** | 绘制路径边框 |
+| [`drawFocusIfNeeded()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawFocusIfNeeded) | **已实现** | 绘制焦点 |
+| [`scrollPathIntoView()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scrollPathIntoView) | **已实现** | 滚动路径到视图 |
+| [`clip()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip) | **已实现** | 裁剪路径 |
+| [`isPointInPath()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath) | **已实现** | 判断点是否在路径内 |
+| [`isPointInStroke()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInStroke) | **已实现** | 判断点是否在路径边框内 |
+| [`getTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getTransform) | **已实现** | 获取变换矩阵 |
+| [`rotate()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate) | **已实现** | 旋转画布 |
+| [`scale()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale) | **已实现** | 缩放画布 |
+| [`translate()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/translate) | **已实现** | 平移画布 |
+| [`setTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform) | **已实现** | 设置变换矩阵 |
+| [`resetTransform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/resetTransform) | **已实现** | 重置变换矩阵 |
+| [`globalAlpha`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalAlpha) | **已实现** | 获取或设置全局透明度 |
+| [`globalCompositeOperation`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation) | **已实现** | 获取或设置全局混合模式 |
+| [`drawImage()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage) | **已实现** | 绘制图片 |
+| [`createImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createImageData) | **已实现** | 创建图像数据 |
+| [`getImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData) | **已实现** | 获取图像数据 |
+| [`putImageData()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putImageData) | **已实现** | 设置图像数据 |
+| [`imageSmoothingEnabled`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled) | **已实现** | 获取或设置图像平滑度 |
+| [`imageSmoothingQuality`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingQuality) | **已实现** | 获取或设置图像平滑质量 |
+| [`save()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save) | **已实现** | 保存画布状态 |
+| [`restore()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore) | **已实现** | 恢复画布状态 |
+| [`canvas`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas) | **已实现** | 获取画布对象 |
+| [`getContextAttributes()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getContextAttributes) | **已实现** | 获取画布属性 |
+| [`filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) | **已实现** | 获取或设置滤镜 |
+
+要具体使用 `OffscreenCanvas` 的绘图功能，开发者需要通过 `getContext()` 方法来获取 [`OffscreenCanvasRenderingContext2D`][] 对象，然后通过该对象来进行绘图：
+
+```typescript
+const canvas = new OffscreenCanvas(100, 100);
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = 'red';
+ctx.fillRect(0, 0, 100, 100);
 ```
 
 ## Web Audio API
@@ -294,3 +542,6 @@ JSAR 底层依赖 JavaScript 引擎 v8，因此可以直接使用 v8 提供的 W
 ## 要求其他 Web API
 
 如果你有其他 Web API 支持的需求，可以在 [GitHub Issues](https://github.com/M-CreativeLab/jsar-website/issues/new) 中提出，我们会考虑在未来的版本中实现。
+
+[`OffscreenCanvasRenderingContext2D`]: runtime/web-apis#OffscreenCanvasRenderingContext2D
+[`ImageBitmap`]: https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap

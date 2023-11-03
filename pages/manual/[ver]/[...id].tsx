@@ -47,29 +47,44 @@ function getPathsFromMenu(toc: TocItem[], parentKey: string | null): string[] {
   }, [])
 }
 
+function getInnerText(props: any): string {
+  if (typeof props.children === 'string') {
+    return props.children
+  } else if (props.children?.props) {
+    return getInnerText(props.children.props)
+  } else {
+    return ''
+  }
+}
+
 function createHeaderRenderer(level?: 1 | 2 | 3 | 4 | 5) {
-  return (props: any) =>
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '0.5rem',
-      }}
-    >
-      <Typography.Title
-        level={level}
+  return (props: any) => {
+    const sectionId = getInnerText(props);
+    console.log(sectionId);
+    return (
+      <div
         style={{
-          ...segmentStyle,
-          position: 'relative',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.5rem',
         }}
       >
-        <a id={props.children} style={{ position: 'absolute', top: '-90px' }}></a>
-        {props.children}
-      </Typography.Title>
-      <Link href={`#${props.children}`} style={{ display: 'flex' }}>
-        <LinkOutlined style={{ fontSize: 18, color: 'unset' }} />
-      </Link>
-    </div>
+        <Typography.Title
+          level={level}
+          style={{
+            ...segmentStyle,
+            position: 'relative',
+          }}
+        >
+          <a id={sectionId} style={{ position: 'absolute', top: '-90px' }}></a>
+          {props.children}
+        </Typography.Title>
+        <Link href={`#${sectionId}`} style={{ display: 'flex' }}>
+          <LinkOutlined style={{ fontSize: 18, color: 'unset' }} />
+        </Link>
+      </div>
+    )
+  }
 }
 
 function createCustomMdxComponents(router: NextRouter): MDXComponents {
@@ -96,8 +111,8 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
       if (href?.startsWith('https://') || href?.startsWith('http://')) {
         return <a href={href} target="_blank">{props.children}</a>
       } else {
-        href = `/manual/${router.query.ver}/${href}`
-        return <a href={href}>{props.children}</a>
+        // return <a href={href}>{props.children}</a>
+        return <Link href={`/manual/${router.query.ver}/${href}`}>{props.children}</Link>
       }
     },
     img: (props) => {

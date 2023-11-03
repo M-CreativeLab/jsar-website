@@ -365,9 +365,15 @@ for (let sub of subChildren) {
 }
 ```
 
-首先通过 `spatialDocument.getSpatialObjectById()` 获取 3D 物体对象，然后通过 `shadowRoot` 可获取到一个 `ShadowRoot` 的实例，然后通过 `querySelectorAll()` 获取到所有的子元素，然后通过 `style` 属性来修改样式，通过 `addEventListener()` 来监听事件。
+要对 JSAR 中的 3D 物体进行更改：
 
-当前可使用的 HTML 标签如下：
+1. 首先使用 `spatialDocument.getSpatialObjectById()` 来识别您要处理的 3D 物体。
+2. 访问这个 3D 物体的 `shadowRoot` 以与其内部结构进行交互。
+3. 利用 `querySelectorAll()` 来选择 3D 物体内的所有子元素。
+4. 使用 `style` 属性修改所选元素的样式。
+5. 您还可以使用 `addEventListener()` 在这些元素上监听事件。
 
-- `<div>` 用于垂直布局的容器
-- `<span>` 用于水平布局的容器
+在这个上下文中可用的 HTML 标签有：
+
+- `div`：用于创建垂直布局容器。
+- `span`：用于创建水平布局容器。

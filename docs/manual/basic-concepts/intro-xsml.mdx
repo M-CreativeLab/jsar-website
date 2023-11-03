@@ -229,3 +229,149 @@ The `<bound>` tag is used to define XSML bounding box elements. It represents th
 - `id`: Represents the unique identifier of the bounding box element, with its value being a string.
 
 This tag is used to define a bounding box element, and its size is calculated based on its child elements. Internally, it is a Babylon.js TransformNode object.
+
+#### HTML Tags
+
+The HTML tag used to define a 2D container element for XSML, similar to the `<div>` in HTML, is different in that you need to insert it into a 3D object. It will be rendered as a texture for that object, for example:
+
+```xml
+<plane id="gui">
+  <div id="root" style="padding:10px;gap:20px;">
+    <span>
+      <span class="sub">Do</span>
+      <span class="sub">Ri</span>
+      <span class="sub">Mi</span>
+      <span class="sub">Fa</span>
+    </span>
+    <span style="color:white;font-size:70px;line-height:1.3;">
+      空间小程序还原最开始的 Web 开发体验，并所见即所得。
+    </span>
+  </div>
+</plane>
+```
+
+> It's important to note that the same 3D object can have only one HTML tag, and additionally, you cannot directly insert an HTML tag under the root `<space>` node.
+
+Like in HTML, you can set styles through the "style" attribute as mentioned above. Currently, the supported styles are as follows:
+
+| Style | Description | Supported |
+| --- | --- | --- |
+| `background-color` | Background color | Yes |
+| `background-image` | Background image | No |
+| `background-position` | Background position | No |
+| `background-repeat` | Background repeat | No |
+| `background-size` | Background size | No |
+| `border` | Border | Yes |
+| `border-bottom` | Bottom border | Yes |
+| `border-bottom-color` | Bottom border color | Yes |
+| `border-bottom-left-radius` | Bottom-left border radius | No |
+| `border-bottom-right-radius` | Bottom-right border radius | No |
+| `border-bottom-style` | Bottom border style | Partial support, includes solid, dashed, and dotted |
+| `border-bottom-width` | Bottom border width | Yes |
+| `border-color` | Border color | Yes |
+| `border-left` | Left border | Yes |
+| `border-left-color` | Left border color | Yes |
+| `border-left-style` | Left border style | Partial support, includes solid, dashed, and dotted |
+| `border-left-width` | Left border width | Yes |
+| `border-radius` | Border radius | Yes |
+| `border-right` | Right border | Yes |
+| `border-right-color` | Right border color | Yes |
+| `border-right-style` | Right border style | Partial support, includes solid, dashed, and dotted |
+| `border-right-width` | Right border width | Yes |
+| `border-style` | Border style | Partial support, includes solid, dashed, and dotted |
+| `border-top` | Top border | Yes |
+| `border-top-color` | Top border color | Yes |
+| `border-top-left-radius` | Top-left border radius | No |
+| `border-top-right-radius` | Top-right border radius | No |
+| `border-top-style` | Top border style | Partial support, includes solid, dashed, and dotted |
+| `border-top-width` | Top border width | Yes |
+| `border-width` | Border width | Yes |
+| `box-shadow` | Box shadow | No |
+| `box-sizing` | Box model | No |
+| `color` | Text color | Yes |
+| `display` | Display mode | Supports flexbox, grid, and none |
+| `flex` | Flex layout | Yes |
+| `flex-basis` | Flex basis | Yes |
+| `flex-direction` | Flex direction | Yes |
+| `flex-flow` | Flex flow | Yes |
+| `flex-grow` | Flex grow | Yes |
+| `flex-shrink` | Flex shrink | Yes |
+| `flex-wrap` | Flex wrap | Yes |
+| `font` | Font | Yes |
+| `font-family` | Font family | No, currently supports default font only |
+| `font-size` | Font size | Yes |
+| `font-style` | Font style | Yes |
+| `font-variant` | Font variant | No |
+| `font-weight` | Font weight | No |
+| `gap` | Gap | Yes |
+| `height` | Height | Yes |
+| `justify-content` | Justify content | Yes |
+| `line-height` | Line height | Yes |
+| `margin` | Margin | Yes |
+| `margin-bottom` | Bottom margin | Yes |
+| `margin-left` | Left margin | Yes |
+| `margin-right` | Right margin | Yes |
+| `margin-top` | Top margin | Yes |
+| `max-height` | Max height | Yes |
+| `max-width` | Max width | Yes |
+| `min-height` | Min height | Yes |
+| `min-width` | Min width | Yes |
+| `opacity` | Opacity | No |
+| `overflow` | Overflow | No |
+| `overflow-x` | Horizontal overflow | No |
+| `overflow-y` | Vertical overflow | No |
+| `padding` | Padding | Yes |
+| `padding-bottom` | Bottom padding | Yes |
+| `padding-left` | Left padding | Yes |
+| `padding-right` | Right padding | Yes |
+| `padding-top` | Top padding | Yes |
+| `position` | Position | No |
+| `text-align` | Text alignment | Yes |
+| `text-decoration` | Text decoration | No |
+| `text-indent` | Text indent | No |
+| `text-overflow` | Text overflow | No |
+| `text-shadow` | Text shadow | No |
+| `text-transform` | Text transform | No |
+| `vertical-align` | Vertical alignment | No |
+
+In addition to these styles, JSAR provides a DOM API in TypeScript, allowing you to modify styles and listen to events using the native DOM API.
+
+```ts
+const guiPlane = spatialDocument.getSpatialObjectById('gui');
+const panel = guiPlane.shadowRoot;
+
+const subChildren = panel.querySelectorAll('.sub');
+for (let sub of subChildren) {
+  const subElement = sub as HTMLElement;
+  subElement.style.backgroundColor = 'rgba(20,33,33,.95)';
+  subElement.style.height = '200px';
+  subElement.style.width = '200px';
+  subElement.style.marginLeft = '30px';
+  subElement.style.fontSize = '80px';
+  subElement.style.color = '#fff';
+  subElement.style.textAlign = 'center';
+  subElement.style.border = '15px solid yellow';
+  subElement.style.borderRadius = '50px';
+  subElement.style.paddingTop = '20px';
+
+  subElement.addEventListener('mouseenter', () => {
+    subElement.style.backgroundColor = 'rgba(100,0,200,.95)';
+  });
+  subElement.addEventListener('mouseleave', () => {
+    subElement.style.backgroundColor = 'rgba(60,33,33,.95)';
+  });
+}
+```
+
+To make changes to a 3D object within JSAR:
+
+1. Start by using `spatialDocument.getSpatialObjectById()` to identify the 3D object you want to work with.
+2. Access the `shadowRoot` of this 3D object to interact with its internal structure.
+3. Utilize `querySelectorAll()` to select all the child elements within the 3D object.
+4. Modify the style of these selected elements using the `style` attribute.
+5. You can also listen for events on these elements by using `addEventListener()`.
+
+The available HTML tags in this context are:
+
+- `div`: Use this for creating vertical layout containers.
+- `span`: Employ this for creating horizontal layout containers.
