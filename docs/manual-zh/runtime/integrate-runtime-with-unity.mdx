@@ -1,0 +1,125 @@
+# 与 Unity 集成
+
+JSAR 除了在官方提供的运行方式外，我们还支持 Unity 开发者集成 JSAR 的 UPM 包，以拓展 JSAR 运行平台。
+
+> 本章面向有一定 Unity 基础的读者，如果您对 Unity 不熟悉，建议您先学习一下 Unity 的基础知识。
+
+> 我们暂不对外公开提供 Unity 集成的 SDK，如有需要请通过 Discord 或 GitHub 联系我们申请 SDK 及中间协议。
+
+## 支持平台
+
+JSAR 的 Unity SDK 支持平台如下：
+
+- Windows x86_64
+- MacOS x86_64
+- MacOS arm64 (M系列)
+- Android arm64
+
+## 管线支持
+
+目前 JSAR 支持 Unity 的管线如下：
+
+- [x] Built-in Render Pipeline
+- [ ] Universal Render Pipeline
+
+## 安装
+
+获取 UPM 包后，通过 Unity 本地安装。
+
+## 使用
+
+你可以多种方式使用 JSAR 的 Unity SDK。
+
+### 预制体
+
+可通过 "Prefabs/TransmuteBow.prefab"，它代表一个空间小程序的实例，只需初始化后，即可使用。
+
+### 脚本
+
+预制体本质上也是通过挂载 "Scripts/Transmute.cs" 脚本实现的，你也可以直接挂载该脚本到任意游戏对象上，然后通过代码控制。
+
+并且我们提供了一些参数可以配置。
+
+#### 静态参数 `string ApplicationCacheDirectory`
+
+通过该参数，你可以指定 JSAR 的缓存目录，该目录用于存放 JSAR 的资源文件，如 JSAR 应用缓存的模型文件、贴图、脚本、音频等。
+
+#### 静态参数 `bool EnableLoggingOfCoreByDefault = false`
+
+通过该参数，你可以指定 JSAR 是否默认开启日志输出。
+
+#### `string ScriptName`
+
+如果是使用预制体方式，可以配置该参数用来指定运行的 XSML 文件路径，支持本地路径和网络路径。
+
+#### `bool AutoStart = true`
+
+如果是使用预制体方式，可以配置该参数用来指定是否自动开始运行 XSML 文件。
+
+#### `Material DefaultMat`
+
+默认的材质球，默认为动态创建的 Standard 材质球，你也可以通过该参数指定自己的材质球，每个小程序应用的材质球都会通过它来创建。
+
+#### `Material DefaultLineMat`
+
+默认的线材质球，默认为动态创建的 Line 材质球，你也可以通过该参数指定自己的材质球，每个小程序应用的线材质球都会通过它来创建。
+
+#### `bool UseTransformToReact = false`
+
+JSAR 在运行时为了保证物体大小一致，会在加载完成后，对物体按照 Bouding Box 进行缩放，我们有两种缩放标准，一种是基于父物体的 Transform 来缩放，而另一种是基于 Box Colider 来缩放，你可以通过该参数来指定使用哪种方式。
+
+#### 静态方法 `void DispatchMouseMoveEvent(Vector3 mousePosition)`
+
+通过该方法用于分发鼠标的移动事件，如果你希望在你的运行环境下应用可以响应鼠标移动的事件，你可以通过该方法来分发鼠标移动事件。
+
+#### 静态方法 `void DispatchMouseAction(string actionValue)`
+
+同上，但用于分发鼠标的 keyup 和 keydown 事件。
+
+#### 静态方法 `void DispatchHandTracking(int, Vector3[], Pose, int, int, bool)`
+
+用于分发手势跟踪事件，如果你希望小程序可以响应手势，那么你需要在手势更新时调用该方法，参数说明如下：
+
+- `int handType`：手势类型，0 为左手，1 为右手
+- `Vector3[] handJoints`：手势关节，包含 21 个关节，每个关节都是一个 Vector3，分别代表 x、y、z 三个坐标轴的值
+- `Pose handPose`：手势的位置和旋转信息
+- `int handGesture`：手势的类型，0 为无手势，1 为手指，2 为手掌
+- `int handOrientation`：手势的方向，0 为手掌向下，1 为手掌向上
+- `bool isNearInteraction`：是否为近场交互，如果为 true，那么手势跟踪的坐标系会根据手势的位置进行变换，以保证手势跟踪的坐标系始终在手势的前方
+
+#### 静态方法 `void DispatchHandRay(int, Ray)`
+
+用户分发射线事件，在 JSAR 内部，我们使用射线来实现物体和 UI 的交互，你可以将你的射线信息通过该方法分发给 JSAR，参数说明如下：
+
+- `int handType`：手势类型，0 为左手，1 为右手
+- `Ray handRay`：射线信息，包含射线的起点和方向
+
+#### 静态方法 `void DispatchHandPress(int, int)`
+
+同上，JSAR 内部通过 Ray 来判断选中的物体和 UI，然后通过 Press 来判断是否点击。
+
+- `int handType`：手势类型，0 为左手，1 为右手
+- `int offset`：可不传
+
+#### 静态方法 `void DispatchHandRelease(int, int)`
+
+同上，JSAR 内部通过 Ray 来判断选中的物体和 UI，然后通过 Release 来判断是否点击。
+
+- `int handType`：手势类型，0 为左手，1 为右手
+- `int offset`：可不传
+
+### 其他方式
+
+你也可以按照需求，自行修改和拓展 JSAR 的 Unity SDK。
+
+## Unity 如何与 JSAR 交互
+
+在 JSAR 中，要实现 Unity 和 JSAR 小程序的简单交互，比如旋转、移动、缩放等十分简单，你只需要按照你的需求操作容器节点即可，无需其他额外的操作。
+
+## 包含必要的 Shaders
+
+由于 JSAR 是动态加载物体，因此我们在集成到 Unity 应用中，需要手动包含一些 Shaders，以保证 JSAR 小程序的正常渲染：
+
+- `Standard` 基础材质球使用，如果你使用了自定义的材质球，那么你可以不包含该 Shader
+- `Wireframe/Cull` 用于渲染线框
+- `Wireframe/NoCull` 用于渲染线框

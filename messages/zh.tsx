@@ -138,6 +138,7 @@ export default {
       "RUNTIME_JSAR_APIS": "JSAR APIs",
       "RUNTIME_RESOURCE_CACHE": "资源缓存",
       "RUNTIME_MODULE_SYSTEM": "模块系统",
+      "INTEGRATE_RUNTIME_WITH_UNITY": "与 Unity 集成",
       "DELIVERY": "发布与分发",
       "DELIVERY_ROKID_ARSTORE": "Rokid AR 商店",
       "DELIVERY_JSAR_CANARY": "JSAR Canary",

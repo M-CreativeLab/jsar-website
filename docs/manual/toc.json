@@ -126,6 +126,10 @@
       {
         "title": "RUNTIME_MODULE_SYSTEM",
         "key": "module-system"
+      },
+      {
+        "title": "INTEGRATE_RUNTIME_WITH_UNITY",
+        "key": "integrate-runtime-with-unity"
       }
     ]
   },

@@ -138,6 +138,7 @@ export default {
       "RUNTIME_JSAR_APIS": "JSAR APIs",
       "RUNTIME_RESOURCE_CACHE": "Resource Cache",
       "RUNTIME_MODULE_SYSTEM": "Module System",
+      "INTEGRATE_RUNTIME_WITH_UNITY": "Integrate with Unity",
       "DELIVERY": "Delivery",
       "DELIVERY_ROKID_ARSTORE": "Rokid AR Store",
       "DELIVERY_JSAR_CANARY": "JSAR Canary",

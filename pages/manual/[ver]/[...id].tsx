@@ -60,7 +60,6 @@ function getInnerText(props: any): string {
 function createHeaderRenderer(level?: 1 | 2 | 3 | 4 | 5) {
   return (props: any) => {
     const sectionId = getInnerText(props);
-    console.log(sectionId);
     return (
       <div
         style={{
@@ -192,10 +191,10 @@ function getDocumentPath(router: NextRouter): string | undefined {
   return router.query.id instanceof Array ? router.query.id.join('/') : router.query.id
 }
 
-export default function Page({ versions }: { versions: string[] }) {
+export default function Page({ versions, tocItems }: { versions: string[], tocItems: TocItem[] }) {
   const t = useTranslations('ManualPages')
   const router = useRouter()
-  const treeData = toMenuTreeData(tocOfManual, null)
+  const treeData = toMenuTreeData(tocItems || tocOfManual, null)
 
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
   const [docPath, setDocPath] = useState<string | undefined>(undefined)
@@ -279,7 +278,7 @@ export default function Page({ versions }: { versions: string[] }) {
                 value={router.query.ver}
                 style={{ flex: 1 }}
                 onChange={(ver) => {
-                  router.push(`/manual/${ver}/${getDocumentPath(router)}`, undefined, { shallow: true })
+                  router.push(`/manual/${ver}/${getDocumentPath(router)}`, undefined, { shallow: false })
                 }}
               >
                 <Select.Option value="latest">{t('latest')}</Select.Option>
@@ -394,11 +393,16 @@ export const getStaticPaths = (async (context) => {
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (async (context) => {
-  const versions = await getVersions()
+  // load toc
+  const versionStr = context.params?.ver as string
+  const isLatest = versionStr === 'latest'
+  const tocItems = isLatest ? tocOfManual : await readJson(`./docs-versions/${versionStr}/manual/toc.json`)
+
   return {
     props: {
       messages: (await import(`../../../messages/${context.locale}`)).default,
-      versions,
+      versions: await getVersions(),
+      tocItems,
     }
   }
 }) satisfies GetStaticProps
