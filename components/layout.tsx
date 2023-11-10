@@ -202,17 +202,6 @@ export default function RootLayout({
             </Dropdown>
           </Space>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          By&nbsp;&nbsp;
-          <a href="https://ar.rokid.com/" target="_blank">
-            <Image
-              src="logo-rokid-ar-platform.png"
-              alt="Rokid AR Platform"
-              width={208}
-              height={21}
-            />
-          </a>
-        </div>
       </Layout.Header>
       <Layout.Content>
         {children}
