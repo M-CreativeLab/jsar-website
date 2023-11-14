@@ -9,6 +9,7 @@ declare var __transmuteRenderUnityScene: any;
 const runtimeVersions = [
   'latest',
   '0.1.0',
+  '0.2.0',
 ]
 const examples = [
   {
