@@ -254,6 +254,38 @@ const blob = new Blob([data], { type: 'image/jpeg' });
 
 > JSAR TypeScript 提供的 `Blob` 由 Node.js 实现，具体使用请参考 [Node.js Blob](https://nodejs.org/api/buffer.html#class-blob)。
 
+## URL
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `URL` | **已实现** | 代表一个 URL |
+| `URL()` 构造函数 | **已实现** | 创建一个 URL |
+| `URL.canParse()` | **已实现** | 判断是否可以解析 URL |
+| `URL.createObjectURL()` | **已实现** | 创建一个 URL 对象 |
+| `URL.revokeObjectURL()` | **已实现** | 释放 URL 对象 |
+| `href` | **已实现** | 获取或设置 URL |
+| `origin` | **已实现** | 获取 URL 基础地址 |
+| `protocol` | **已实现** | 获取或设置 URL 协议 |
+| `username` | **已实现** | 获取或设置 URL 用户名 |
+| `password` | **已实现** | 获取或设置 URL 密码 |
+| `host` | **已实现** | 获取或设置 URL 主机 |
+| `hostname` | **已实现** | 获取或设置 URL 主机名 |
+| `port` | **已实现** | 获取或设置 URL 端口 |
+| `pathname` | **已实现** | 获取或设置 URL 路径 |
+| `search` | **已实现** | 获取或设置 URL 查询字符串 |
+| `searchParams` | **已实现** | 获取 URL 查询参数 |
+| `hash` | **已实现** | 获取或设置 URL 锚点 |
+| `toString()` | **已实现** | 获取 URL 字符串 |
+| `toJSON()` | **已实现** | 获取 URL JSON 字符串 |
+
+`URL` 用于解析和操作 URL，它的使用方法如下：
+
+```typescript
+const url = new URL(urlString, base);
+```
+
+> JSAR TypeScript 提供的 `URL` 由 Node.js 实现，具体使用请参考 [Node.js URL](https://nodejs.org/api/url.html#class-url)。
+
 ## Navigator API
 
 | API | 状态 | 备注 |
