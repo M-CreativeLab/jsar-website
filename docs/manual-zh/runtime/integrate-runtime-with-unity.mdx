@@ -20,11 +20,39 @@ JSAR 的 Unity SDK 支持平台如下：
 目前 JSAR 支持 Unity 的管线如下：
 
 - [x] Built-in Render Pipeline
-- [ ] Universal Render Pipeline
+- [x] Universal Render Pipeline
 
 ## 安装
 
 获取 UPM 包后，通过 Unity 本地安装。
+
+## 配置
+
+对于不同的管线类型，配置方式会有细微差别。
+
+### Built-in Render Pipeline
+
+Built-in Render Pipeline 无需额外配置，只需将 JSAR 的预制体拖入场景即可，并且需要包含以下 Shaders：
+
+- `Standard` 基础材质球使用，如果你使用了自定义的材质球，那么你可以不包含该 Shader
+- `Hidden/Internal-Colored` 用于渲染线段
+- `Wireframe/Cull` 用于渲染线框
+- `Wireframe/NoCull` 用于渲染线框
+- `Hidden/UnityFx/Outline` 用于渲染轮廓
+- `Hidden/UnityFx/OutlineColor` 用于渲染轮廓
+
+### Universal Render Pipeline
+
+对于 Universal Render Pipeline，你需要包含对应的 Shaders：
+
+- `Universal Render Pipeline/Lit` 基础材质球使用，如果你使用了自定义的材质球，那么你可以不包含该 Shader
+- `Universal Render Pipeline/2D/Sprite-Lit-Default` 用于渲染线段
+- `Wireframe/Cull` 用于渲染线框
+- `Wireframe/NoCull` 用于渲染线框
+- `Hidden/UnityFx/Outline.URP` 用于渲染轮廓
+- `Hidden/UnityFx/OutlineColor.URP` 用于渲染轮廓
+
+除此之外，还需要在 URP 的 Asset 中，添加一个 Renderer Feature："Transmute Feature"，以确保 Transmute 运行时可以正确获取自定义 Pass 的能力。
 
 ## 使用
 
@@ -87,12 +115,19 @@ JSAR 在运行时为了保证物体大小一致，会在加载完成后，对物
 - `int handOrientation`：手势的方向，0 为手掌向下，1 为手掌向上
 - `bool isNearInteraction`：是否为近场交互，如果为 true，那么手势跟踪的坐标系会根据手势的位置进行变换，以保证手势跟踪的坐标系始终在手势的前方
 
-#### 静态方法 `void DispatchHandRay(int, Ray)`
+#### 静态方法 `void DispatchRaycast(int, TransmuteInputEvent.RaySourceType, Ray, System.Action<Pose?>?)`
 
-用户分发射线事件，在 JSAR 内部，我们使用射线来实现物体和 UI 的交互，你可以将你的射线信息通过该方法分发给 JSAR，参数说明如下：
+分发射线检测的事件，它被用来检测射线是否碰撞到由 JSAR 创建的物体和 UI，具体参数如下：
 
-- `int handType`：手势类型，0 为左手，1 为右手
-- `Ray handRay`：射线信息，包含射线的起点和方向
+- `int raySourceId`：每条射线都有一个表示它自身的标识，JSAR 内部通过 ID 来关联射线的其他事件，比如拖动、点击和按压等
+- `TransmuteInputEvent.RaySourceType raySourceType`：射线源类型，包括：
+  - `Hand` 手
+  - `Head` 头
+  - `Gamepad` 手柄
+  - `Mouse` 鼠标
+  - `Custom` 自定义
+- `Ray ray`：射线信息，包含射线的起点和方向
+- `System.Action<Pose?>? hitAction`：该参数可选，当开发者希望获取到是否命中的回调时，可以传入一个对应的 Action，它会返回一个 `Nullable<Pose>`。
 
 #### 静态方法 `void DispatchHandPress(int, int)`
 
@@ -115,11 +150,3 @@ JSAR 在运行时为了保证物体大小一致，会在加载完成后，对物
 ## Unity 如何与 JSAR 交互
 
 在 JSAR 中，要实现 Unity 和 JSAR 小程序的简单交互，比如旋转、移动、缩放等十分简单，你只需要按照你的需求操作容器节点即可，无需其他额外的操作。
-
-## 包含必要的 Shaders
-
-由于 JSAR 是动态加载物体，因此我们在集成到 Unity 应用中，需要手动包含一些 Shaders，以保证 JSAR 小程序的正常渲染：
-
-- `Standard` 基础材质球使用，如果你使用了自定义的材质球，那么你可以不包含该 Shader
-- `Wireframe/Cull` 用于渲染线框
-- `Wireframe/NoCull` 用于渲染线框
