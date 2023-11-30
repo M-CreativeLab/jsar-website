@@ -71,7 +71,51 @@ As shown in the image above, fill in the required information to create a new Gi
 
 > For JSAR space widget projects created through GitHub, we recommend adding the "jsar-widget" topic to your project. This will make it easier for the JSAR development team and the community to discover your project on [GitHub #jsar-widget](https://github.com/topics/jsar-widget).
 
-## Explanation of package.json Fields
+## Project Structure
+
+Whether created through npm or GitHub Template, the project structure remains consistent.
+
+```
+.
+├── lib
+│   └── index.ts
+├── model
+│   └── foobar.glb
+├── icon.png
+├── main.xsml
+├── tsconfig.json
+└── package.json
+```
+
+Where:
+
+- The `lib` directory is generally used to store script files, such as `TypeScript`, `JavaScript`, etc.
+- The `model` directory is generally used to store model files, such as `glTF`, `glb`, etc.
+- `icon.png` is the icon file for the mini-program. The YodaOS Master system in the store and the mini-program list will display this icon.
+- `main.xsml` is the entry file for the mini-program. It is an XSML file used to describe the interface and interactive logic of the mini-program.
+
+The above files and directories are recommended names and locations, but not mandatory. Developers can adjust them according to their preferences, such as changing the `lib` directory to `src`, the `model` directory to `assets`, etc.
+
+The [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) is the TypeScript configuration file, used to configure the behavior of the TypeScript compiler and VSCode's intelligent suggestions.
+
+```json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "types": [
+      "@yodaos-jsar/types"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
+```
+
+> Projects created from the template already include the `tsconfig.json` file. Developers can modify the configuration according to their needs, but it is generally not recommended.
+
+The [`package.json`](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) is the standard configuration file for every npm project. JSAR extends the npm package.json specification, and here is a complete explanation within JSAR:
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -92,22 +136,3 @@ Important notes:
 2. The `main` field must point to an xsml file and does not support JavaScript files.
 3. The `files` field must include xsml files and `icon.png`, which is used for display in the store and the list of mini-programs.
 4. Be sure to add the `@yodaos-jsar/types` dependency. It contains type definition files for space mini-programs, enabling type checking and autocompletion during development.
-
-## Enable TypeScript IntelliSense
-
-To enable TypeScript IntelliSense for JSAR, you need to create a `tsconfig.json` file in the project's root directory with the following content:
-
-```json
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "types": [
-      "@yodaos-jsar/types"
-    ]
-  },
-  "exclude": [
-    "node_modules"
-  ]
-}
-```
