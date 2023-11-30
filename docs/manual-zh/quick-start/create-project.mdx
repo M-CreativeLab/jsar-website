@@ -71,7 +71,51 @@ $ npm install
 
 > 如果通过 GitHub 项目创建的 JSAR 空间小程序，推荐为你的项目添加 "jsar-widget" 的主题（Topic），这样可以方便 JSAR 开发团队以及社区在 [GitHub #jsar-widget](https://github.com/topics/jsar-widget) 上发现你的项目。
 
-## package.json 字段说明
+## 项目结构
+
+无论通过 npm 还是 GitHub Template 创建的项目，项目结构都是一致的。
+
+```
+.
+├── lib
+│   └── index.ts
+├── model
+│   └── foobar.glb
+├── icon.png
+├── main.xsml
+├── tsconfig.json
+└── package.json
+```
+
+其中:
+
+- `lib` 目录一般是用来存放脚本文件，比如 `TypeScript`、`JavaScript` 等
+- `model` 目录一般是用来存放模型文件，比如 `glTF`、`glb` 等
+- `icon.png` 是小程序的图标文件，YodaOS Master 系统中的商店和小程序列表中会展示该图标
+- `main.xsml` 是小程序的入口文件，它是一个 XSML 文件，用于描述小程序的界面和交互逻辑
+
+以上的文件和目录都是推荐命名和位置，但不是强制的，开发者可以根据自己的喜好进行调整，比如可以将 `lib` 目录改为 `src`，`model` 目录改为 `assets` 等。
+
+[`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) 是 TypeScript 配置文件，用于配置 TypeScript 编译器的行为以及 VSCode 的智能提示。
+
+```json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "types": [
+      "@yodaos-jsar/types"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
+```
+
+> 通过模版创建的项目，已经包含了 `tsconfig.json` 文件，开发者也可以按照自己的需求修改其中的配置，但一般不推荐开发者修改。
+
+[`package.json`](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) 是每一个 npm 项目的标准配置文件，JSAR 基于 npm 的 package.json 规范进行了一些拓展，以下是在 JSAR 中完整 package.json 说明：
 
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
@@ -92,22 +136,3 @@ $ npm install
 2. `main` 字段必须是 xsml 文件，不支持 JavaScript 文件。
 3. `files` 字段必须包含 xsml 文件和`icon.png`，后者用于展示在商店及小程序列表。
 4. 请务必添加 `@yodaos-jsar/types` 这个依赖，它包含了空间小程序的类型定义文件，这样可以在开发过程中获得类型检查和自动补全的功能。
-
-## 使用 TypeScript 智能提示
-
-为了使用 JSAR 的 TypeScript 智能提示，除了安装 `@yodaos-jsar/types` 之外，还需要在项目根目录下创建 `tsconfig.json` 文件，内容如下：
-
-```json
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "types": [
-      "@yodaos-jsar/types"
-    ]
-  },
-  "exclude": [
-    "node_modules"
-  ]
-}
-```

@@ -130,11 +130,13 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
             language={lang}
             theme={github}
             text={code.replace(/\n$/, '')}
-            showLineNumbers={true}
+            showLineNumbers
             codeContainerStyle={{
               padding: '0.5rem',
-              fontSize: '1.15em',
-              width: '100%',
+              fontSize: '1em',
+              fontFamily: 'monospace',
+              minWidth: 'calc(100% - 1rem)',
+              overflowX: 'auto',
             }}
           />
         </Typography.Paragraph>
@@ -162,6 +164,7 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
               overflow: auto;
             }
             tr {
+              word-break: auto-phrase;
               background-color: var(--color-canvas-default);
               border-top: 1px solid var(--color-border-muted);
             }
