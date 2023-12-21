@@ -60,7 +60,7 @@ export default function RootLayout({
           <a href={getLocaleHref(router, '/')}>
             <div className="logo" style={{ marginRight: '2.25rem' }}>
               <Image
-                src="logo-jsar.png"
+                src="logo-jsar.svg"
                 alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
                 width={50}
                 height={50}

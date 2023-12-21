@@ -140,7 +140,7 @@ export default function Home() {
           </Space>
         </Space>
         <Image
-          src="logo-jsar.png"
+          src="logo-jsar.svg"
           alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
           height={260}
           width={260}
