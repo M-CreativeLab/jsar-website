@@ -1,0 +1,66 @@
+# 贡献
+
+JSAR 在这里为所有贡献者致谢。
+
+## 项目
+
+JSAR 由多个项目组成，各自完成独自的功能，最终整合在一起形成整体的空间小程序运行时解决方案。
+
+> 需要注意的是，目前并非所有项目都已开源，整个 JSAR 项目组会逐步开源，但我们会在本章节仍然将所有的仓库及功能列出，以便大家了解整个项目的构成。
+
+### `jsar-dom`
+
+`jsar-dom` 是 JSAR 的上层 API 定义，它实现了 DOM 以及所有 JSAR 运行时所需的 Web API，同时该项目也可以将空间小程序应用集成在 Babylon.js 中。
+
+| 项目属性 | 说明 |
+|---------|------|
+| 是否开源 | 是 |
+| 项目地址 | https://github.com/M-CreativeLab/jsar-dom |
+| 项目语言 | TypeScript, Rust |
+
+### `jsar-runtime`
+
+Transmute 是 JSAR 与宿主环境的 3D 数据交换协议，它定义了空间小程序中实时的 3D 数据，包括：顶点、材质、贴图等数据，`jsar-runtime` 具体：
+
+- 定义 Transmute 协议
+- 基于 `jsar-dom` 实现了 Transmute 协议的生产者
+- 集成了 Node.js 运行时
+- 提供了 Transmute 协议消费端接口，它包括：Unity C# 和 C/C++。
+
+| 项目属性 | 说明 |
+|---------|------|
+| 是否开源 | 否 |
+| 项目地址 | 空 |
+| 项目语言 | C/C++, C#, Rust |
+
+### `jsar-loader-unity`
+
+`jsar-loader-unity` 是 JSAR 小程序在 Unity 中的加载器，它通过集成 `jsar-runtime` 并使用 Unity C# 接口实现了 Transmute 协议在 Unity 环境中的渲染和交互。
+
+| 项目属性 | 说明 |
+|---------|------|
+| 是否开源 | 否 |
+| 项目地址 | 空 |
+| 项目语言 | C#, Shaderlab |
+
+> 我们欢迎社区贡献更多的加载器，以让 JSAR 应用可以运行在更多的宿主环境中，比如：Unreal Engine、Cocos Engine、Godot、VisionOS 等。
+
+### `jsar-devtools`
+
+`jsar-devtools` 是 JSAR 的开发者工具，它包含了 Visual Studio Code 插件以及一个在线的 Web 开发环境。
+
+| 项目属性 | 说明 |
+|---------|------|
+| 是否开源 | 否 |
+| 项目地址 | 空 |
+| 项目语言 | TypeScript |
+
+### `jsar-website`
+
+`jsar-website` 是 JSAR 的官方网站，它包含了 JSAR 的文档、示例、教程等内容。
+
+| 项目属性 | 说明 |
+|---------|------|
+| 是否开源 | 是 |
+| 项目地址 | https://github.com/M-CreativeLab/jsar-website |
+| 项目语言 | TypeScript |

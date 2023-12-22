@@ -24,7 +24,7 @@ function SiteDocument() {
       <Head>
         <title>YodaOS JSAR: The embeddable AR runtime for JavaScript Developers</title>
         <base href="/" />
-        <link rel="icon" href="logo-jsar.png" />
+        <link rel="icon" href="logo-jsar.svg" />
         <script src="/js/iconfonts.js"></script>
         <style type="text/css">{`
           .icon {

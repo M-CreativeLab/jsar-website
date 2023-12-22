@@ -142,6 +142,9 @@ export default {
       "DELIVERY": "Delivery",
       "DELIVERY_ROKID_ARSTORE": "Rokid AR Store",
       "DELIVERY_JSAR_CANARY": "JSAR Canary",
+      "CONTRIBUTING": "Contributing",
+      "CONTRIBUTING_TO_JSAR": "Contributing to JSAR",
+      "CONTRIBUTING_STYLE_GUIDE": "JSAR Style Guide",
       "API_REFERENCE": "API Reference",
     }
   }

@@ -148,6 +148,20 @@
     ]
   },
   {
+    "title": "CONTRIBUTING",
+    "key": "contributing",
+    "children": [
+      {
+        "title": "CONTRIBUTING_TO_JSAR",
+        "key": "contributing-to-jsar"
+      },
+      {
+        "title": "CONTRIBUTING_STYLE_GUIDE",
+        "key": "jsar-style-guide"
+      }
+    ]
+  },
+  {
     "title": "API_REFERENCE",
     "key": "api-reference"
   }

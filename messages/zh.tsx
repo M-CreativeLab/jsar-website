@@ -142,6 +142,9 @@ export default {
       "DELIVERY": "发布与分发",
       "DELIVERY_ROKID_ARSTORE": "Rokid AR 商店",
       "DELIVERY_JSAR_CANARY": "JSAR Canary",
+      "CONTRIBUTING": "贡献指南",
+      "CONTRIBUTING_TO_JSAR": "贡献",
+      "CONTRIBUTING_STYLE_GUIDE": "代码风格",
       "API_REFERENCE": "API Reference",
     }
   }
