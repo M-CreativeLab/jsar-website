@@ -1,15 +1,31 @@
 # XSML
 
-XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它沿用了 HTML 的一些标签定义，比如 `head`、`title`、`script`、`style`、`div` 等，同时也增加了一些标签用于表示空间，比如 `body` 替换为 `space`，使用 `cube` 表示一个立方体等。
+> **如何使用本文档**
+>
+> 文档中包含了当前 JSAR 版本中所有和 XSML 相关的功能介绍，包括使用指南、元素列表、属性列表等。 
 
-以下是一个 XSML 的示例：
+XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言，它基于 HTML 语言，拓展了 3D 元素（`<cube/>`）的定义，并支持了模型的导入和空间样式的定义。
+
+## 什么是 XSML
+
+- XSML 全称为 eXtensible Spatial Markup Language，即可拓展空间标记语言。
+- XSML 是一种用于创建可交互数字产品（Interactive Digital Product）的标记语言。
+- XSML 用于描述数字产品的内容和结构。
+- XSML 由一系列的元素（Element）组成，这些元素可以用来包裹不同的内容，使其以不同的方式呈现或者工作。
+- XSML 兼容部分 HTML 标签用户空间中的用户界面（UI）定义。
+
+## XSML 示例
+
+以下是一个简单的 XSML 示例：
 
 ```xml
 <xsml version="1.0">
   <head>
     <title>Rokid Jungle</title>
     <link id="model" rel="mesh" type="octstream/glb" href="./model/welcome.glb" />
-    <script src="./lib/main.ts"></script>
+    <script>
+      console.log('hello world');
+    </script>
   </head>
   <space>
     <mesh id="model" ref="model" selector="__root__" />
@@ -17,244 +33,239 @@ XSML 是一种与 HTML 极为相似的标记语言，它的全称为 eXtensible 
 </xsml>
 ```
 
-## XSML 标签
+在上面的代码中：
 
-以下对当前 XSML 做简要说明。
+- `<xsml>` 定义了这是一个 XSML 文档。
+- `<head>` 元素包含了文档的元信息。
+  - `<title>` 元素定义了文档的标题。
+  - `<link>` 元素定义了引入一个 3D 模型文件。
+  - `<script>` 元素添加了一个动态脚本，在 XSML 中它可以是 JavaScript 或 TypeScript。
+- `<space>` 像 `<body>` 一样，它包含了文档的内容。
+  - `<mesh>` 元素定义了一个 3D 模型元素，它的 id 属性指定了引入的 3D 模型文件的 id，它的 ref 属性指定了引入的 3D 模型文件的节点。
 
-### xsml
+## XSML 编辑器
 
-`<xsml>` 标签是 XSML 的根标签，它的属性有：
+要开始学习并使用 XSML，并不需要太复杂的工具，与 HTML 一样，你可以使用任何文本编辑器来编写 XSML，比如：
 
-- `version`：表示 XSML 的版本号，目前只支持 `1.0`。
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Sublime Text](https://www.sublimetext.com/)
+- [Atom](https://atom.io/)
+- [Notepad++](https://notepad-plus-plus.org/)
 
-### head
+保存好的 XSML 文件，然后通过支持 JSAR 的运行时打开即可，目前已经支持的 JSAR 运行时有：
 
-`<head>` 标签用于定义 XSML 的头部信息，它的子标签有：`title`、`link`、`script` 等。
+- JSAR-DOM Playground: https://m-creativelab.github.io/jsar-dom/
+- JSAR DevTools for Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=RokidMCreativeLab.vscode-jsar-devtools
 
-#### title
+## XSML 基础
 
-`<title>` 标签用于定义 XSML 的标题，它的内容为字符串。
+### 文档
 
-#### link
+每一个文档从 `<xsml>` 标签开始，以 `</xsml>` 标签结束。
 
-`<link>` 标签用于定义 XSML 的链接信息，它的属性有：
+而能被用户看到的内容在 `<space>` 标签中，它的内容是一个 3D 空间，你可以在其中放置 3D 元素，比如 `<cube>`、`<sphere>`、`<cylinder>` 等。
 
-- `id`：表示链接的唯一标识符，它的值为字符串。
-- `rel`：表示链接的关系，它的值为字符串，目前只支持 `mesh`。
-- `type`：表示链接的类型，它的值为字符串，目前只支持 `octstream/glb`。
+### 3D 元素
 
-在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
+3D 元素用于定义空间中的 3D 物体，在 XSML 中提供了多种 3D 元素，比如 `<cube>`、`<sphere>`、`<cylinder>` 等。
 
-在后续版本中，我们也会支持通过该标签引入 SCSS 及其他格式的模型文件，具体支持情况如下。
+### 2D 元素
 
-| `rel` | 描述 | 是否支持 |
-| --- | --- | --- |
-| `mesh` | 当前文档会使用的 3D 模型 | 是 |
-| `alternate` | 当前文档的替代文档 | 否 |
-| `author` | 当前文档的作者 | 否 |
-| `bookmark` | 当前文档的书签 | 否 |
-| `canonical` | 当前文档的规范地址 | 否 |
-| `dns-prefetch` | 当前文档的 DNS 预获取 | 否 |
-| `help` | 当前文档的帮助 | 否 |
-| `icon` | 当前文档的图标 | 否 |
-| `license` | 当前文档的许可证 | 否 |
-| `manifest` | 当前文档的清单 | 否 |
-| `modulepreload` | 当前文档的模块预加载 | 否 |
-| `next` | 当前文档的下一个 | 否 |
-| `pingback` | 当前文档的 PingBack | 否 |
-| `preconnect` | 当前文档的预连接 | 否 |
-| `prefetch` | 当前文档的预获取 | 否 |
-| `preload` | 当前文档的预加载 | 否 |
-| `prerender` | 当前文档的预渲染 | 否 |
-| `prev` | 当前文档的上一个 | 否 |
-| `search` | 当前文档的搜索 | 否 |
-| `stylesheet` | 当前文档的样式表 | 否 |
-| `tag` | 当前文档的标签 | 否 |
+在 XSML 中，你任何可以使用部分 HTML 的元素来作为一个 3D 元素的表面，比如在一个立方体的每个面上分别渲染出不同的 HTML 并与之交互。
 
-#### script
-
-`<script>` 标签用于定义 XSML 的脚本信息，它的属性有：
-
-- `src`：表示脚本的链接地址，它的值为字符串。
-
-在 XSML 中，`<script>` 标签除了可以引入 JavaScript 文件外，还可以引入 TypeScript 文件，但需要在 `src` 属性中指定文件的后缀名为 `.ts`，引入 TypeScript 脚本无需额外的代码编译。
-
-> 当前版本中，我们还不支持 CommonJS 或 ECMAScript Module 等模块系统，但你可以通过挂载全局变量 `global.spaceDocument` 来实现不同文件之间的引用，但仍然不推荐这么做，因为这样会导致代码的可读性变差。
-
-> 我们会尽快在 JSAR 中支持 ECMAScript Module。
-
-#### style
-
-`<style>` 标签用于定义 XSML 的样式信息，它与 HTML 中的 style 有同样的用途，它的属性有：
-
-- `type`：表示样式的类型，它的值为字符串，目前只支持 `text/scss`。
-
-以下是一个 `<style>` 标签的示例：
+比如：
 
 ```xml
-<xsml version="1.0">
+<xsml>
   <head>
-    <style type="text/scss">
-      @material yellow {
-        diffuse-color: #fdd276;
-        backface-culling: false;
-        side-orientation: frontside;
-      }
-      #lion {
-        rotation: 0 0 0;
-      }
-      #lion_body {
-        material: "yellow";
-        position: 0 -30 -60;
-      }
-      #lion_head {
-        y: 60;
-        z: -50;
-      }
-      #lion_face {
-        material: "yellow";
-        position: 0 0 135;
-      }
-      #lion_mane {
-        position: 0 -10 80;
-      }
-    </style>
+    <title>GUI Example</title>
   </head>
   <space>
-    <!-- 空间结构 -->
+    <plane>
+      <p>This is a paragraph.</p>
+      <img src="path/to/your/image.jpg" />
+    </plane>
   </space>
 </xsml>
 ```
 
-可以看到通过 `<style>` 标签内部的内容，可以像 CSS 一样定义样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+## 使用 XSML 元素
 
-比如我们通过原来 `@font-family` 和 `@keyframes` 的语法定义了 3D 中的材质，在 `@material` 中你可以设置材质类型、颜色、贴图等，然后在具体的元素中通过 material 属性来使用对应的材质定义。
+与 HTML 一样：
 
-同样，我们也拓展了原有的样式定义，比如增加了 `position`、`rotation`、`scale` 等属性，用于定义 3D 元素的位置、旋转、缩放等。
+> An HTML element is defined by a start tag, some content, and an end tag.
 
-> 注：当前版本仅支持按照 id 查询，后续会兼容 CSS 的按照元素标签和 class 查询。
+每一个 XSML 元素都由一个开始标签、一些内容和一个结束标签组成，或者是一个自闭合标签。
 
-> 更多关于 `<style>` 标签的内容，可以参考 [SCSS](./basic-concepts/intro-scss)。
-
-### space
-
-`<space>` 标签用于定义 XSML 的空间结构，它的子标签有：`mesh`、`cube`、`sphere`、`cylinder`、`cone`、`plane`、`text`、`image`、`video`、`audio` 等。
-
-#### mesh
-
-`<mesh>` 标签用于定义 XSML 的网格元素，它的属性有：
-
-- `id`：表示网格元素的唯一标识符，它的值为字符串。
-- `ref`：表示网格元素的引用，它的值为字符串，目前只支持 `model`。
-- `selector`：表示网格元素的选择器，它的值为字符串。
-
-该标签用于将 `<head>` 标签中的 `<link>` 标签引入的 3D 模型文件，渲染到空间中，通过 ref 属性指定引入的 3D 模型文件的 id，通过 selector 属性指定引入的 3D 模型文件的节点。
-
-#### cube
-
-`<cube>` 标签用于定义 XSML 的立方体元素，它的属性有：
-
-- `id`：表示立方体元素的唯一标识符，它的值为字符串。
-- `width`：表示立方体元素的宽度，它的值为数字。
-- `height`：表示立方体元素的高度，它的值为数字。
-- `depth`：表示立方体元素的深度，它的值为数字。
-- `size`：表示立方体元素的大小，它的值为数字。
-
-该标签用于定义一个立方体元素，通过 `width`、`height`、`depth` 属性指定立方体元素的宽度、高度、深度。
-
-#### plane
-
-`<plane>` 标签用于定义 XSML 的平面元素，它的属性有：
-
-- `id`：表示平面元素的唯一标识符，它的值为字符串。
-- `width`：表示平面元素的宽度，它的值为数字。
-- `height`：表示平面元素的高度，它的值为数字。
-- `size`：表示平面元素的大小，它的值为数字。
-
-该标签用于定义一个平面元素，通过 `width`、`height` 属性指定平面元素的宽度、高度。
-
-#### sphere
-
-`<sphere>` 标签用于定义 XSML 的球体元素，它的属性有：
-
-- `id`：表示球体元素的唯一标识符，它的值为字符串。
-- `segments`：表示球体元素的分段数，它的值为数字。
-- `diameter`：表示球体元素的直径，它的值为数字。
-- `diameterX`：表示球体元素的 X 轴直径，它的值为数字。
-- `diameterY`：表示球体元素的 Y 轴直径，它的值为数字。
-- `diameterZ`：表示球体元素的 Z 轴直径，它的值为数字。
-- `arc`：表示球体元素的弧度，它的值为数字。
-- `slice`：表示球体元素的切片数，它的值为数字。
-
-该标签用于定义一个球体元素，通过 `segments` 属性指定球体元素的分段数，通过 `diameter`、`diameterX`、`diameterY`、`diameterZ` 属性指定球体元素的直径，通过 `arc` 属性指定球体元素的弧度，通过 `slice` 属性指定球体元素的切片数。
-
-#### cylinder
-
-`<cylinder>` 标签用于定义 XSML 的圆柱体元素，它的属性有：
-
-- `id`：表示圆柱体元素的唯一标识符，它的值为字符串。
-- `height`：表示圆柱体元素的高度，它的值为数字。
-- `diameter`：表示圆柱体元素的直径，它的值为数字。
-- `diameterTop`：表示圆柱体元素的顶部直径，它的值为数字。
-- `diameterBottom`：表示圆柱体元素的底部直径，它的值为数字。
-- `tessellation`：表示圆柱体元素的分段数，它的值为数字。
-
-该标签用于定义一个圆柱体元素，通过 `height` 属性指定圆柱体元素的高度，通过 `diameter`、`diameterTop`、`diameterBottom` 属性指定圆柱体元素的直径，通过 `tessellation` 属性指定圆柱体元素的分段数。
-
-#### capsule
-
-`<capsule>` 标签用于定义 XSML 的胶囊体元素，它的属性有：
-
-- `id`：表示胶囊体元素的唯一标识符，它的值为字符串。
-- `height`：表示胶囊体元素的高度，它的值为数字。
-- `radius`：表示胶囊体元素的半径，它的值为数字。
-- `radiusTop`：表示胶囊体元素的顶部半径，它的值为数字。
-- `radiusBottom`：表示胶囊体元素的底部半径，它的值为数字。
-
-该标签用于定义一个胶囊体元素，通过 `height` 属性指定胶囊体元素的高度，通过 `radius`、`radiusTop`、`radiusBottom` 属性指定胶囊体元素的半径。
-
-#### torus
-
-`<torus>` 标签用于定义 XSML 的圆环体元素，它的属性有：
-
-- `id`：表示圆环体元素的唯一标识符，它的值为字符串。
-- `diameter`：表示圆环体元素的直径，它的值为数字。
-- `thickness`：表示圆环体元素的厚度，它的值为数字。
-- `tessellation`：表示圆环体元素的分段数，它的值为数字。
-
-#### bound
-
-`<bound>` 标签用于定义 XSML 的边界元素，即 Bounding Box，它的属性有：
-
-- `id`：表示边界元素的唯一标识符，它的值为字符串。
-
-该标签用于定义一个边界元素，它的大小与其父元素的大小一致，通过 `id` 属性指定边界元素的唯一标识符。
-
-> `<bound>` 不能手动声明大小，而是通过计算子元素得到，在内部它是一个 Babylon.js TransformNode 对象。
-
-#### HTML 标签
-
-HTML 标签用于定义 XSML 的 2D 容器元素，与 HTML 中的 `<div>` 相同，但不同的是你需要将它插入到一个 3D 物体中，它会作为该物体的贴图渲染，比如：
+每一个 XSML 元素都可以内嵌其他的 XSML 元素，比如：
 
 ```xml
-<plane id="gui">
-  <div id="root" style="padding:10px;gap:20px;">
-    <span>
-      <span class="sub">Do</span>
-      <span class="sub">Ri</span>
-      <span class="sub">Mi</span>
-      <span class="sub">Fa</span>
-    </span>
-    <span style="color:white;font-size:70px;line-height:1.3;">
-      空间小程序还原最开始的 Web 开发体验，并所见即所得。
-    </span>
-  </div>
-</plane>
+<xsml>
+  <head>
+    <title>XSML Example</title>
+  </head>
+  <space>
+    <cube>
+      <sphere></sphere>
+    </cube>
+  </space>
+</xsml>
 ```
 
-> 需要注意的是，同一个 3D 物体有且只能有一个 HTML 标签，另外在根节点 `<space>` 下不能直接插入 HTML 标签。
+这表示在生成的 3D 空间中，一个立方体中包含了一个球体。
 
-与 HTML 中一样，你可以通过设置 "style" 来设置样式，如上所示，当前支持的样式如下：
+> 注：与 HTML 中 2D 元素的包含不同，对于 2D 元素，子元素是从父元素的左上角开始布局的，而对于 3D 元素，子元素是从父元素的中心点开始布局的。
+
+## 使用 XSML 属性
+
+在 XSML 中，每个元素都可以拥有属性，属性可以提供元素的额外信息。
+
+XSML 属性的原则遵循 HTML 的属性原则，即：
+
+- 所有元素都可以拥有属性。
+- 属性用于提供元素的额外信息。
+- 属性总是在开始标签中指定。
+- 属性以名称/值对的形式指定，比如：`name="value"`，也可以只指定名称表示为 true，比如：`async`。
+
+对于 3D 元素来说，开发者可以通过生成不同的属性来生成不同的形状与大小：
+
+```xml
+<xsml>
+  <space>
+    <polyhedra size="0.2" type="elongated-pentagonal-dipyramid" />
+    <polyhedra size="0.2" type="octahedron" />
+    <polyhedra size="0.2" type="dodecahedron" />
+    <polyhedra size="0.2" type="icosahedron" />
+    <polyhedra size="0.2" type="rhombicuboctahedron" />
+  </space>
+</xsml>
+```
+
+> **写法建议**
+>
+> - 尽管 XSML 属性不区分大小写，但是为了代码的可读性，我们建议所有的 XSML 属性都使用小写。
+> - 为了代码的可读性，我们建议所有的 XSML 属性都使用双引号包裹。
+> - 为了代码的可读性，我们建议所有的 XSML 属性都使用短横线分隔。
+
+## XSML 几何体
+
+在 XSML 中可以使用内置的一些几何体，比如：
+
+```xml
+<xsml>
+  <space>
+    <polyhedra type="elongated-pentagonal-dipyramid" />
+  </space>
+</xsml>
+```
+
+除了 `<polyhedra>` 元素外，还有 `<cube>`、`<sphere>`、`<cylinder>`、`<cone>`、`<plane>` 等。
+
+每个几何体的属性不同，它们主要用于定义几何体的初始化参数，比如 `<cube>` 用于定义一个立方体，那么开发者可以通过 `width`、`height`、`depth`、`size` 等属性来定义立方体的大小。
+
+具体支持的几何体以及支持的属性可以参考下面章节的内容。
+
+## XSML 3D 模型
+
+除了通过 XSML 几何体元素来定义 3D 元素外，XSML 还支持了通过 `<link>` 元素来引入 3D 模型文件，比如：
+
+```xml
+<xsml>
+  <head>
+    <link id="model" rel="mesh" type="octstream/glb" href="./model/welcome.glb" />
+  </head>
+  <space>
+    <mesh id="model" ref="model" selector="__root__" />
+  </space>
+</xsml>
+```
+
+在上面的代码中，我们通过 `<link>` 元素来引入了一个 3D 模型文件，然后通过 `<mesh>` 元素来引用该 3D 模型文件。
+
+XSML 在初始化 `<mesh>` 时，也会遍历模型文件中的节点，并为每一个实例化的节点创建一个 DOM 元素（`ELement`）。
+
+## 在 XSML 中使用 HTML
+
+XSML 允许开发者使用 HTML 来定义 2D 的内容：
+
+- 首先，需要定义一个 3D 元素，它将作为 2D 内容的载体，即 2D 内容将会渲染到该 3D 元素的表面
+- 在这个 3D 元素内，添加 HTML 元素，比如 `<div>`、`<span>`、`<p>` 等
+
+比如：
+
+```xml
+<xsml>
+  <head>
+    <title>GUI Example</title>
+  </head>
+  <space>
+    <plane>
+      <p>This is a paragraph.</p>
+      <img src="path/to/your/image.jpg" />
+    </plane>
+  </space>
+</xsml>
+```
+
+## XSML 样式
+
+在 XSML 中，可以通过 `<style>` 元素来定义样式，比如：
+
+```xml
+<xsml>
+  <head>
+    <style>
+      cube {
+        rotation: 45 0 0;
+      }
+    </style>
+  </head>
+  <space>
+    <cube />
+  </space>
+</xsml>
+```
+
+如上所示，通过 `<style>` 元素内部的内容，可以像 CSS 一样定义空间样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+
+这里的选择器与 CSS 的选择器一致，XSML 目前支持了：
+
+- [x] `id` 选择器
+- [x] `class` 选择器
+- [x] 元素选择器
+- [x] 属性选择器
+- [ ] 伪类选择器
+- [ ] 伪元素选择器
+
+需要注意的是，在 XSML 中定义的 `<style>` 都是 Spatial CSS，即空间样式，它并不能直接用于文档中的 2D 元素，如果希望定义 2D 元素，需要在对应的 2D 元素中定义 `<style>`：
+
+```html
+<xsml>
+  <head>
+    <title>GUI Example</title>
+  </head>
+  <space>
+    <plane>
+      <style type="text/css">
+        p {
+          color: red;
+        }
+      </style>
+      <p>This is a paragraph.</p>
+      <img src="path/to/your/image.jpg" />
+    </plane>
+  </space>
+</xsml>
+```
+
+> 这样设计的原因：
+>
+> - 2D 元素和 3D 元素不在同一个上下文下，都放到同一份 SpatialCSS 标准中，会导致标准过于复杂
+> - 在 XSML 中添加 2D 元素会在根节点创建一个 [ShadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM)，在 ShadowRoot 中添加 `<style>` 本就是一个很自然的做法，并且：
+>   - 2D 和 3D 元素隔离
+>   - 不同的 ShadowRoot 之间的样式也是隔离的
+
+在 XSML 中，你可以使用如下的 2D 样式：
 
 | 样式 | 描述 | 是否支持 |
 | --- | --- | --- |
@@ -336,44 +347,501 @@ HTML 标签用于定义 XSML 的 2D 容器元素，与 HTML 中的 `<div>` 相�
 | `text-transform` | 文字转换 | 否 |
 | `vertical-align` | 垂直对齐 | 否 |
 
-除此之外，JSAR 在 TypeScript 中提供了 DOM API，你可以通过原生的 DOM API 来实现样式的修改以及事件的监听：
+一个稍微复杂一些的例子：
 
-```ts
-const guiPlane = spatialDocument.getSpatialObjectById('gui');
-const panel = guiPlane.shadowRoot;
-
-const subChildren = panel.querySelectorAll('.sub');
-for (let sub of subChildren) {
-  const subElement = sub as HTMLElement;
-  subElement.style.backgroundColor = 'rgba(20,33,33,.95)';
-  subElement.style.height = '200px';
-  subElement.style.width = '200px';
-  subElement.style.marginLeft = '30px';
-  subElement.style.fontSize = '80px';
-  subElement.style.color = '#fff';
-  subElement.style.textAlign = 'center';
-  subElement.style.border = '15px solid yellow';
-  subElement.style.borderRadius = '50px';
-  subElement.style.paddingTop = '20px';
-
-  subElement.addEventListener('mouseenter', () => {
-    subElement.style.backgroundColor = 'rgba(100,0,200,.95)';
-  });
-  subElement.addEventListener('mouseleave', () => {
-    subElement.style.backgroundColor = 'rgba(60,33,33,.95)';
-  });
-}
+```html
+<xsml>
+  <space>
+    <plane id="ui-cube" size="1">
+      <style type="text/css">
+        section {
+          background-color: rgba(255, 0, 0, 0.1);
+          display: block;
+          height: 100%;
+          width: 100%;
+          padding: 50px;
+        }
+        section > * {
+          color: #fff;
+        }
+        section > img {
+          height: 200px;
+          margin: 20px 0;
+        }
+      </style>
+      <section>
+        <h1>Using a section without a heading</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <h5>Heading 5</h5>
+        <p>
+          Depending on the content, including a heading could also be good for SEO, so it is an option to consider.
+        </p>
+        <img src="../textures/example.jpeg" />
+        <p>
+          Hello
+        </p>
+      </section>
+    </plane>
+  </space>
+</xsml>
 ```
 
-要对 JSAR 中的 3D 物体进行更改：
+## XSML 脚本
 
-1. 首先使用 `spatialDocument.getSpatialObjectById()` 来识别您要处理的 3D 物体。
-2. 访问这个 3D 物体的 `shadowRoot` 以与其内部结构进行交互。
-3. 利用 `querySelectorAll()` 来选择 3D 物体内的所有子元素。
-4. 使用 `style` 属性修改所选元素的样式。
-5. 您还可以使用 `addEventListener()` 在这些元素上监听事件。
+XSML 中支持使用 JavaScript 或 TypeScript 来编写脚本。
 
-在这个上下文中可用的 HTML 标签有：
+开发者可以通过安装 `@yodaos-jsar/types` 来获取脚本的类型定义。
 
-- `div`：用于创建垂直布局容器。
-- `span`：用于创建水平布局容器。
+```bash
+$ npm install @yodaos-jsar/types --save-dev
+```
+
+在脚本中可以使用 ECMAScript Module 的语法来导入模块，比如：
+
+```js
+import { foobar } from './foobar';
+```
+
+在 XSML 中，通过 `<script>` 元素来定义脚本，比如：
+
+```xml
+<xsml>
+  <head>
+    <script type="module">
+      import { foobar } from './foobar';
+    </script>
+  </head>
+</xsml>
+```
+
+或者通过 "src" 属性：
+
+```xml
+<xsml>
+  <head>
+    <script src="./foobar.js" type="module"></script>
+  </head>
+</xsml>
+```
+
+## XSML 元素索引
+
+### `xsml`
+
+XSML 的根标签。
+
+| 属性 | 描述 |
+| --- | --- |
+| `version` | 表示 XSML 的版本号，默认 `1.0` |
+
+### `head`
+
+用于定义 XSML 的元信息。
+
+### `title`
+
+定义 XSML 的标题，它的内容为字符串。
+
+### `meta`
+
+定义具体的文档元信息。
+
+| 属性 | 描述 |
+| --- | --- |
+| `name` | 表示元信息的名称 |
+| `content` | 表示元信息的内容 |
+
+其中，`name` 属性的值可以为：
+
+- `description`：表示文档的描述信息。
+- `author`：表示文档的作者。
+- `keywords`：表示文档的关键字。
+- `rating`：表示文档的评级。
+- `license`：表示文档的许可证。
+- `license-url`：表示文档的许可证链接。
+
+比如：
+
+```html
+<xsml version="1.1">
+  <head>
+    <title>Example</title>
+    <meta charset="utf-8">
+    <meta name="description" content="This is an example.">
+    <meta name="author" content="M-CreativeLab">
+    <meta name="keywords" content="example, xsml">
+    <meta name="rating" content="general">
+    <meta name="license" content="MIT">
+    <meta name="license-url" content="https://opensource.org/licenses/MIT">
+  </head>
+  <space>
+  </space>
+</xsml>
+```
+
+### `link`
+
+定义 XSML 的外部信息或数据，比如导入 3D 模型文件和样式文件。
+
+| 属性 | 描述 | 是否必须 |
+| --- | --- | --- |
+| `id` | 表示链接的唯一标识符 | 是 |
+| `rel` | 表示链接的关系 | 是 |
+| `type` | 表示链接的类型 | 是 |
+
+在 HTML 中，一般使用 `<link>` 标签用于引用 CSS 文件，但在 XSML 中，`<link>` 标签用于引用 3D 模型文件，比如 `glb` 格式的 3D 模型文件。
+
+其中 `rel` 值为：
+
+| `rel` | 描述 | 是否支持 |
+| --- | --- | --- |
+| `mesh` | 当前文档会使用的 3D 模型 | 是 |
+| `alternate` | 当前文档的替代文档 | 否 |
+| `author` | 当前文档的作者 | 是 |
+| `bookmark` | 当前文档的书签 | 否 |
+| `canonical` | 当前文档的规范地址 | 否 |
+| `dns-prefetch` | 当前文档的 DNS 预获取 | 否 |
+| `help` | 当前文档的帮助 | 否 |
+| `icon` | 当前文档的图标 | 否 |
+| `license` | 当前文档的许可证 | 是 |
+| `manifest` | 当前文档的清单 | 否 |
+| `modulepreload` | 当前文档的模块预加载 | 否 |
+| `next` | 当前文档的下一个 | 否 |
+| `pingback` | 当前文档的 PingBack | 否 |
+| `preconnect` | 当前文档的预连接 | 否 |
+| `prefetch` | 当前文档的预获取 | 否 |
+| `preload` | 当前文档的预加载 | 否 |
+| `prerender` | 当前文档的预渲染 | 否 |
+| `prev` | 当前文档的上一个 | 否 |
+| `search` | 当前文档的搜索 | 否 |
+| `stylesheet` | 当前文档的样式表 | 否 |
+| `tag` | 当前文档的标签 | 否 |
+
+### `script`
+
+添加 XSML 脚本。
+
+| 属性 | 描述 | 是否必须 |
+| --- | --- | --- |
+| `src` | 表示脚本的链接地址 | 否 |
+| `type` | 表示脚本的类型，支持 `loader`、`module` 和 `script` | 是 |
+| `async` | 表示脚本是否异步解析执行脚本，默认为阻塞解析执行脚本，即先解析到的 `script` 标签会先解析并执行一次 | 否 |
+
+在 XSML 中，`<script>` 标签除了可以引入 JavaScript 文件外，还可以引入 TypeScript 文件，但需要在 `src` 属性中指定文件的后缀名为 `.ts`，引入 TypeScript 脚本无需额外的代码编译。
+
+除了通过 `src` 导入脚本外，还可以通过 `<script>` 标签内部的内容来定义脚本，比如：
+
+```xml
+<xsml>
+<head>
+  <script type="module">
+    console.log('hello world');
+  </script>
+</head>
+<space></space>
+</xsml>
+```
+
+### `style`
+
+定义 XSML 的样式信息，它与 HTML 中的 style 有同样的用途，它的属性有：
+
+| 属性 | 描述 |
+| --- | --- |
+| `type` | 表示样式的类型，默认为 `text/scss`，支持 `text/scss` 和 `text/css` |
+
+以下是一个 `<style>` 标签的示例：
+
+```xml
+<xsml version="1.0">
+  <head>
+    <style type="text/scss">
+      @material yellow {
+        diffuse-color: #fdd276;
+        backface-culling: false;
+        side-orientation: frontside;
+      }
+      #lion {
+        rotation: 0 0 0;
+      }
+      #lion_body {
+        material: "yellow";
+        position: 0 -30 -60;
+      }
+      #lion_head {
+        y: 60;
+        z: -50;
+      }
+      #lion_face {
+        material: "yellow";
+        position: 0 0 135;
+      }
+      #lion_mane {
+        position: 0 -10 80;
+      }
+    </style>
+  </head>
+  <space>
+    <!-- 空间结构 -->
+  </space>
+</xsml>
+```
+
+可以看到通过 `<style>` 标签内部的内容，可以像 CSS 一样定义样式，通过定义 CSS 选择器找到元素，然后对选择的元素进行设置，只不过从原来的定义平面的样式，升级为 3D 样式。
+
+比如我们通过原来 `@font-family` 和 `@keyframes` 的语法定义了 3D 中的材质，在 `@material` 中你可以设置材质类型、颜色、贴图等，然后在具体的元素中通过 material 属性来使用对应的材质定义。
+
+同样，我们也拓展了原有的样式定义，比如增加了 `position`、`rotation`、`scale` 等属性，用于定义 3D 元素的位置、旋转、缩放等。
+
+> 注：当前版本仅支持按照 id 查询，后续会兼容 CSS 的按照元素标签和 class 查询。
+
+> 更多关于 `<style>` 标签的内容，可以参考 [SCSS](./basic-concepts/intro-scss)。
+
+### `space`
+
+定义 XSML 文档中用户可见的内容，包括 3D 元素和 2D 元素。
+
+`<space>` 元素本身是一个空间中的定位节点，你可以对它的旋转进行设置。
+
+> 由于 XSML 空间是相对的，因此你对 `<space>` 元素设置缩放和位置是没有意义的。
+
+### `mesh`
+
+用于使用 3D 模型文件的元素。
+
+| 属性 | 描述 | 是否必须 |
+| --- | --- | --- |
+| `ref` | 表示 3D 模型文件的引用 | 是 |
+| `selector` | 表示 3D 模型文件的选择器，XSML 会从选择器找到的 3D 节点开始渲染 | 是 |
+
+通过 `<mesh>` 标签，开发者可以将 `<link>` 声明的 3D 模型文件渲染到空间中。
+
+在 3D 模型文件中，可以同时定义多个物体，或者你只希望从模型中挑选出指定的部分渲染，那么这时你可以使用 `selector` 属性声明实际渲染的根节点。
+
+### `bound`
+
+用于定义边界元素，即包围盒（Bouding Box）。
+
+使用 `<bound>` 可以将多个 3D 元素包含在一个虚拟的长方体（即包围盒）中，这样可以方便对这些元素的位置、旋转、缩放等进行统一的设置。
+
+```html
+<xsml>
+  <head>
+    <style>
+      bound {
+        position: 0 0 -1;
+        rotation: 0 0 0;
+        scale: 1 1 1;
+      }
+    </style>
+  </head>
+  <space>
+    <bound>
+      <cube />
+      <sphere />
+    </bound>
+  </space>
+</xsml>
+```
+
+### `cube`
+
+用于定义长方体。
+
+| 属性 | 描述 |
+| --- | --- |
+| `width` | 表示长方体元素的宽度，它的值为数字 |
+| `height` | 表示长方体元素的高度，它的值为数字 |
+| `depth` | 表示长方体元素的深度，它的值为数字 |
+| `size` | 表示长方体元素的大小，它的值为数字 |
+
+如果希望定义的是立方体（正方体），即长宽高都相同，只需要设置 `size` 属性即可，它会同时设置 `width`、`height` 和 `depth` 属性。
+
+### `plane`
+
+用于定义平面。
+
+| 属性 | 描述 |
+| --- | --- |
+| `width` | 表示平面元素的宽度，它的值为数字 |
+| `height` | 表示平面元素的高度，它的值为数字 |
+| `size` | 表示平面元素的大小（同时设置高度和宽度），它的值为数字 |
+
+### `sphere`
+
+用于定义球面。
+
+| 属性 | 描述 |
+| --- | --- |
+| `segments` | 表示球面元素的分段数，它的值为数字 |
+| `diameter` | 表示球面元素的直径，它的值为数字 |
+| `diameter-x` | 表示球面元素的 X 轴直径，它的值为数字 |
+| `diameter-y` | 表示球面元素的 Y 轴直径，它的值为数字 |
+| `diameter-z` | 表示球面元素的 Z 轴直径，它的值为数字 |
+| `arc` | 表示球面元素的弧度，它的值为数字 |
+| `slice` | 表示球面元素的切片数，它的值为数字 |
+
+### `cylinder`
+
+用于定义圆柱体。
+
+| 属性 | 描述 |
+| --- | --- |
+| `height` | 表示圆柱体元素的高度，它的值为数字 |
+| `diameter` | 表示圆柱体元素的直径，它的值为数字 |
+| `diameter-top` | 表示圆柱体元素的顶部直径，它的值为数字 |
+| `diameter-bottom` | 表示圆柱体元素的底部直径，它的值为数字 |
+| `tessellation` | 表示圆柱体元素的分段数，它的值为数字 |
+
+### `capsule`
+
+用于定义胶囊形状的几何体。
+
+| 属性 | 描述 |
+| --- | --- |
+| `height` | 表示胶囊体元素的高度，它的值为数字 |
+| `radius` | 表示胶囊体元素的半径，它的值为数字 |
+| `radius-top` | 表示胶囊体元素的顶部半径，它的值为数字 |
+| `radius-bottom` | 表示胶囊体元素的底部半径，它的值为数字 |
+
+### `torus`
+
+用于定义圆环几何体。
+
+| 属性 | 描述 |
+| --- | --- |
+| `diameter` | 表示圆环体元素的直径，它的值为数字 |
+| `thickness` | 表示圆环体元素的厚度，它的值为数字 |
+| `tessellation` | 表示圆环体元素的分段数，它的值为数字 |
+
+### `div`
+
+用于定义 2D 元素的容器。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <div>
+        <h1>Hello World</h1>
+        <p>This is a paragraph.</p>
+      </div>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `span`
+
+与 `<div>` 类似，用于定义 2D 元素的容器，一般用于行内元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <span>
+        This is a paragraph.
+      </span>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `img`
+
+用于定义图片元素。
+
+| 属性 | 描述 |
+| --- | --- |
+| `src` | 表示图片元素的链接地址，支持相对地址或 URL |
+
+```html
+<xsml>
+  <head>
+    <title>HTML in Spatial Example (Images)</title>
+  </head>
+  <space>
+    <plane size="1">
+      <div>
+        <img src="../textures/example.jpeg" />
+      </div>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `p`
+
+用于定义段落元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <p>This is a paragraph.</p>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `h{x}`
+
+用于定义标题元素，其中 `{x}` 表示标题的级别，比如 `h1` 表示一级标题，`h2` 表示二级标题，以此类推。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <h1>This is a h1.</h1>
+      <h2>This is a h2.</h2>
+      <h3>This is a h3.</h3>
+      <h4>This is a h4.</h4>
+      <h5>This is a h5.</h5>
+      <h6>This is a h6.</h6>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `header`
+
+语义化标签，用于定义头部元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <header>
+        <h1>This is a header.</h1>
+      </header>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `section`
+
+语义化标签，用于定义章节元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <section>
+        <h1>This is a section.</h1>
+      </section>
+    </plane>
+  </space>
+</xsml>
+```
+
+## 建议与反馈
+
+由于 XSML 与 JSAR 仍然在持续迭代中，因此可能会存在 XSML 中的 HTML 与浏览器不一致的情况，如果你发现了这样的情况，可以以下方式反馈或建议：
+
+- 提交问题，可以在 [M-CreativeLab/jsar-dom][] 提交 Issue。
+- 查看问题，XSML 所有的实现已经完全开源到 [M-CreativeLab/jsar-dom][]，具体可查看 [src/living/nodes](https://github.com/M-CreativeLab/jsar-dom/tree/main/src/living/nodes) 目录下的实现。
+
+[M-CreativeLab/jsar-dom]: https://github.com/M-CreativeLab/jsar-dom

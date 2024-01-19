@@ -2,3 +2,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+details {
+  display: block;
+  margin-top: 1em;
+}
+
+summary {
+  font-size: 16px;
+}

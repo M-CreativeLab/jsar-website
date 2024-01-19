@@ -10,7 +10,7 @@ JSAR 作为可嵌入空间的 Web 运行时，会优先考虑通过 Web APIs 为
 | `export` | **已实现** | 导出模块 |
 | `import.meta` | 未实现 | - |
 | `import()` | **已实现** | 动态导入模块 |
-| HTTP imports | 不支持 | - |
+| HTTP imports | **已实现** | 远程导入模块 |
 
 在文件 `bar.ts` 中，我们可以通过 `export` 导出模块：
 
@@ -64,12 +64,6 @@ import bin3 from './bin3.png';    // ArrayBuffer
 import bin4 from './bin4.jpeg';   // ArrayBuffer
 import bin5 from './bin5.webp';   // ArrayBuffer
 ```
-
-> **为什么不支持 HTTP imports？**
->
-> 尽管 JSAR 团队希望尽可能地兼容 Web APIs，但我们更需要确保每个发布的空间小程序是版本稳定的，而非像网页随时保持在线的状态。
->
-> 因此 JSAR 希望开发者能够确保所有代码都在自己的包中，而不是通过网络加载，这样就不会出现因为第三方更改而导致的异常，另一方面，每当开发者发布一个版本后的心智负担也会大大降低。
 
 ## 全局函数
 
@@ -285,6 +279,19 @@ const url = new URL(urlString, base);
 ```
 
 > JSAR TypeScript 提供的 `URL` 由 Node.js 实现，具体使用请参考 [Node.js URL](https://nodejs.org/api/url.html#class-url)。
+
+## WebSocket API
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `WebSocket` | **已实现** | 代表一个 WebSocket 连接 |
+| `WebSocket()` 构造函数 | **已实现** | 创建一个 WebSocket 连接 |
+
+`WebSocket` 用于创建一个 WebSocket 连接，它的使用方法如下：
+
+```typescript
+const ws = new WebSocket(url, protocols);
+```
 
 ## Navigator API
 

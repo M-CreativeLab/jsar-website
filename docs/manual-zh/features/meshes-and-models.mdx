@@ -12,7 +12,50 @@
 
 ## 创建网格
 
+### 通过 XSML 创建网格
+
+在基础概念里，曾介绍了 [XSML](basic-concepts/intro-xsml)，我们可以在 XSML 里直接创建网格，如下所示：
+
+```xml
+<xsml version="1.0">
+  <space>
+    <cube width="10" height="10" depth="10" />
+  </space>
+</xsml>
+```
+
+在 [jsar-gallery-flatten-lion](https://github.com/M-CreativeLab/jsar-gallery-flatten-lion/blob/main/lib/lion.xsml#L260-L328) 这个例子中，我们使用了 XSML 中的各种形状标签来创建了一个狮子的模型，可以通过这个例子来了解如何使用 XSML 来创建复杂的形状。
+
+### 通过 DOM 创建网格
+
+与 HTML 一样，开发者可以通过 DOM API 来创建网格节点，如下所示：
+
+```ts
+const cube = spatialDocument.createElement('cube');
+cube.size = 10;
+cube.addEventListener('rayenter', () => {
+  console.log('a ray enter the cube');
+});
+cube.addEventListener('rayleave', () => {
+  console.log('a ray leave the cube');
+});
+spatialDocument.space.appendChild(cube);
+```
+
+可以看到除了可以添加网格外，通过 DOM API 还可以监听每个网格对象上的交互事件。
+
+通过 DOM API 创建的网格，可以通过 `asNativeType<T>()` 方法来获取 Babylon.js 中的网格对象，如下所示：
+
+```ts
+const cube = spatialDocument.createElement('cube');
+const mesh = cube.asNativeType<BABYLON.Mesh>();
+```
+
+`asNativeType<T>()` 方法的泛型参数 `T` 默认为 `BABYLON.Node`。
+
 ### 通过 `MeshBuilder` 创建网格
+
+> JSAR 提供了可以直接使用 Babylon.js 的 API 来创建网格节点的能力，主要用于帮助开发者可以快速在 JSAR 中运行一些 Babylon.js Playground 的示例代码。
 
 `MeshBuilder` 是一个用于创建网格的便捷类，它提供了一些静态方法，用于创建一些预定义的网格，如 `box`、`sphere`、`plane` 等，这些方法的返回值都是 `BABYLON.Mesh` 类型的实例，如下所示：
 
@@ -39,19 +82,7 @@ Babylon.js 支持通过 `MeshBuilder` 创建如下的预制网格：
 
 由于以上都是 Babylon.js APIs，因此本节就不重复介绍了，有兴趣的读者可以点击上面的链接查看具体的使用方法。
 
-### 通过 XSML 创建网格
-
-在基础概念里，曾介绍了 [XSML](basic-concepts/intro-xsml)，我们可以在 XSML 里直接创建网格，如下所示：
-
-```xml
-<xsml version="1.0">
-  <space>
-    <cube width="10" height="10" depth="10" />
-  </space>
-</xsml>
-```
-
-在 [jsar-gallery-flatten-lion](https://github.com/M-CreativeLab/jsar-gallery-flatten-lion/blob/main/lib/lion.xsml#L260-L328) 这个例子中，我们使用了 XSML 中的各种形状标签来创建了一个狮子的模型，可以通过这个例子来了解如何使用 XSML 来创建复杂的形状。
+> 通过 `MeshBuilder` 创建的网格会统一被添加到 `space` 下，而不是 `BABYLON.Scene` 下。
 
 ## 网格变换
 
@@ -184,12 +215,12 @@ boxClone.position = new Vector3(1, 2, 3);
 在使用导入模型时，需要注意以下几点：
 
 - 支持的模型格式：GLB / GLTF，其他格式暂不支持（并且推荐使用 GLB 格式，单个文件更利于管理）。
-- 通过 link 标签导入的模型，记得要通过 mesh 标签来引用，否则模型不会被加载。
+- 通过 `link` 标签导入的模型，记得要通过 mesh 标签来引用，否则模型不会被加载。
 - 在进行模型优化时，
   - 目前支持 Draco 和 MeshOpt 网格压缩
-  - 还不支持量化压缩
-  - 还不支持扁平化
-  - 尽量不要做减面操作
+  - 不支持量化压缩
+  - 不支持扁平化
+  - 不支持减面
   - 推荐使用 [gltf-transform](https://gltf-transform.dev/) 工具进行模型优化
 
 ## 网格碰撞检测

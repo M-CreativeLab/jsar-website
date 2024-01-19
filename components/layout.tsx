@@ -288,7 +288,7 @@ export default function RootLayout({
             fontSize: 16,
           }}
         >
-          <p>Copyright © 2023 <a href="https://github.com/M-CreativeLab">Rokid MCreativeLab</a></p>
+          <p>Copyright © 2024 <a href="https://github.com/M-CreativeLab">Rokid MCreativeLab</a></p>
         </section>
       </Layout.Footer>
     </Layout>

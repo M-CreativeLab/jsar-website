@@ -1,13 +1,20 @@
+import { ColorBlock } from '../../../components/md-advanced';
+
 # SCSS
 
-SCSS 即 Spatial CSS —— 空间层叠样式表，它参考了 Web 开发的 CSS 中大量的已有定义，来定义空间及空间物体的样式，以此来控制空间的显示效果，JSAR 这么设计的目的即是让 Web 开发者几乎可以零门槛地进入到 AR 应用的开发。
+SCSS 即 SpatialCSS —— 空间层叠样式表，它参考了 Web 开发的 CSS 中大量的已有定义，来定义空间及空间物体的样式，以此来控制空间的显示效果，JSAR 这么设计的目的即是让 Web 开发者几乎可以零门槛地进入到 AR 应用的开发。
 
-与 CSS 一样，要使用 SCSS 主要分为两个部分：
+## 什么是 SpatialCSS
 
-1. 通过 id、class、tag 等选择器来选择空间物体
-2. 在选择器中定义样式
+- SpatialCSS 代表空间层叠样式表
+- SpatialCSS 用于描述 XSML 元素如何在空间中渲染
+- SpatialCSS 可以帮助开发者节约很多时间，它内置了样式和布局，并保持了灵活性
 
-比如：
+## SpatialCSS 与 CSS 的区别
+
+SpatialCSS 在具体的样式定义上并没有集成关系，除了一些通用的 `@font-family`、`@keyframes` 规则组外，SpatialCSS 的样式定义都是围绕空间物体重新设计的。
+
+不过在使用上，它们是类似的，采用了同一套语法和选择器，唯一不同的就是属性不同。
 
 ```css
 #box {
@@ -17,48 +24,365 @@ SCSS 即 Spatial CSS —— 空间层叠样式表，它参考了 Web 开发的 C
 }
 ```
 
-这段代码的作用是选择 id 为 box 的空间物体，并将其旋转角度设置为 0，位置设置为 0，材质设置为红色。
+## 语法
 
-那么接下来就分成这两部分展开介绍。
+CSS 或者 SpatialCSS 的语法如下：
 
-## 选择器
+```
+[selector] {
+  [property]: [value];
+}
+```
 
-选择器用于查询空间中的物体，用于进一步的样式设置。
+其中：
+
+- `selector` 为选择器，用于选择对应 XSML 中的元素。
+- `property` 为属性，用于设置对应 XSML 中的元素的属性。
+- `value` 为属性值，用于设置对应 XSML 中的元素的属性值。
+
+## CSS 选择器
+
+选择器用于查询空间中的物体。
+
+### 标签/元素选择器
+
+标签/元素选择器通过 XSML 元素的名称来选择，比如：
+
+```css
+cube {
+  rotation: 0 180 0;
+}
+```
+
+选择了文档中所有的 `cube` 元素，并设置 rotation 属性为 `0 180 0`。
 
 ### id 选择器
 
-id 选择器用于按照物体的 id 查询空间中的物体，比如：
+Id 选择器通过 XSML 元素的 id 属性来选择，比如 `<cube id="foobar">`。
+
+因为 id 属性在 XSML 元素中是唯一的，那么 id 选择器也只能选择到一个元素。
+
+Id 选择器通过 `#{id}` 来定义，比如：
+
+```css
+#foobar {
+  rotation: 0 180 0;
+}
+```
+
+### 类选择器
+
+类选择器用于按照物体的 class 属性查询空间中的物体，比如：
 
 ```html
 <space>
-  <cube id="a1">
-    <cube id="a2"></cube>
+  <cube class="a1">
+    <cube class="a2"></cube>
   </cube>
 </space>
 ```
 
-通过选择器 `#a1` 选择的是外面的立方体，而 `a2` 选择的是里面的立方体。
+通过选择器 `.a1` 选择的是外面的立方体，而 `.a2` 选择的是里面的立方体。
 
-如上所示，id 选择器的语法即为 `#{id}`，其中 `id` 为物体的 id，下面是具体的 SCSS 代码：
+如上所示，class 选择器的语法即为 `.{class}`，其中 `class` 为物体的 class，下面是具体的 SCSS 代码：
 
 ```css
-#a1 {
+.a1 {
   rotation: 0 0 0;
   material: "red";
 }
 ```
 
-### class 选择器
+### 通配符选择器
 
-> 暂不支持
+在 SpatialCSS 中，可以使用通配符（`*`）来选择所有的元素，比如：
 
-### 标签选择器
+```css
+* {
+  rotation: 0 180 0;
+}
+```
 
-> 暂不支持
+### 父子选择器
+
+父子选择器用于选择空间中的父子元素，比如和通配符选择器一起使用：
+
+```css
+#foobar > * {
+  rotation: 0 180 0;
+}
+```
+
+表示 id 为 "foobar" 的元素的所有子元素的 rotation 属性设置为 `0 180 0`。
+
+### 组合选择器
+
+组合选择器用于将多个选择器组合在一起，比如：
+
+```css
+cube, sphere, #foo, .bar {
+  material: "red";
+}
+```
+
+将所有 `cube`、`sphere`、`#foo`、`.bar` 的材质设置为红色。
+
+### 属性选择器
+
+属性选择器用于按照物体的其他属性查询空间中的元素，比如：
+
+```html
+<space>
+  <polyhedra size="0.2" type="octahedron" />
+  <polyhedra size="0.2" type="dodecahedron" />
+  <polyhedra size="0.2" type="icosahedron" />
+</space>
+```
+
+通过选择器 `polyhedra` 选择所有 `polyhedra` 元素，再通过属性选择器 `[type="dodecahedron"]` 选择属性 `type` 为 `dodecahedron` 的 `polyhedra` 元素。
+
+```css
+polyhedra {
+  animation: rotate 2s infinite;
+}
+polyhedra[type="octahedron"] {
+  position: 0 1 0;
+  material: "litered";
+}
+```
+
+### 未支持的选择器
+
+以下选择器目前还未支持：
+
+- 伪类选择器
+- 伪元素选择器
 
 ## 样式
 
-接下来，我们来介绍 SCSS 中的样式，样式用于设置空间物体的样式，包括位置、旋转、材质等。
+接下来，我们来介绍 SpatialCSS 中的样式，样式用于设置空间物体的样式，包括位置、旋转、材质等。
+
+### 样式值
+
+本小节介绍 SpatialCSS 中的样式值。
+
+#### 长度
+
+在 SpatialCSS 中，支持以下方式定义长度：
+
+- [x] 数值，如 `1`、`2`、`0.5` 等
+- [x] 百分比，如 `100%`、`50%`、`25%` 等
+
+在使用数值时请注意，XSML 容器的体积大小为 1x1x1，开发者可按照该大小来设置物体的大小和位置。
+
+#### 角度
+
+在 SpatialCSS 中，角度一般用来描述 `rotation` 属性，目前支持以下方式定义角度：
+
+- [x] 度，如 `0deg`、`90deg`、`180deg` 等
+- [x] 弧度，如 `0rad`、`1rad`、`1.5rad` 等
+- [x] 梯度，如 `0grad`、`100grad`、`200grad` 等
+
+没有单位则默认使用度为单位，即 `120` 等价于 `120deg`。
+
+#### 颜色
+
+在 SpatialCSS 中，支持以下方式定义颜色：
+
+- [x] 颜色名称，如 `red`、`green`、`blue` 等
+- [x] 十六进制颜色，如 `#ff0000`、`#00ff00`、`#0000ff` 等
+- [x] RGB 颜色，如 `rgb(255, 0, 0)`、`rgb(0, 255, 0)`、`rgb(0, 0, 255)` 等
+- [x] RGBA 颜色，如 `rgba(255, 0, 0, 1)`、`rgba(0, 255, 0, 1)`、`rgba(0, 0, 255, 1)` 等
+- [x] HSL 颜色，如 `hsl(0, 100%, 50%)`、`hsl(120, 100%, 50%)`、`hsl(240, 100%, 50%)` 等
+- [x] HSLA 颜色，如 `hsla(0, 100%, 50%, 1)`、`hsla(120, 100%, 50%, 1)`、`hsla(240, 100%, 50%, 1)` 等
+
+<details>
+<summary>颜色列表如下</summary>
+
+| 颜色名称 | 颜色值 |
+| --- | --- |
+| `aliceblue` | <ColorBlock color="rgb(240, 248, 255)" /> |
+| `antiquewhite` | <ColorBlock color="rgb(250, 235, 215)" /> |
+| `aqua` | <ColorBlock color="rgb(0, 255, 255)" /> |
+| `aquamarine` | <ColorBlock color="rgb(127, 255, 212)" /> |
+| `azure` | <ColorBlock color="rgb(240, 255, 255)" /> |
+| `beige` | <ColorBlock color="rgb(245, 245, 220)" /> |
+| `bisque` | <ColorBlock color="rgb(255, 228, 196)" /> |
+| `black` | <ColorBlock color="rgb(0, 0, 0)" /> |
+| `blanchedalmond` | <ColorBlock color="rgb(255, 235, 205)" /> |
+| `blue` | <ColorBlock color="rgb(0, 0, 255)" /> |
+| `blueviolet` | <ColorBlock color="rgb(138, 43, 226)" /> |
+| `brown` | <ColorBlock color="rgb(165, 42, 42)" /> |
+| `burlywood` | <ColorBlock color="rgb(222, 184, 135)" /> |
+| `cadetblue` | <ColorBlock color="rgb(95, 158, 160)" /> |
+| `chartreuse` | <ColorBlock color="rgb(127, 255, 0)" /> |
+| `chocolate` | <ColorBlock color="rgb(210, 105, 30)" /> |
+| `coral` | <ColorBlock color="rgb(255, 127, 80)" /> |
+| `cornflowerblue` | <ColorBlock color="rgb(100, 149, 237)" /> |
+| `cornsilk` | <ColorBlock color="rgb(255, 248, 220)" /> |
+| `crimson` | <ColorBlock color="rgb(220, 20, 60)" /> |
+| `cyan` | <ColorBlock color="rgb(0, 255, 255)" /> |
+| `darkblue` | <ColorBlock color="rgb(0, 0, 139)" /> |
+| `darkcyan` | <ColorBlock color="rgb(0, 139, 139)" /> |
+| `darkgoldenrod` | <ColorBlock color="rgb(184, 134, 11)" /> |
+| `darkgray` | <ColorBlock color="rgb(169, 169, 169)" /> |
+| `darkgreen` | <ColorBlock color="rgb(0, 100, 0)" /> |
+| `darkgrey` | <ColorBlock color="rgb(169, 169, 169)" /> |
+| `darkkhaki` | <ColorBlock color="rgb(189, 183, 107)" /> |
+| `darkmagenta` | <ColorBlock color="rgb(139, 0, 139)" /> |
+| `darkolivegreen` | <ColorBlock color="rgb(85, 107, 47)" /> |
+| `darkorange` | <ColorBlock color="rgb(255, 140, 0)" /> |
+| `darkorchid` | <ColorBlock color="rgb(153, 50, 204)" /> |
+| `darkred` | <ColorBlock color="rgb(139, 0, 0)" /> |
+| `darksalmon` | <ColorBlock color="rgb(233, 150, 122)" /> |
+| `darkseagreen` | <ColorBlock color="rgb(143, 188, 143)" /> |
+| `darkslateblue` | <ColorBlock color="rgb(72, 61, 139)" /> |
+| `darkslategray` | <ColorBlock color="rgb(47, 79, 79)" /> |
+| `darkslategrey` | <ColorBlock color="rgb(47, 79, 79)" /> |
+| `darkturquoise` | <ColorBlock color="rgb(0, 206, 209)" /> |
+| `darkviolet` | <ColorBlock color="rgb(148, 0, 211)" /> |
+| `deeppink` | <ColorBlock color="rgb(255, 20, 147)" /> |
+| `deepskyblue` | <ColorBlock color="rgb(0, 191, 255)" /> |
+| `dimgray` | <ColorBlock color="rgb(105, 105, 105)" /> |
+| `dimgrey` | <ColorBlock color="rgb(105, 105, 105)" /> |
+| `dodgerblue` | <ColorBlock color="rgb(30, 144, 255)" /> |
+| `firebrick` | <ColorBlock color="rgb(178, 34, 34)" /> |
+| `floralwhite` | <ColorBlock color="rgb(255, 250, 240)" /> |
+| `forestgreen` | <ColorBlock color="rgb(34, 139, 34)" /> |
+| `fuchsia` | <ColorBlock color="rgb(255, 0, 255)" /> |
+| `gainsboro` | <ColorBlock color="rgb(220, 220, 220)" /> |
+| `ghostwhite` | <ColorBlock color="rgb(248, 248, 255)" /> |
+| `gold` | <ColorBlock color="rgb(255, 215, 0)" /> |
+| `goldenrod` | <ColorBlock color="rgb(218, 165, 32)" /> |
+| `gray` | <ColorBlock color="rgb(128, 128, 128)" /> |
+| `green` | <ColorBlock color="rgb(0, 128, 0)" /> |
+| `greenyellow` | <ColorBlock color="rgb(173, 255, 47)" /> |
+| `grey` | <ColorBlock color="rgb(128, 128, 128)" /> |
+| `honeydew` | <ColorBlock color="rgb(240, 255, 240)" /> |
+| `hotpink` | <ColorBlock color="rgb(255, 105, 180)" /> |
+| `indianred` | <ColorBlock color="rgb(205, 92, 92)" /> |
+| `indigo` | <ColorBlock color="rgb(75, 0, 130)" /> |
+| `ivory` | <ColorBlock color="rgb(255, 255, 240)" /> |
+| `khaki` | <ColorBlock color="rgb(240, 230, 140)" /> |
+| `lavender` | <ColorBlock color="rgb(230, 230, 250)" /> |
+| `lavenderblush` | <ColorBlock color="rgb(255, 240, 245)" /> |
+| `lawngreen` | <ColorBlock color="rgb(124, 252, 0)" /> |
+| `lemonchiffon` | <ColorBlock color="rgb(255, 250, 205)" /> |
+| `lightblue` | <ColorBlock color="rgb(173, 216, 230)" /> |
+| `lightcoral` | <ColorBlock color="rgb(240, 128, 128)" /> |
+| `lightcyan` | <ColorBlock color="rgb(224, 255, 255)" /> |
+| `lightgoldenrodyellow` | <ColorBlock color="rgb(250, 250, 210)" /> |
+| `lightgray` | <ColorBlock color="rgb(211, 211, 211)" /> |
+| `lightgreen` | <ColorBlock color="rgb(144, 238, 144)" /> |
+| `lightgrey` | <ColorBlock color="rgb(211, 211, 211)" /> |
+| `lightpink` | <ColorBlock color="rgb(255, 182, 193)" /> |
+| `lightsalmon` | <ColorBlock color="rgb(255, 160, 122)" /> |
+| `lightseagreen` | <ColorBlock color="rgb(32, 178, 170)" /> |
+| `lightskyblue` | <ColorBlock color="rgb(135, 206, 250)" /> |
+| `lightslategray` | <ColorBlock color="rgb(119, 136, 153)" /> |
+| `lightslategrey` | <ColorBlock color="rgb(119, 136, 153)" /> |
+| `lightsteelblue` | <ColorBlock color="rgb(176, 196, 222)" /> |
+| `lightyellow` | <ColorBlock color="rgb(255, 255, 224)" /> |
+| `lime` | <ColorBlock color="rgb(0, 255, 0)" /> |
+| `limegreen` | <ColorBlock color="rgb(50, 205, 50)" /> |
+| `linen` | <ColorBlock color="rgb(250, 240, 230)" /> |
+| `magenta` | <ColorBlock color="rgb(255, 0, 255)" /> |
+| `maroon` | <ColorBlock color="rgb(128, 0, 0)" /> |
+| `mediumaquamarine` | <ColorBlock color="rgb(102, 205, 170)" /> |
+| `mediumblue` | <ColorBlock color="rgb(0, 0, 205)" /> |
+| `mediumorchid` | <ColorBlock color="rgb(186, 85, 211)" /> |
+| `mediumpurple` | <ColorBlock color="rgb(147, 112, 219)" /> |
+| `mediumseagreen` | <ColorBlock color="rgb(60, 179, 113)" /> |
+| `mediumslateblue` | <ColorBlock color="rgb(123, 104, 238)" /> |
+| `mediumspringgreen` | <ColorBlock color="rgb(0, 250, 154)" /> |
+| `mediumturquoise` | <ColorBlock color="rgb(72, 209, 204)" /> |
+| `mediumvioletred` | <ColorBlock color="rgb(199, 21, 133)" /> |
+| `midnightblue` | <ColorBlock color="rgb(25, 25, 112)" /> |
+| `mintcream` | <ColorBlock color="rgb(245, 255, 250)" /> |
+| `mistyrose` | <ColorBlock color="rgb(255, 228, 225)" /> |
+| `moccasin` | <ColorBlock color="rgb(255, 228, 181)" /> |
+| `navajowhite` | <ColorBlock color="rgb(255, 222, 173)" /> |
+| `navy` | <ColorBlock color="rgb(0, 0, 128)" /> |
+| `oldlace` | <ColorBlock color="rgb(253, 245, 230)" /> |
+| `olive` | <ColorBlock color="rgb(128, 128, 0)" /> |
+| `olivedrab` | <ColorBlock color="rgb(107, 142, 35)" /> |
+| `orange` | <ColorBlock color="rgb(255, 165, 0)" /> |
+| `orangered` | <ColorBlock color="rgb(255, 69, 0)" /> |
+| `orchid` | <ColorBlock color="rgb(218, 112, 214)" /> |
+| `palegoldenrod` | <ColorBlock color="rgb(238, 232, 170)" /> |
+| `palegreen` | <ColorBlock color="rgb(152, 251, 152)" /> |
+| `paleturquoise` | <ColorBlock color="rgb(175, 238, 238)" /> |
+| `palevioletred` | <ColorBlock color="rgb(219, 112, 147)" /> |
+| `papayawhip` | <ColorBlock color="rgb(255, 239, 213)" /> |
+| `peachpuff` | <ColorBlock color="rgb(255, 218, 185)" /> |
+| `peru` | <ColorBlock color="rgb(205, 133, 63)" /> |
+| `pink` | <ColorBlock color="rgb(255, 192, 203)" /> |
+| `plum` | <ColorBlock color="rgb(221, 160, 221)" /> |
+| `powderblue` | <ColorBlock color="rgb(176, 224, 230)" /> |
+| `purple` | <ColorBlock color="rgb(128, 0, 128)" /> |
+| `rebeccapurple` | <ColorBlock color="rgb(102, 51, 153)" /> |
+| `red` | <ColorBlock color="rgb(255, 0, 0)" /> |
+| `rosybrown` | <ColorBlock color="rgb(188, 143, 143)" /> |
+| `royalblue` | <ColorBlock color="rgb(65, 105, 225)" /> |
+| `saddlebrown` | <ColorBlock color="rgb(139, 69, 19)" /> |
+| `salmon` | <ColorBlock color="rgb(250, 128, 114)" /> |
+| `sandybrown` | <ColorBlock color="rgb(244, 164, 96)" /> |
+| `seagreen` | <ColorBlock color="rgb(46, 139, 87)" /> |
+| `seashell` | <ColorBlock color="rgb(255, 245, 238)" /> |
+| `sienna` | <ColorBlock color="rgb(160, 82, 45)" /> |
+| `silver` | <ColorBlock color="rgb(192, 192, 192)" /> |
+| `skyblue` | <ColorBlock color="rgb(135, 206, 235)" /> |
+| `slateblue` | <ColorBlock color="rgb(106, 90, 205)" /> |
+| `slategray` | <ColorBlock color="rgb(112, 128, 144)" /> |
+| `slategrey` | <ColorBlock color="rgb(112, 128, 144)" /> |
+| `snow` | <ColorBlock color="rgb(255, 250, 250)" /> |
+| `springgreen` | <ColorBlock color="rgb(0, 255, 127)" /> |
+| `steelblue` | <ColorBlock color="rgb(70, 130, 180)" /> |
+| `tan` | <ColorBlock color="rgb(210, 180, 140)" /> |
+| `teal` | <ColorBlock color="rgb(0, 128, 128)" /> |
+| `thistle` | <ColorBlock color="rgb(216, 191, 216)" /> |
+| `tomato` | <ColorBlock color="rgb(255, 99, 71)" /> |
+| `turquoise` | <ColorBlock color="rgb(64, 224, 208)" /> |
+| `violet` | <ColorBlock color="rgb(238, 130, 238)" /> |
+| `wheat` | <ColorBlock color="rgb(245, 222, 179)" /> |
+| `white` | <ColorBlock color="rgb(255, 255, 255)" /> |
+| `whitesmoke` | <ColorBlock color="rgb(245, 245, 245)" /> |
+| `yellow` | <ColorBlock color="rgb(255, 255, 0)" /> |
+| `yellowgreen` | <ColorBlock color="rgb(154, 205, 50)" /> |
+</details>
+
+> 颜色名的列表定义在 [M-CreativeLab/jsar-dom/blob/main/src/living/cssom/parsers/named-colors.ts](https://github.com/M-CreativeLab/jsar-dom/blob/main/src/living/cssom/parsers/named-colors.ts)。
+
+#### URL
+
+在 SpatialCSS 中，URL 通常用于指向贴图、背景图片等，它的语法为：
+
+```
+url("path/to/your/image")
+url(path/to/your/image)
+```
+
+路径支持 URL 和相对路径，相对路径会基于 CSS 文件或当前文档解析。
+
+比如：
+
+```html
+<xsml>
+  <head>
+    <style>
+      @material example {
+        diffuse-texture: url(https://playground.babylonjs.com/textures/misc.jpg);
+      }
+      sphere {
+        material: "example";
+      }
+    </style>
+  </head>
+  <space>
+    <sphere segments="16" diameter="2" />
+  </space>
+</xsml>
+```
 
 ### 布局
 
@@ -68,9 +392,11 @@ id 选择器用于按照物体的 id 查询空间中的物体，比如：
 
 空间坐标系是一个三维坐标系，比如它的原点在空间的中心，x 轴正方向指向右侧，y 轴正方向指向上方，z 轴正方向指向屏幕外方向，在一个空间中，所有的位置关系都依赖于一个坐标系，而 JSAR 遵循 Babylon.js 的坐标系，即右手坐标系，具体来说：
 
+![coordinate-system](./babylonjs-coordinate-system.png)
+
 - x 轴正方向指向右侧
 - y 轴正方向指向上方
-- z 轴正方向指向屏幕外方向
+- z 轴正方向指向前面
 
 #### 物体中心点
 
@@ -152,79 +478,125 @@ id 选择器用于按照物体的 id 查询空间中的物体，比如：
 }
 ```
 
-这段代码的作用是将 id 为 a1 的物体的材质设置为红色，但是名为 "red" 的材质是在哪儿定义的呢？SCSS 使用和定义字体、关键帧一样的方式即：
+这段代码的作用是将 id 为 a1 的物体的材质设置为红色，但是名为 "red" 的材质是在哪儿定义的呢？SpatialCSS 使用 AtRule 的方式来定义材质：
   
 ```css
 @material red {
+  /** 材质基础类型 */
+  material-type: physical-based;
   /** 材质的具体属性 */
 }
 ```
 
 #### 标准材质（Standard）
 
-标准材质是默认的材质类型，不需要通过 type 设置，它提供的属性如下。
+标准材质是默认的材质类型，不需要通过 `material-type` 设置，它提供的属性如下。
 
-> 暂不支持通过 SCSS 来设置贴图（Texture）类型的属性。
-
-##### `diffuse-color`
-
-材质的漫反射颜色，支持的格式有：
-
-- `#rrggbb`：比如 `#ff0000` 表示红色
-- `rgb(r,g,b)`：比如 `rgb(255,0,0)` 表示红色
-
-##### `specular-color`
-
-材质的镜面反射颜色，支持颜色同 `diffuse-color`。
-
-##### `emissive-color`
-
-材质的自发光颜色，支持颜色同 `diffuse-color`。
+| 属性 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| `diffuse-color` | 颜色 | `#ffffff` | 材质的漫反射颜色 |
+| `ambient-color` | 颜色 | `#ffffff` | 材质的环境光颜色 |
+| `specular-color` | 颜色 | `#ffffff` | 材质的镜面反射颜色 |
+| `emissive-color` | 颜色 | `#000000` | 材质的自发光颜色 |
+| `diffuse-texture` | URL | 无 | 材质的漫反射贴图 |
+| `ambient-texture` | URL | 无 | 材质的环境光贴图 |
+| `specular-texture` | URL | 无 | 材质的镜面反射贴图 |
+| `emissive-texture` | URL | 无 | 材质的自发光贴图 |
+| `specular-power` | 数值（0-128） | `64` | 材质的镜面反射强度 |
 
 #### 物理材质（Physical-based）
 
-物理材质是一种基于物理的材质，它提供了更加真实的光影渲染，支持的属性如下。
+物理材质是一种基于物理的材质，它提供了更加真实的光影渲染。
 
-##### `albedo-color`
+使用物理材质需要设置 `material-type` 为 `physical-based`，比如：
 
-材质的基础颜色，支持颜色同 `diffuse-color`。
+```css
+@material red {
+  material-type: physical-based;
+}
+```
 
-##### `metallic`
+属性列表如下：
 
-材质的金属度，数值范围为 0 到 1，0 表示非金属，1 表示完全金属。
+| 属性 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| `physical-metallic` | 数值（0-1） | `0` | 材质的金属度 |
+| `physical-roughness` | 数值（0-1） | `0` | 材质的粗糙度 |
+| `albedo-color` | 颜色 | `#ffffff` | 材质的基础颜色 |
+| `emissive-color` | 颜色 | `#000000` | 材质的自发光颜色 |
+| `albedo-texture` | URL | 无 | 材质的基础贴图 |
+| `emissive-texture` | URL | 无 | 材质的自发光贴图 |
+| `bump-texture` | URL | 无 | 材质的凹凸贴图 |
 
-##### `roughness`
+#### 网格材质（Grid）
 
-材质的粗糙度，数值范围为 0 到 1，0 表示完全光滑，1 表示完全粗糙。
+网格材质可以在物体上绘制网格。
+
+![](spatial-grid-system.png)
+
+使用网格材质需要设置 `material-type` 为 `grid`，比如：
+
+```css
+@material red {
+  material-type: grid;
+}
+```
+
+属性列表如下：
+
+| 属性 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| `material-grid-width` | 数值 | `1` | 网格的宽度 |
+| `material-grid-height` | 数值 | `1` | 网格的高度 |
+| `material-grid-background-color` | 颜色 | `#ffffff` | 网格的背景颜色 |
+| `material-grid-cell-width` | 数值 | `0.1` | 网格的单元格宽度 |
+| `material-grid-cell-height` | 数值 | `0.1` | 网格的单元格高度 |
+| `material-grid-major-line-color` | 颜色 | `#ffffff` | 网格的主要线条颜色 |
+| `material-grid-minor-line-color` | 颜色 | `#ffffff` | 网格的次要线条颜色 |
 
 #### 通用属性
 
 通用属性是指所有材质都支持的属性，它们的含义如下。
 
-##### `alpha`
+##### 透明度模式
 
-材质的透明度，数值范围为 0 到 1，0 表示完全透明，1 表示完全不透明。
+用于设置材质的透明度模式，可以通过 `material-alpha-mode` 设置：
 
-##### `backface-culling`
+```css
+@material red {
+  material-alpha-mode: additive;
+}
+```
 
-材质的背面剔除，数值为 `true` 或 `false`，默认为 `true`，表示剔除背面，`false` 表示不剔除背面。
+| 属性 | 描述 |
+| --- | --- |
+| `additive` | 这种混合模式将有效地将新像素值和现有像素值相加，产生一种幽灵般的效果，并使网格背后的内容变亮。 |
+| `combine` | 混合效果受到正在绘制的像素的 alpha 值控制。|
+| `subtractive` | 新的像素值从现有像素值中减去，产生一种"反色"效果。|
+| `multiply` | 新的像素值与现有像素值相乘，因此渲染网格背后的内容变暗。这在某种程度上可以看作是 "additive" 效果的相反。 |
+| `miximized` | 这种混合模式类似于 "additive"，但产生的效果较为柔和，饱和度较低。|
+| `one-one` | 这种混合模式与 "additive" 非常相似，唯一的区别在于它不受 alpha 值的调制。在内部用于各种视觉效果。 |
+| `none` | 不透明 |
 
-##### `side-orientation`
+##### 朝向
 
-材质的面朝向，数值为 `frontside`、`backside` 或 `doubleside`，他们分别表示：
+用于设置材质的朝向，可以通过 `material-orientation` 设置：
 
-- `frontside`：正面
-- `backside`：背面，即反面
-- `doubleside`：双面，即正面和背面都显示
+```css
+@material red {
+  material-orientation: clockwise;
+}
+```
 
-##### `transparency-mode`
+##### 渲染线框
 
-材质的透明度模式，数值为 `opaque`、`alpha`、`alpha-blend` 或 `alpha-test`，他们分别表示：
+用于设置材质是否显示为线框模式，可以通过 `material-wireframe` 设置：
 
-- `opaque`：不透明
-- `alpha`：透明
-- `alpha-blend`：透明混合，即根据透明度来决定是否透明
-- `alpha-test`：透明测试，即根据透明度阈值来决定是否透明
+```css
+@material red {
+  material-wireframe: yes;
+}
+```
 
 ### 动画
 
