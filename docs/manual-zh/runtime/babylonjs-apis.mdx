@@ -1,21 +1,21 @@
 # Babylon.js APIs
 
-JSAR 是一套基于 Babylon.js 构建的 WebAR 应用开发框架，因此在 JSAR TypeScript 中，你可以使用大部分 Babylon.js 的应用接口，本文将着重介绍 JSAR 运行时中如何使用，以及可以使用的 Babylon.js APIs。
+JSAR 是一套基于 Babylon.js 构建的空间应用开发框架，因此在 JSAR TypeScript 中，开发者可以使用大部分的 Babylon.js 接口，本文将着重介绍 JSAR 运行时中如何使用，以及可以使用的 Babylon.js APIs。
 
 ## 如何使用 Babylon.js APIs
 
-在 JSAR 中使用 [Babylon.js APIs](https://doc.babylonjs.com/typedoc/modules/BABYLON) 非常简单，因为在每个 XSML 文档中，都会默认创建一个 Babylon.js 场景，你可以通过全局变量 `spaceDocument` 获取到它：
+在 JSAR 中使用 [Babylon.js APIs](https://doc.babylonjs.com/typedoc/modules/BABYLON) 非常简单，因为在每个 XSML 文档中，都会默认创建一个 Babylon.js 场景，你可以通过全局变量 `spatialDocument` 获取到它：
 
 ```typescript
 // 获取 Babylon.js 场景
-const scene = spaceDocument.scene as BABYLON.Scene;
+const scene = spatialDocument.scene as BABYLON.Scene;
 ```
 
 这样就可以按照 [Babylon.js Scene](https://doc.babylonjs.com/typedoc/classes/BABYLON.Scene) 的接口来使用这个对象了，比如获取到场景下的所有 Mesh：
 
 ```typescript
 // 获取 Babylon.js 场景
-const scene = spaceDocument.scene as BABYLON.Scene;
+const scene = spatialDocument.scene as BABYLON.Scene;
 
 // 获取场景下的所有 Mesh
 const meshes = scene.meshes;
@@ -31,6 +31,32 @@ console.log(vector3);
 ```
 
 也可以直接访问 [BABYLON](https://doc.babylonjs.com/typedoc/modules/BABYLON) 这个对象。
+
+## 使用注意事项
+
+JSAR 支持了一套基于 DOM 的 3D 物体描述方式，它内部使用 Babylon.js 来实现，它兼容了 DOM API 的属性、查询、事件等能力，比如：
+
+```typescript
+const box = spatialDocument.createElement('cube');
+box.setAttribute('size', '10');
+box.addEventListener('rayenter', () => {
+  console.log('rayenter');
+});
+
+const container = spaceDocument.querySelector('#container');
+container.appendChild(box);
+```
+
+如果开发者直接使用 `BABYLON` 对象来创建的 `Mesh` 或 `TransformNode` 将不会被 JSAR DOM 管理，这也意味着开发者可能无法直接使用到这部分的能力。
+
+但这不意味在 JSAR 中使用 Babylon.js 不被推荐，在每个 JSAR DOM 的 `SpatialElement` 中都有一个 `asNativeType<T>` 方法，可以获取到 Babylon.js 中的原生对象，比如：
+
+```typescript
+const box = spatialDocument.createElement('cube');
+const boxNative = box.asNativeType<BABYLON.Mesh>(); // BABYLON.Mesh
+```
+
+另外，对于开发者使用 Babylon.js API 创建的 `Mesh` 或者 `TransformNode`，它们是可以被正常添加到场景并渲染的。
 
 ## 可使用的 Babylon.js APIs
 

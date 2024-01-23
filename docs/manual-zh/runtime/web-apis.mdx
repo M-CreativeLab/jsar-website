@@ -8,7 +8,7 @@ JSAR 作为可嵌入空间的 Web 运行时，会优先考虑通过 Web APIs 为
 | --- | --- | --- |
 | `import` | **已实现** | 导入 TypeScript/JavaScript 模块 |
 | `export` | **已实现** | 导出模块 |
-| `import.meta` | 未实现 | - |
+| `import.meta` | ❌ | - |
 | `import()` | **已实现** | 动态导入模块 |
 | HTTP imports | **已实现** | 远程导入模块 |
 
@@ -51,7 +51,9 @@ JSAR 会通过导入的文件拓展名来判断文件类型，并根据不同的
 | --- | --- | --- |
 | 脚本 | `Module` | `.ts`, `.js`, `.mjs` |
 | JSON | `Object` | `.json` |
-| 数据 | `ArrayBuffer` | `.bin`, `.wasm`, `.png`, `.jpeg`, `.webp` |
+| 数据 | `ArrayBuffer` | `.bin`, `.data`, `.wasm`, `.png`, `.jpg`, `.jpeg`, `.webp`, `.mp3`, `.wav`, `.ogg` |
+
+> ESM 支持文件格式的运行时代码可以查看：[M-CreativeLab/jsar-dom:src/living/esm-supports.json](https://github.com/M-CreativeLab/jsar-dom/blob/main/src/living/esm-supports.json)
 
 示例代码如下：
 
@@ -64,6 +66,23 @@ import bin3 from './bin3.png';    // ArrayBuffer
 import bin4 from './bin4.jpeg';   // ArrayBuffer
 import bin5 from './bin5.webp';   // ArrayBuffer
 ```
+
+在 JSAR 中，也支持 HTTP imports，即通过 HTTP 协议来导入模块，例如：
+
+```typescript
+import { h, Component, render } from 'https://esm.sh/preact';
+const plane = document.querySelector('#inner');
+const shadowRoot = plane.shadowRoot;
+const rootDiv = shadowRoot.querySelector('#root');
+
+const app = h('h1', null, 'Hello World!');
+console.log(app, render);
+render(app, rootDiv);
+```
+
+> 注：以上例子仅用于展示 HTTP imports 的使用方法，实际上 JSAR 中还不支持 `preact`。
+
+> 在 JSAR 中并不推荐开发者使用 HTTP imports，因为它会导致开发者从多个来源加载模块，并且打包后的应用会存在外部依赖，不符合 JSAR 的离线随时可用的特性。但由于 HTTP imports 可以方便开发者快速做一些尝试，因此 JSAR 选择支持它，但仍然建议开发者在最终的应用中使用本地模块。
 
 ## 全局函数
 
@@ -175,8 +194,8 @@ setTimeout(() => clearInterval(interval), 5000);
 
 ```typescript
 const xr = navigator.xr;
-xr.requestSession('immersive-vr')
-  .then(session => {
+xr.requestSession('immersive-ar')
+  .then((session) => {
     session.requestAnimationFrame((time) => {
       // 渲染空间
     });
@@ -188,13 +207,13 @@ xr.requestSession('immersive-vr')
 | API | 状态 | 备注 |
 | --- | --- | --- |
 | `createImageBitmap` | **已实现** | 创建图片位图 |
-| 参数 `options.colorSpaceConversion` | 否 | - |
-| 参数 `options.imageOrientation` | 否 | - |
-| 参数 `options.premultiplyAlpha` | 否 | - |
-| 参数 `options.resizeHeight` | 否 | - |
-| 参数 `options.resizeQuality` | 否 | - |
-| 参数 `options.resizeWidth` | 否 | - |
-| 使用 `SVGImageElement` 作为图片源 | 否 | - |
+| 参数 `options.colorSpaceConversion` | ❌ | - |
+| 参数 `options.imageOrientation` | ❌ | - |
+| 参数 `options.premultiplyAlpha` | ❌ | - |
+| 参数 `options.resizeHeight` | ❌ | - |
+| 参数 `options.resizeQuality` | ❌ | - |
+| 参数 `options.resizeWidth` | ❌ | - |
+| 使用 `SVGImageElement` 作为图片源 | ❌ | - |
 
 该函数用于创建 [`ImageBitmap`][] 对象，再将 [`ImageBitmap`][] 用于其他用途，如创建原始贴图。
 
@@ -225,6 +244,454 @@ createImageBitmap(blob).then(function (bitmap) {
   console.log(bitmap.width);
 });
 ```
+
+## Document Object Model (DOM)
+
+> 文档对象模型（DOM）将 Web 页面与到脚本或编程语言连接起来。通常是指 JavaScript，但将 HTML、SVG 或 XML 文档建模为对象并不是 JavaScript 语言的一部分。DOM 模型用一个逻辑树来表示一个文档，树的每个分支的终点都是一个节点 (node)，每个节点都包含着对象 (objects)。DOM 的方法 (methods) 让你可以用特定方式操作这个树，用这些方法你可以改变文档的结构、样式或者内容。节点可以关联上事件处理器，一旦某一事件被触发了，那些事件处理器就会被执行。
+>
+> 来自：https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model
+
+与传统的 Web 应用一样，在 JSAR 或 XSML 中你可以通过同样的 DOM API 访问和使用你的“空间”文档。
+
+本小节将介绍 JSAR 支持的 DOM API。
+
+所有 DOM API 的实现都在 [https://github.com/M-CreativeLab/jsar-dom](https://github.com/M-CreativeLab/jsar-dom) 中，开发者可以通过该仓库来查看具体的实现，或补充未实现的能力。
+
+### `AbortController`
+
+> 暂未支持
+
+### `AbortSignal`
+
+> 暂未支持
+
+### `AbstractRange`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `AbstractRange` | **已实现** | - |
+| `AbstractRange()` 构造函数 | **已实现** | - |
+| `collapsed` 属性 | **已实现** | - |
+| `endContainer` 属性 | **已实现** | - |
+| `endOffset` 属性 | **已实现** | - |
+| `startContainer` 属性 | **已实现** | - |
+| `startOffset` 属性 | **已实现** | - |
+
+### `Attr`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `Attr` | **已实现** | - |
+| `Attr()` 构造函数 | **已实现** | - |
+| `name` 属性 | **已实现** | - |
+| `namespaceURI` 属性 | **已实现** | - |
+| `ownerElement` 属性 | **已实现** | - |
+| `prefix` 属性 | **已实现** | - |
+| `specified` 属性 | **已实现** | - |
+| `value` 属性 | **已实现** | - |
+
+### `CDATASection`
+
+> 暂未支持
+
+### `CharacterData`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `CharacterData` | **已实现** | - |
+| `CharacterData()` 构造函数 | **已实现** | - |
+| `data` 属性 | **已实现** | - |
+| `length` 属性 | **已实现** | - |
+| `nextElementSibling` 属性 | ❌ | - |
+| `previousElementSibling` 属性 | ❌ | - |
+| `after()` 方法 | ❌ | - |
+| `appendData()` 方法 | **已实现** | - |
+| `before()` 方法 | ❌ | - |
+| `deleteData()` 方法 | **已实现** | - |
+| `insertData()` 方法 | **已实现** | - |
+| `remove()` 方法 | ❌ | - |
+| `replaceData()` 方法 | ❌ | - |
+| `substringData()` 方法 | **已实现** | - |
+
+### `Comment`
+
+> 暂未支持
+
+### `CustomEvent`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `CustomEvent` | **已实现** | - |
+| `CustomEvent()` 构造函数 | **已实现** | - |
+| `detail` 属性 | **已实现** | - |
+
+### `SpatialDocument`
+
+> 在 JSAR 中，`SpatialDocument` 取代了 `Document` 代替当前文档对象。
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `SpatialDocument` | **已实现** | - |
+| `SpatialDocument()` 构造函数 | ❌ | 在 JSAR 中不允许开发者动态创建 `SpatialDocument` 对象 |
+| `activeElement` 属性 | ❌ | - |
+| `body` 属性 | **已实现** | 返回 `null` |
+| `characterSet` 属性 | **已实现** | - |
+| `charset` 属性 | **已实现** | - |
+| `compatMode` 属性 | **已实现** | - |
+| `contentType` 属性 | ❌ | - |
+| `cookie` 属性 | ❌ | - |
+| `currentScript` 属性 | ❌ | - |
+| `defaultView` 属性 | ❌ | - |
+| `designMode` 属性 | ❌ | - |
+| `dir` 属性 | ❌ | - |
+| `doctype` 属性 | **已实现** | 返回当前文档类型对象 |
+| `documentElement` 属性 | **已实现** | - |
+| `documentURI` 属性 | **已实现** | - |
+| `domain` 属性 | ❌ | - |
+| `embeds` 属性 | ❌ | - |
+| `fgColor` 属性 | **已实现** | 返回 `transparent` |
+| `forms` 属性 | ❌ | - |
+| `fullscreen` 属性 | ❌ | - |
+| `fullscreenEnabled` 属性 | ❌ | - |
+| `head` 属性 | **已实现** | 返回 `<head>` 元素对象 |
+| `hidden` 属性 | ❌ | - |
+| `images` 属性 | ❌ | - |
+| `implementation` 属性 | ❌ | - |
+| `inputEncoding` 属性 | **已实现** | - |
+| `lastModified` 属性 | **已实现** | - |
+| `links` 属性 | ❌ | - |
+| `location` 属性 | ❌ | - |
+| `origin` 属性 | ❌ | - |
+| `ownerDocument` 属性 | **已实现** | 返回 `null` |
+| `plugins` 属性 | ❌ | - |
+| `readyState` 属性 | ❌ | - |
+| `referrer` 属性 | ❌ | - |
+| `scripts` 属性 | **已实现** | 返回 `<script>` 元素对象列表 |
+| `scrollingElement` 属性 | ❌ | - |
+| `space` 属性 | **已实现** | 返回空间元素的根节点 |
+| `title` 属性 | **已实现** | 返回文档标题 |
+| `URL` 属性 | **已实现** | 返回文档 URL |
+| `visibilityState` 属性 | ❌ | - |
+| `adoptNode()` 方法 | **已实现** | - |
+| `append()` 方法 | **已实现** | - |
+| `captureEvents()` 方法 | ❌ | - |
+| `caretRangeFromPoint()` 方法 | ❌ | - |
+| `clear()` 方法 | ❌ | - |
+| `close()` 方法 | ❌ | - |
+| `createAttribute()` 方法 | **已实现** | - |
+| `createAttributeNS()` 方法 | **已实现** | - |
+| `createCDATASection()` 方法 | ❌ | - |
+| `createComment()` 方法 | ❌ | - |
+| `createDocumentFragment()` 方法 | ❌ | - |
+| `createElement()` 方法 | **已实现** | - |
+| `createElementNS()` 方法 | ❌ | - |
+| `createEvent()` 方法 | **已实现** | - |
+| `createExpression()` 方法 | ❌ | - |
+| `createNodeIterator()` 方法 | **已实现** | - |
+| `createNSResolver()` 方法 | ❌ | - |
+| `createProcessingInstruction()` 方法 | ❌ | - |
+| `createRange()` 方法 | **已实现** | - |
+| `createTextNode()` 方法 | **已实现** | - |
+| `createTreeWalker()` 方法 | ❌ | - |
+| `elementFromPoint()` 方法 | ❌ | - |
+| `elementsFromPoint()` 方法 | ❌ | - |
+| `evaluate()` 方法 | ❌ | - |
+| `execCommand()` 方法 | ❌ | - |
+| `exitFullscreen()` 方法 | ❌ | - |
+| `exitPointerLock()` 方法 | ❌ | - |
+| `getAnimations()` 方法 | ❌ | - |
+| `getBoxQuads()` 方法 | ❌ | - |
+| `getElementById()` 方法 | **已实现** | - |
+| `getElementsByClassName()` 方法 | **已实现** | - |
+| `getElementsByName()` 方法 | **已实现** | - |
+| `getElementsByTagName()` 方法 | **已实现** | - |
+| `getElementsByTagNameNS()` 方法 | **已实现** | - |
+| `getSelection()` 方法 | ❌ | - |
+| `hasFocus()` 方法 | ❌ | - |
+| `importNode()` 方法 | ❌ | - |
+| `open()` 方法 | ❌ | - |
+| `prepend()` 方法 | ❌ | - |
+| `queryCommandEnabled()` 方法 | ❌ | - |
+| `queryCommandIndeterm()` 方法 | ❌ | - |
+| `queryCommandState()` 方法 | ❌ | - |
+| `queryCommandSupported()` 方法 | ❌ | - |
+| `queryCommandValue()` 方法 | ❌ | - |
+| `querySelector()` 方法 | **已实现** | 查询单个节点 |
+| `querySelectorAll()` 方法 | **已实现** | 查询所有满足要求的节点列表 |
+| `releaseEvents()` 方法 | ❌ | - |
+| `write()` 方法 | ❌ | - |
+| `writeln()` 方法 | ❌ | - |
+
+通过全局对象 `spatialDocument` 可访问到当前文档对象，例如：
+
+```typescript
+console.log(spatialDocument.title); // "Hello World"
+```
+
+> JSAR 为了可兼容传统浏览器的一些库，它们使用到了 `document` 对象，因此 JSAR 也提供了 `document` 对象，但它仅仅是 `spatialDocument` 的别名，因此对于框架开发者来说，可以直接使用 `document` 对象，但对于应用开发者来说，我们建议使用 `spatialDocument` 对象。
+
+### `DocumentFragment`
+
+> 暂未支持
+
+### `DocumentType`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `DocumentType` | **已实现** | - |
+| `DocumentType()` 构造函数 | **已实现** | - |
+| `name` 属性 | **已实现** | - |
+| `publicId` 属性 | **已实现** | - |
+| `systemId` 属性 | **已实现** | - |
+
+### `DOMImplementation`
+
+> 暂未支持
+
+### `DOMParser`
+
+> 暂未支持
+
+### `DOMPoint`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `DOMPoint` | **已实现** | - |
+| `DOMPoint()` 构造函数 | **已实现** | - |
+| `w` 属性 | **已实现** | - |
+| `x` 属性 | **已实现** | - |
+| `y` 属性 | **已实现** | - |
+| `z` 属性 | **已实现** | - |
+| `fromPoint()` 静态方法 | **已实现** | - |
+| `matrixTransform()` 方法 | ❌ | - |
+
+### `DOMRect`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `DOMRect` | **已实现** | - |
+| `DOMRect()` 构造函数 | **已实现** | - |
+| `x` 属性 | **已实现** | - |
+| `y` 属性 | **已实现** | - |
+| `width` 属性 | **已实现** | - |
+| `height` 属性 | **已实现** | - |
+| `fromRect()` 静态方法 | **已实现** | - |
+
+### `Element`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `Element` | **已实现** | - |
+| `Element()` 构造函数 | **已实现** | - |
+| `attributes` 属性 | ❌ | - |
+| `childElementCount` 属性 | **已实现** | 返回此元素的子元素个数 |
+| `children` 属性 | **已实现** | 返回此元素的子元素列表 |
+| `classList` 属性 | **已实现** | 返回该元素包含的所有 class 属性，是一个 `DOMTokenList` |
+| `className` 属性 | **已实现** | 一个字符串，表示这个元素的类 |
+| `clientHeight` 属性 | ❌ | - |
+| `clientLeft` 属性 | ❌ | - |
+| `clientTop` 属性 | ❌ | - |
+| `clientWidth` 属性 | ❌ | - |
+| `id` 属性 | **已实现** | - |
+| `innerHTML` 属性 | ❌ | - |
+| `localName` 属性 | **已实现** | - | 
+| `namespaceURI` 属性 | **已实现** | - |
+| `nextElementSibling` 属性 | ❌ | - |
+| `outerHTML` 属性 | ❌ | - |
+| `ownerDocument` 属性 | **已实现** | - |
+| `previousElementSibling` 属性 | ❌ | - |
+| `scrollHeight` 属性 | ❌ | - |
+| `scrollLeft` 属性 | ❌ | - |
+| `scrollTop` 属性 | ❌ | - |
+| `scrollWidth` 属性 | ❌ | - |
+| `shadowRoot` 属性 | **已实现** | - |
+| `slot` 属性 | ❌ | - |
+| `tagName` 属性 | **已实现** | - |
+| `addEventListener()` 方法 | **已实现** | - |
+| `after()` 方法 | ❌ | - |
+| `animate()` 方法 | ❌ | - |
+| `append()` 方法 | **已实现** | - |
+| `attachShadow()` 方法 | **已实现** | - |
+| `before()` 方法 |❌ | - |
+| `blur()` 方法 | ❌ | - |
+| `click()` 方法 | ❌ | - |
+| `closest()` 方法 | ❌ | - |
+| `compareDocumentPosition()` 方法 | ❌ | - |
+| `contains()` 方法 | ❌ | - |
+| `detachShadow()` 方法 | ❌ | - |
+| `dispatchEvent()` 方法 | **已实现** | - |
+| `focus()` 方法 | ❌ | - |
+| `getAttribute()` 方法 | **已实现** | - |
+| `getAttributeNames()` 方法 | **已实现** | - |
+| `getAttributeNS()` 方法 | **已实现** | - |
+| `getAttributeNode()` 方法 | **已实现** | - |
+| `getAttributeNodeNS()` 方法 | **已实现** | - |
+| `getBoundingClientRect()` 方法 | ❌ | - |
+| `getClientRects()` 方法 | ❌ | - |
+| `getElementsByClassName()` 方法 | **已实现** | - |
+| `getElementsByTagName()` 方法 | **已实现** | - |
+| `getElementsByTagNameNS()` 方法 | **已实现** | - |
+| `hasAttribute()` 方法 | **已实现** | - |
+| `hasAttributeNS()` 方法 | **已实现** | - |
+| `hasAttributes()` 方法 | **已实现** | - |
+| `hasPointerCapture()` 方法 | ❌ | - |
+| `insertAdjacentElement()` 方法 | ❌ | - |
+| `insertAdjacentHTML()` 方法 | ❌ | - |
+| `insertAdjacentText()` 方法 | ❌ | - |
+| `insertBefore()` 方法 | ❌ | - |
+| `matches()` 方法 | **已实现** | - |
+| `prepend()` 方法 | **已实现** | - |
+| `querySelector()` 方法 | **已实现** | - |
+| `querySelectorAll()` 方法 | **已实现** | - |
+| `releasePointerCapture()` 方法 | ❌ | - |
+| `remove()` 方法 | **已实现** | - |
+| `removeAttribute()` 方法 | **已实现** | - |
+| `removeAttributeNS()` 方法 | **已实现** | - |
+| `removeAttributeNode()` 方法 | **已实现** | - |
+| `removeEventListener()` 方法 | **已实现** | - |
+| `replaceWith()` 方法 | ❌ | - |
+| `requestFullscreen()` 方法 | ❌ | - |
+| `requestPointerLock()` 方法 | ❌ | - |
+| `scroll()` 方法 | ❌ | - |
+| `scrollBy()` 方法 | ❌ | - |
+| `scrollIntoView()` 方法 | ❌ | - |
+| `scrollTo()` 方法 | ❌ | - |
+| `setAttribute()` 方法 | **已实现** | - |
+| `setAttributeNS()` 方法 | **已实现** | - |
+| `setAttributeNode()` 方法 | **已实现** | - |
+| `setAttributeNodeNS()` 方法 | **已实现** | - |
+| `setPointerCapture()` 方法 | ❌ | - |
+| `toggleAttribute()` 方法 | **已实现** | - |
+
+### `Event`
+
+已实现，见 Node.js [Event](https://nodejs.org/dist/v18.16.0/docs/api/events.html#class-event)。
+
+### `EventTarget`
+
+已实现，见 Node.js [EventTarget](https://nodejs.org/dist/v18.16.0/docs/api/events.html#class-eventtarget)。
+
+### `MutationObserver`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `MutationObserver` | **已实现** | - |
+| `MutationObserver()` 构造函数 | **已实现** | - |
+| `disconnect()` 方法 | **已实现** | - |
+| `observe()` 方法 | **已实现** | - |
+| `takeRecords()` 方法 | **已实现** | - |
+
+### `MutationRecord`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `MutationRecord` | **已实现** | - |
+| `MutationRecord()` 构造函数 | **已实现** | - |
+| `addedNodes` 属性 | **已实现** | - |
+| `attributeName` 属性 | **已实现** | - |
+| `attributeNamespace` 属性 | **已实现** | - |
+| `nextSibling` 属性 | **已实现** | - |
+| `oldValue` 属性 | **已实现** | - |
+| `previousSibling` 属性 | **已实现** | - |
+| `removedNodes` 属性 | **已实现** | - |
+| `target` 属性 | **已实现** | - |
+| `type` 属性 | **已实现** | - |
+
+### `Node`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `Node` | **已实现** | - |
+| `Node()` 构造函数 | **已实现** | - |
+| `baseURI` 属性 | **已实现** | - |
+| `childNodes` 属性 | **已实现** | 返回一个包含了该节点所有子节点的实时的 `NodeList` |
+| `firstChild` 属性 | **已实现** | 返回该节点的第一个子节点 `Node`，如果该节点没有子节点则返回 `null` |
+| `isConnected` 属性 | **已实现** | 返回一个布尔值用来检测该节点是否已连接 (直接或者间接) 到一个上下文对象上 |
+| `lastChild` 属性 | **已实现** | 返回该节点的最后一个子节点 `Node`，如果该节点没有子节点则返回null |
+| `nextSibling` 属性 | **已实现** | - |
+| `nodeName` 属性 | **已实现** | 返回一个包含该节点名字的 `DOMString` |
+| `nodeType` 属性 | **已实现** | 返回一个与该节点类型对应的无符号短整型的值 |
+| `nodeValue` 属性 | **已实现** | 返回或设置当前节点的值 |
+| `ownerDocument` 属性 | **已实现** | 返回这个元素属于的 `Document` 对象。如果没有 `Document` 对象与之关联，返回 `null` |
+| `parentElement` 属性 | **已实现** | - |
+| `parentNode` 属性 | **已实现** | - |
+| `previousSibling` 属性 | **已实现** | - |
+| `textContent` 属性 | **已实现** | 返回或设置一个元素内所有子节点及其后代的文本内容 |
+| `appendChild()` 方法 | **已实现** | 将指定的 childNode 参数作为最后一个子节点添加到当前节点 |
+| `cloneNode()` 方法 | **已实现** | 克隆一个 `Node`，并且可以选择是否克隆这个节点下的所有内容。默认情况下，节点下的内容会被克隆 |
+| `compareDocumentPosition()` 方法 | ❌ | - |
+| `contains()` 方法 | **已实现** | 返回一个 Boolean 布尔值，来表示传入的节点是否为该节点的后代节点 |
+| `getRootNode()` 方法 | **已实现** | 返回上下文对象的根节点。如果 shadow root 节点存在的话，也可以在返回的节点中包含它 |
+| `hasChildNodes()` 方法 | **已实现** | 返回一个 Boolean 布尔值，来表示该元素是否包含有子节点 |
+| `insertBefore()` 方法 | **已实现** | 在当前节点下增加一个子节点 `Node`，并使该子节点位于参考节点的前面 |
+| `isEqualNode()` 方法 | **已实现** | 返回一个 Boolean 类型值。当两个 node 节点为相同类型的节点且定义的数据点匹配时（即属性和属性值相同，节点值相同）返回 true，否则返回 false |
+| `isSameNode()` 方法 | **已实现** | 返回一个 Boolean 类型值。返回这两个节点的引用比较结果 |
+| `normalize()` 方法 | ❌ | 对该元素下的所有文本子节点进行整理，合并相邻的文本节点并清除空文本节点 |
+| `removeChild()` 方法 | **已实现** | 移除当前节点的一个子节点。这个子节点必须存在于当前节点中 |
+| `replaceChild()` 方法 | **已实现** | 对选定的节点，替换一个子节点 `Node` 为另外一个节点 |
+
+### `ProcessingInstruction`
+
+> 暂未支持
+
+### `Range`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `Range` | **已实现** | `Range` 接口表示一个包含节点与文本节点的一部分的文档片段。 |
+| `Range()` 构造函数 | **已实现** | - |
+| `commonAncestorContainer` 属性 | **已实现** | 返回完整包含 `startContainer` 和 `endContainer` 的、最深一级的节点 |
+| `collapse()` 方法 | **已实现** | 将 Range 折叠到其边界的端点 |
+| `cloneContents()` 方法 | **已实现** | 返回一个复制 Range 中所有节点的文档片段 |
+| `cloneRange()` 方法 | **已实现** | 返回一个拥有和原 Range 对象相同端点的克隆的 Range 对象 |
+| `compareBoundaryPoints()` 方法 | **已实现** | 将该 Range 的边界与另一个 Range 的边界进行比较 |
+| `comparePoint()` 方法 | **已实现** | 返回 -1、0 或 1，分别表示端点在 Range 之前、内部还是之后 |
+| `createContextualFragment()` 方法 | **已实现** | - |
+| `deleteContents()` 方法 | **已实现** | - |
+| `detach()` 方法 | **已实现** | - |
+| `extractContents()` 方法 | **已实现** | 将 Range 的内容从文档树移动到一个文档片段 |
+| `getBoundingClientRect()` 方法 | ❌ | - |
+| `getClientRects()` 方法 | ❌ | - |
+| `insertNode()` 方法 | **已实现** | 在 Range 开头插入一个节点 |
+| `intersectsNode()` 方法 | **已实现** | 返回一个 boolean，表示给定的节点是否与 Range 相交 |
+| `isPointInRange()` 方法 | **已实现** | - |
+| `select()` 方法 | **已实现** | - |
+| `selectNodeContents()` 方法 | **已实现** | - |
+| `setEnd()` 方法 | **已实现** | 设置 Range 的终点 |
+| `setEndAfter()` 方法 | **已实现** | 以另一个节点为基准，设置 Range 的终点位置 |
+| `setEndBefore()` 方法 | **已实现** | 以另一个节点为基准，设置 Range 的终点位置 |
+| `setStart()` 方法 | **已实现** | 设置 Range 的起点。 |
+| `setStartAfter()` 方法 | **已实现** | 以另一个节点为基准，设置 Range 的起点位置 |
+| `setStartBefore()` 方法 | **已实现** | 以另一个节点为基准，设置 Range 的起点位置 |
+| `surroundContents()` 方法 | **已实现** | 将 Range 中的内容移动到一个新的节点 |
+| `toString()` 方法 | **已实现** | 返回 Range 中的文本 |
+
+### `SpatialElement`
+
+| API | 状态 | 备注 |
+| --- | --- | --- |
+| `SpatialElement` | **已实现** | `SpatialElement` 继承自 `Element` 类 |
+| `style` 属性 | **已实现** | 返回当前空间元素的样式 |
+| `position` 属性 | **已实现** | 返回或设置一个 `DOMPoint`，表示当前空间元素的相对位置 |
+| `rotationQuaternion` 属性 | **已实现** | 返回或设置一个 `DOMPoint`，表示当前空间元素的旋转四元数 |
+| `scaling` 属性 | **已实现** | 返回或设置一个 `DOMPoint`，表示当前空间元素的缩放比例 |
+| `textureSizeRatio` 属性 | **已实现** | 返回表示当前空间元素的贴图尺寸比例 |
+| `textureLighting` 属性 | **已实现** | 返回或设置空间元素的贴图是否启用光照 |
+| `asNativeType<T>()` 方法 | **已实现** | 返回当前空间元素的原生类型，比如 `BABYLON.Mesh` |
+| `attachShadow()` 方法 | **已实现** | 返回一个 `ShadowRoot` 对象用于在空间元素上创建一个 Web 可交互贴图 |
+| `attachCanvasTexture()` 方法 | **已实现** | 与 `attachShadow()` 类似，但用于创建一个画布对象 |
+
+### `StaticRange`
+
+> 暂未支持
+
+### `TextDecoder`
+
+> 暂未支持
+
+### `TextEncoder`
+
+> 暂未支持
 
 ## Blob API
 
@@ -318,17 +785,17 @@ console.log(navigator.userAgent); // "JSAR/0.1.0 (XSML/1.0)"
 | --- | --- | --- |
 | `OffscreenCanvas` | **已实现** | 代表一个离屏画布 |
 | `OffscreenCanvas()` 构造函数 | **已实现** | 创建一个离屏画布 |
-| `contextlost` 事件 | 否 | - |
-| `contextrestored` 事件 | 否 | - |
+| `contextlost` 事件 | ❌ | - |
+| `contextrestored` 事件 | ❌ | - |
 | `getContext` | **部分实现** | 获取画布上下文 |
 | `getContext` 支持 `2d` | **已实现** | 用于 2D 图形的绘制，返回 [`OffscreenCanvasRenderingContext2D`][] |
-| `getContext` 支持 `bitmaprenderer` | 否 | - |
-| `getContext` 支持 `webgl` | 否 | - |
-| `getContext` 支持 `webgl2` | 否 | - |
+| `getContext` 支持 `bitmaprenderer` | ❌ | - |
+| `getContext` 支持 `webgl` | ❌ | - |
+| `getContext` 支持 `webgl2` | ❌ | - |
 | `height` 属性 | **已实现** | 获取或设置画布高度 |
 | `width` 属性 | **已实现** | 获取或设置画布宽度 |
-| `transferToImageBitmap()` | 否 | - |
-| `convertToBlob()` | 否 | - |
+| `transferToImageBitmap()` | ❌ | - |
+| `convertToBlob()` | ❌ | - |
 
 在 JSAR TypeScript 中，你可以有多种方式来使用 `OffscreenCanvas`，比如：
 
@@ -349,7 +816,7 @@ const canvas = texture.getContext();  // 实际上是返回了一个 `OffscreenC
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| [`reset()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset) | 否 | 重置画布 |
+| [`reset()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset) | ❌ | 重置画布 |
 | [`transform()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform) | **已实现** | 变换画布 |
 | [`clearRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect) | **已实现** | 清除画布 |
 | [`fillRect()`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect) | **已实现** | 填充矩形 |
@@ -431,40 +898,38 @@ ctx.fillRect(0, 0, 100, 100);
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `AudioContext` | **已实现** | 音频上下文 |
-| `AudioBuffer` | **已实现** | 代表一个音频缓冲数据流 |
-| `AudioBufferSourceNode` | **已实现** | 代表一个输入源，用于生产音频流 |
-| `AudioDestinationNode` | **已实现** | 代表一个音频消费节点 |
-| `AudioListener` | 未实现 | 代表一个音频接收者，用于空间音频中表达声音接收方的属性和坐标 |
-| `AudioParam` | **已实现** | 音频参数 |
-| `AudioWorklet` | 未实现 | - |
-| `AudioWorkletNode` | 未实现 | - |
-| `BaseAudioContext` | **已实现** | 音频上下文的基础类 |
-| `BiquadFilterNode` | 未实现 | - |
-| `ChannelMergerNode` | 未实现 | - |
-| `ChannelSplitterNode` | 未实现 | - |
-| `ConstantSourceNode` | 未实现 | - |
-| `ConvolverNode` | 未实现 | - |
-| `DelayNode` | 未实现 | - |
-| `DynamicsCompressorNode` | 未实现 | - |
-| `GainNode` | 未实现 | - |
-| `IIRFilterNode` | 未实现 | - |
-| `MediaElementAudioSourceNode` | 未实现 | - |
-| `MediaStreamAudioDestinationNode` | 未实现 | - |
-| `MediaStreamAudioSourceNode` | 未实现 | - |
-| `OfflineAudioContext` | 未实现 | - |
-| `OscillatorNode` | 未实现 | - |
-| `PannerNode` | 未实现 | - |
-| `PeriodicWave` | 未实现 | - |
-| `ScriptProcessorNode` | 未实现 | - |
-| `StereoPannerNode` | 未实现 | - |
-| `WaveShaperNode` | 未实现 | - |
+| `AudioContext` | ❌ | 音频上下文 |
+| `AudioBuffer` | ❌ | 代表一个音频缓冲数据流 |
+| `AudioBufferSourceNode` | ❌ | 代表一个输入源，用于生产音频流 |
+| `AudioDestinationNode` | ❌ | 代表一个音频消费节点 |
+| `AudioListener` | ❌ | 代表一个音频接收者，用于空间音频中表达声音接收方的属性和坐标 |
+| `AudioParam` | ❌ | 音频参数 |
+| `AudioWorklet` | ❌ | - |
+| `AudioWorkletNode` | ❌ | - |
+| `BaseAudioContext` | ❌ | 音频上下文的基础类 |
+| `BiquadFilterNode` | ❌ | - |
+| `ChannelMergerNode` | ❌ | - |
+| `ChannelSplitterNode` | ❌ | - |
+| `ConstantSourceNode` | ❌ | - |
+| `ConvolverNode` | ❌ | - |
+| `DelayNode` | ❌ | - |
+| `DynamicsCompressorNode` | ❌ | - |
+| `GainNode` | ❌ | - |
+| `IIRFilterNode` | ❌ | - |
+| `MediaElementAudioSourceNode` | ❌ | - |
+| `MediaStreamAudioDestinationNode` | ❌ | - |
+| `MediaStreamAudioSourceNode` | ❌ | - |
+| `OfflineAudioContext` | ❌ | - |
+| `OscillatorNode` | ❌ | - |
+| `PannerNode` | ❌ | - |
+| `PeriodicWave` | ❌ | - |
+| `ScriptProcessorNode` | ❌ | - |
+| `StereoPannerNode` | ❌ | - |
+| `WaveShaperNode` | ❌ | - |
 
 我们计划在未来实现全部的 Web Audio API，但是目前只实现了部分，包含了基本的播放和音量控制，具体使用方法请参考 [MDN Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)。
 
 > JSAR 不会实现 Web Audio API 中空间音频的功能，因为 JSAR 的定位作为开发可嵌入空间，我们可以忽略单个空间组件的空间大小对音源本身的影响，因此在每个 JSAR 空间内部，并不需要实现空间音频的功能，而是通过 Unity 场景来实现整个空间的空间音频效果。
-
-> 感谢 [audiojs/web-audio-api](https://github.com/audiojs/web-audio-api) 项目及 audiojs 项目组，JSAR 的 Web Audio API 实现为该项目的 TypeScript 版本。
 
 ## HTMLAudioElement
 
@@ -486,15 +951,15 @@ audio.play();
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `SpeechSynthesis` | 未实现 |  |
-| `SpeechSynthesisUtterance` | 未实现 |  |
-| `SpeechSynthesisEvent` | 未实现 |  |
-| `SpeechRecognition` | 未实现 |  |
-| `SpeechRecognitionAlternative` | 未实现 |  |
-| `SpeechRecognitionResult` | 未实现 |  |
-| `SpeechRecognitionResultList` | 未实现 |  |
-| `SpeechRecognitionError` | 未实现 |  |
-| `SpeechRecognitionEvent` | 未实现 |  |
+| `SpeechSynthesis` | ❌ |  |
+| `SpeechSynthesisUtterance` | ❌ |  |
+| `SpeechSynthesisEvent` | ❌ |  |
+| `SpeechRecognition` | ❌ |  |
+| `SpeechRecognitionAlternative` | ❌ |  |
+| `SpeechRecognitionResult` | ❌ |  |
+| `SpeechRecognitionResultList` | ❌ |  |
+| `SpeechRecognitionError` | ❌ |  |
+| `SpeechRecognitionEvent` | ❌ |  |
 
 Web Speech API 可以让开发者使用语音识别和语音合成，我们计划在未来实现 Web Speech API 来连接后端的语音识别和语音合成，具体使用方法请参考 [MDN Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)。
 
@@ -513,11 +978,11 @@ recognition.start();
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| `Gamepad` | 未实现 |  |
-| `GamepadButton` | 未实现 |  |
-| `GamepadEvent` | 未实现 |  |
-| `GamepadHapticActuator` | 未实现 |  |
-| `GamepadPose` | 未实现 |  |
+| `Gamepad` | ❌ |  |
+| `GamepadButton` | ❌ |  |
+| `GamepadEvent` | ❌ |  |
+| `GamepadHapticActuator` | ❌ |  |
+| `GamepadPose` | ❌ |  |
 
 通过 Web Gamepad API，可以让开发者控制游戏手柄，这天然与 Rokid AR Studio 契合，因此我们计划在未来实现 Web Gamepad API 来控制游戏手柄，具体使用方法请参考 [MDN Web Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API)。
 
@@ -541,20 +1006,20 @@ window.addEventListener('gamepaddisconnected', (event) => {
 
 | API | 状态 | 备注 |
 | --- | --- | --- |
-| Initialization | 未实现 |  |
-| Session | 未实现 |  |
-| Frame loop | 未实现 |  |
-| Spaces | 未实现 |  |
-| Views | 未实现 |  |
-| Geometric primitives | 未实现 |  |
-| Pose | 未实现 |  |
-| Input | 未实现 |  |
-| Layers | 未实现 |  |
-| WebGL binding | 未实现 |  |
-| Anchors | 未实现 |  |
-| Depth sensing | 未实现 |  |
-| Hit testing | 未实现 |  |
-| Lighting estimation | 未实现 |  |
+| Initialization | ❌ |  |
+| Session | ❌ |  |
+| Frame loop | ❌ |  |
+| Spaces | ❌ |  |
+| Views | ❌ |  |
+| Geometric primitives | ❌ |  |
+| Pose | ❌ |  |
+| Input | ❌ |  |
+| Layers | ❌ |  |
+| WebGL binding | ❌ |  |
+| Anchors | ❌ |  |
+| Depth sensing | ❌ |  |
+| Hit testing | ❌ |  |
+| Lighting estimation | ❌ |  |
 
 WebXR Device API 可以让开发者在 Web 上使用 AR/VR 设备，这同样与 Rokid AR Studio 契合，因此我们计划在未来实现 WebXR Device API 来获取 XR 相关数据和能力，具体使用方法请参考 [MDN WebXR Device API](https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API)。
 

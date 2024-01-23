@@ -159,9 +159,11 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
               display: block;
               margin-top: 0;
               margin-bottom: 16px;
-              width: max-content;
               max-width: 100%;
               overflow: auto;
+            }
+            table, thead, tbody {
+              width: 100%;
             }
             tr {
               word-break: auto-phrase;
@@ -171,10 +173,14 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
             tr:nth-child(2n) {
               background-color: var(--color-canvas-subtle);
             }
+            tr > td:first-child, tr > td:nth-child(2) {
+              word-break: keep-all;
+            }
             td,
             th {
               padding: 6px 13px;
               border: 1px solid var(--color-border-default);
+              
             }
             th {
               font-weight: 600;
