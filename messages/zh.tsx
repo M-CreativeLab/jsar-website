@@ -92,8 +92,8 @@ export default {
     "title": "在线演示",
     "description": [
       "该页面用于预览官方/社区提供的示例，您可以通过点击左侧的示例列表来切换不同的示例。",
-      "注：首次加载可能需要较长时间，请耐心等待。"
     ],
+    "otherEx": "其他示例",
     "metadata": {
       "base": "基础信息",
       "xsmlCode": "XSML代码",
