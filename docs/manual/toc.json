@@ -60,6 +60,10 @@
         "key": "materials"
       },
       {
+        "title": "GUI",
+        "key": "gui"
+      },
+      {
         "title": "ANIMATIONS",
         "key": "animations"
       },

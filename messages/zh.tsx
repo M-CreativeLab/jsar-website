@@ -122,6 +122,7 @@ export default {
       "FEATURES": "基础功能",
       "MESHES_AND_MODELS": "网格与模型",
       "MATERIALS": "材质",
+      "GUI": "交互界面",
       "ANIMATIONS": "动画",
       "AUDIO": "音频",
       "INPUT_EVENTS": "输入事件",

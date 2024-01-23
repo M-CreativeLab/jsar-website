@@ -3,13 +3,14 @@
 
 拓展界面如下图所示，主要包含5个区域：
 
-![](vscode-extension-gui.png)
+![](vscode-extension-gui.jpg)
 
 1. 目录树，用于查看你项目的文件和代码
 2. 编辑区，用于编辑单个文件的代码
 3. 预览区，或场景预览，用于预览单个 XSML 文件
-4. 场景树，用于查看当前运行的场景结构
+4. 文档树，用于查看当前运行的文档结构
 5. 属性查看器，用于查看你选中的对象属性
+6. 控制台，用于查看运行时日志以及 WebXR 调试器
 
 ## 目录树
 
@@ -36,3 +37,12 @@
 - 材质属性
 
 > 未来会支持通过属性查看器修改对象属性，并同步到代码中。
+
+## 控制台
+
+控制台继承在 VSCode 自带的控制台中，作为新增的 Tab，目前支持以下功能：
+
+- JSAR Console：用于查看 JSAR 应用的运行日志
+- WebXR：集成并适配了 [meta-quest/immersive-web-emulator][] 用于在 VSCode 中调试 JSAR 应用的 WebXR 部分
+
+[meta-quest/immersive-web-emulator]: https://github.com/meta-quest/immersive-web-emulator

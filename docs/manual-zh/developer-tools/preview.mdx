@@ -2,11 +2,27 @@
 
 ## 打开预览窗口
 
-- 首先，打开任何 `*.xsml` 文件
+预览应用分为两种方式：
+
+1. 预览项目，即打开 `package.json` 中的 `main` 字段指向的 XSML 文件来预览项目
+2. 预览 `*.xsml` 文件，即打开任意 XSML 文件来预览该文件
+
+### 预览项目
+
+- 首先，打开一个 `*.xsml` 文件
 - 并选中打开的标签（Tab）页，在右上角可以找到打开场景视图的按钮
 - 点击按钮，就可以打开场景视图
 
 ![screenshot](howto-run-project.png)
+
+> 通过该方式打开的是当前项目中 `package.json` 中 `main` 字段指向的 XSML 文件。
+
+### 预览 `*.xsml` 文件
+
+有两种方式可以预览 `*.xsml` 文件（即不需要在 `package.json` 配置 `main`）
+
+- 在 Explorer 中找到以 `.xsml` 结尾的文件，右键点击后，选择："JSAR: Open in Scene View"
+- 在文件编辑器中，右键点击后，选择："JSAR: Open in Scene View"
 
 ## 交互功能
 

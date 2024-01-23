@@ -180,7 +180,6 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
             th {
               padding: 6px 13px;
               border: 1px solid var(--color-border-default);
-              
             }
             th {
               font-weight: 600;
