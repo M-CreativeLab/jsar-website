@@ -716,6 +716,89 @@ XSML 的根标签。
 | `thickness` | 表示圆环体元素的厚度，它的值为数字 |
 | `tessellation` | 表示圆环体元素的分段数，它的值为数字 |
 
+### `polyhedra`
+
+用于定义多面体几何体，支持多种类型。
+
+| 属性 | 描述 |
+| --- | --- |
+| `type` | 多面体类型 |
+| `size-x` | 表示多面体元素的 X 轴大小，它的值为数字 |
+| `size-y` | 表示多面体元素的 Y 轴大小，它的值为数字 |
+| `size-z` | 表示多面体元素的 Z 轴大小，它的值为数字 |
+| `size` | 表示多面体元素的大小，它的值为数字 |
+
+当前多面体类型支持有：
+
+- `tetrahedron` 四面体
+- `octahedron` 八面体
+- `dodecahedron` 十二面体
+- `icosahedron` 二十面体
+- `rhombicuboctahedron` 二十六面体
+- `triangular-prism` 三角柱体
+- `pentagonal-prism` 五角柱体
+- `hexagonal-prism` 六角柱体
+- `square-prism` 正方柱体
+- `pentagonal-pyramid` 五角金字塔
+- `triangular-dipyramid` 三角双金字塔
+- `pentagonal-dipyramid` 五角双金字塔
+- `elongated-square-dipyramid` 延长正方双金字塔
+- `elongated-pentagonal-dipyramid` 延长五角双金字塔
+- `elongated-pentagonal-cupola` 延长五角杯
+
+### `icosphere`
+
+用于定义可细分的球面几何体。
+
+| 属性 | 描述 |
+| --- | --- |
+| `radius` | 表示球面元素的半径，它的值为数字 |
+| `radius-x` | 表示球面元素的 X 轴半径，它的值为数字 |
+| `radius-y` | 表示球面元素的 Y 轴半径，它的值为数字 |
+| `radius-z` | 表示球面元素的 Z 轴半径，它的值为数字 |
+| `subdivisions` | 表示球面元素的细分数，它的值为数字 |
+
+### `panel`
+
+用于定义一个空间面板，它是一个虚拟空间容器，用于在空间中布局子元素。
+
+| 属性 | 描述 |
+| --- | --- |
+| `type` | 空间布局类型，支持 "stack"、"cylinder" 和 "sphere" |
+| `margin` | 表示每个子元素的外边距 |
+| `orientation` | 表示子元素的排列方向，支持 "horizontal" 和 "vertical" |
+| `rows` | 表示子元素的行数 |
+| `columns` | 表示子元素的列数 |
+| `radius` | 表示子元素的半径，仅对 "cylinder" 和 "sphere" 生效 |
+
+使用 `<panel>` 元素可以配合属性设置来实现元素的空间布局，比如：
+
+```html
+<xsml>
+  <head>
+    <title>Spatial User Interface Example (Stack Layout)</title>
+  </head>
+  <space>
+    <panel type="cylinder" rows="10" margin="0.2">
+      <button3d>Button 1</button3d>
+      <button3d>Button 2</button3d>
+      <button3d>Button 3</button3d>
+      <button3d>Button 4</button3d>
+      ...
+      <button3d>Button 20</button3d>
+    </panel>
+  </space>
+</xsml>
+```
+
+上面的代码会在空间中创建一个虚拟的圆柱面，然后按照每一行10个元素的方式进行子元素的排列，当子元素超过行数会进行换行。
+
+![](spatial-ui-cylinder-panel.png)
+
+> 注：`<panel>` 元素的内部集成了 [Babylon.js 3D GUI][] 中的 Containers 部分实现，它作为空间布局能力的一种尝试集成到 XSML 中，后续也会增加更多的布局类型，同时也会将布局能力转移到 SpatialCSS 中。
+
+[Babylon.js 3D GUI]: https://doc.babylonjs.com/features/featuresDeepDive/gui/gui3D
+
 ### `div`
 
 用于定义 2D 元素的容器。

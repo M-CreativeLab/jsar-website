@@ -8,7 +8,7 @@ $ npm install @yodaos-jsar/types --save-dev
 
 ## 空间文档
 
-通过 `spatialDocument` 或 `spaceDocument` 可以访问，它提供了一些比如获取场景对象、获取场景中的物体等接口。
+通过 `spatialDocument` 可以访问，它提供了一些比如获取场景对象、获取场景中的物体等接口。
 
 ```typescript
 const scene = spatialDocument.scene as BABYLON.Scene;
@@ -127,3 +127,86 @@ type Position = {
 | `PINKY_TIP ` | 20 |
 
 与 WebXR 的对应关系可以参考 [WebXR Hand Input Profiles](https://immersive-web.github.io/webxr-hand-input/#hand-joints)。
+
+## `Noise`
+
+`Noise` 是一个用于生成噪声的类，它提供了一些生成噪声的方法，目前支持的噪声类型有 `Perlin` 和 `Simplex`。
+
+```typescript
+const noise = new Noise();
+const value2d = noise.simplex2(0.1, 0.2);
+const value3d = noise.simplex3(0.1, 0.2, 0.3);
+const perlin2d = noise.perlin2(0.1, 0.2);
+const perlin3d = noise.perlin3(0.1, 0.2, 0.3);
+```
+
+### 构造函数
+
+`Noise` 构造函数接受一个可选参数 `seed`，它是一个 `number` 类型的值，用于初始化随机数种子。
+
+```typescript
+const noise = new Noise(123);
+```
+
+### 方法 `simplex2()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+
+`simplex2()` 方法用于生成二维的 [Simplex][] 噪声，它接受两个参数 `x` 和 `y`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+### 方法 `simplex3()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+| `z` | `number` | Z 因子 |
+
+`simplex3()` 方法用于生成三维的 [Simplex][] 噪声，它接受三个参数 `x`、`y` 和 `z`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+### 方法 `simplex4()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+| `z` | `number` | Z 因子 |
+| `w` | `number` | W 因子 |
+
+`simplex4()` 方法用于生成四维的 [Simplex][] 噪声，它接受四个参数 `x`、`y`、`z` 和 `w`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+### 方法 `perlin2()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+
+`perlin2()` 方法用于生成二维的 [Perlin][] 噪声，它接受两个参数 `x` 和 `y`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+### 方法 `perlin3()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+| `z` | `number` | Z 因子 |
+
+`perlin3()` 方法用于生成三维的 [Perlin][] 噪声，它接受三个参数 `x`、`y` 和 `z`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+### 方法 `perlin4()`
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `x` | `number` | X 因子 |
+| `y` | `number` | Y 因子 |
+| `z` | `number` | Z 因子 |
+| `w` | `number` | W 因子 |
+
+`perlin4()` 方法用于生成四维的 [Perlin][] 噪声，它接受四个参数 `x`、`y`、`z` 和 `w`，它们是 `number` 类型的值，返回值是一个 `number` 类型的值。
+
+[Simplex]: https://en.wikipedia.org/wiki/Simplex_noise
+[Perlin]: https://en.wikipedia.org/wiki/Perlin_noise
