@@ -904,6 +904,56 @@ XSML 的根标签。
 </xsml>
 ```
 
+### `footer`
+
+语义化标签，用于定义尾部元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <footer>
+        <h1>This is a footer.</h1>
+      </footer>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `nav`
+
+语义化标签，用于定义导航元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <nav>
+        <h1>Nav</h1>
+        <div>item1</div>
+        <div>item2</div>
+      </nav>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `aside`
+
+语义化标签，用于定义侧边栏元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <aside>
+        <h1>This is a aside.</h1>
+      </aside>
+    </plane>
+  </space>
+</xsml>
+```
+
 ### `section`
 
 语义化标签，用于定义章节元素。
@@ -915,6 +965,27 @@ XSML 的根标签。
       <section>
         <h1>This is a section.</h1>
       </section>
+    </plane>
+  </space>
+</xsml>
+```
+
+### `article`
+
+语义化标签，用于定义文章元素。
+
+```html
+<xsml>
+  <space>
+    <plane>
+      <article>
+        <h1>This is a article.</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+          ultricies, nisl ut aliquet ultricies, nunc sapien aliquet
+          nunc, nec faucibus augue nunc sit amet urna
+        </p>
+      </article>
     </plane>
   </space>
 </xsml>
