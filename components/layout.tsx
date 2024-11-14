@@ -1,18 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { CommentOutlined, GithubOutlined, UnorderedListOutlined, WechatOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Layout, Popover, QRCode, Space, Tooltip, Typography } from 'antd'
+import { CommentOutlined, GithubOutlined, UnorderedListOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'
 import { NextRouter, useRouter } from 'next/router'
-import LocaleCode from 'locale-code'
-
-function getLanguageName(code: string): string {
-  if (code.startsWith('zh')) {
-    return '简体中文'
-  } else {
-    return LocaleCode.getLanguageNativeName(code)
-  }
-}
+import Footer from './footer'
 
 function getLocaleHref(router: NextRouter, href: string): string {
   if (router.locale === router.defaultLocale) {
@@ -23,8 +15,10 @@ function getLocaleHref(router: NextRouter, href: string): string {
 }
 
 export default function RootLayout({
+  footer,
   children,
 }: {
+  footer: boolean,
   children: React.ReactNode
 }) {
   const t = useTranslations('PageLayout')
@@ -47,13 +41,15 @@ export default function RootLayout({
         style={{
           position: 'sticky',
           top: 0,
-          zIndex: 1,
+          zIndex: 100,
           width: '100%',
+          height: '64px',
+          backgroundColor: '#fff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           animation: 'fade-in 0.5s',
-          filter: isTop ? 'none' : 'drop-shadow(30px 10px 4px #eeeeee)',
+          filter: isTop ? 'none' : 'drop-shadow(0px 1px 4px #f3f3f3)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -206,91 +202,7 @@ export default function RootLayout({
       <Layout.Content>
         {children}
       </Layout.Content>
-      <Layout.Footer
-        style={{
-          textAlign: 'center',
-          background: '#fff',
-          marginTop: '50px',
-          paddingTop: '50px',
-        }}
-      >
-        <section
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            boxSizing: 'border-box',
-            paddingLeft: '20%',
-            gap: '2rem',
-            fontSize: '16px',
-          }}
-        >
-          <div style={{ textAlign: 'left', width: '20vw' }}>
-            <Typography.Title level={4}>{t('footer.languages')}</Typography.Title>
-            <Space size={18}>
-              {router.locales?.map((locale) => (
-                <a href={`/${locale}`} key={locale}>
-                  {getLanguageName(locale)}
-                </a>
-              ))}
-            </Space>
-          </div>
-          <div style={{ textAlign: 'left' }}>
-            <Typography.Title level={4}>{t('footer.community')}</Typography.Title>
-            <Space
-              style={{
-                color: '#fff',
-                fontSize: 20,
-                gap: '1rem',
-              }}
-            >
-              <Tooltip title={t('footer.icons.forum')}>
-                <a href="https://forum.rokid.com/index" target="_blank" style={{ color: '#333' }}>
-                  <CommentOutlined />
-                </a>
-              </Tooltip>
-              <Tooltip title={t('footer.icons.discord')}>
-                <a href="https://discord.gg/3HRn5VEWcv" target="_blank" style={{ color: '#333' }}>
-                  <svg className="icon" aria-hidden="true">
-                    <use xlinkHref="#icon-discord"></use>
-                  </svg>
-                </a>
-              </Tooltip>
-              <Tooltip title={t('footer.icons.github')}>
-                <a href="https://github.com/M-CreativeLab" target="_blank" style={{ color: '#333' }}>
-                  <GithubOutlined />
-                </a>
-              </Tooltip>
-              <Popover
-                content={
-                  <Space direction="vertical" align="center">
-                    <Image
-                      alt="Rokid Support Wechat"
-                      src="/rokid-support-wechat-qrcode.png" width={120} height={120}
-                    />
-                    <p>{t('footer.icons.wechatHelp')}</p>
-                  </Space>
-                }
-                trigger="hover"
-                placement="right"
-              >
-                <WechatOutlined style={{ color: '#333' }} />
-              </Popover>
-            </Space>
-          </div>
-        </section>
-        <Divider />
-        <section
-          style={{
-            textAlign: 'left',
-            boxSizing: 'border-box',
-            paddingLeft: '20%',
-            fontSize: 16,
-          }}
-        >
-          <p>Copyright © 2024 <a href="https://github.com/M-CreativeLab">Rokid MCreativeLab</a></p>
-        </section>
-      </Layout.Footer>
+      {footer && <Footer />}
     </Layout>
   )
 }

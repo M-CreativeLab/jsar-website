@@ -1,8 +1,8 @@
-# SCSS
+# SpatialCSS
 
-SCSS, which stands for Spatial CSS, references a lot of existing definitions in web development CSS to define the styles of space and spatial objects. This is used to control the visual effects of space. The purpose of designing JSAR in this way is to allow web developers to enter AR application development with minimal barriers.
+SpatialCSS references a lot of existing definitions in web development CSS to define the styles of space and spatial objects. This is used to control the visual effects of space. The purpose of designing JSAR in this way is to allow web developers to enter AR application development with minimal barriers.
 
-Similar to CSS, using SCSS primarily involves two parts:
+Similar to CSS, using SpatialCSS primarily involves two parts:
 
 1. Selecting spatial objects using selectors like id, class, tag, etc.
 2. Defining styles within selectors.
@@ -39,7 +39,7 @@ The ID selector is used to query objects in space by their ID. For example:
 
 With the selector #a1, you select the outer cube, and a2 selects the inner cube.
 
-In SCSS, the syntax for the ID selector is `#{id}`, where id is the ID of the object. Here's the specific SCSS code:
+In SpatialCSS, the syntax for the ID selector is `#{id}`, where id is the ID of the object. Here's the specific SpatialCSS code:
 
 ```css
 #a1 {
@@ -58,7 +58,7 @@ In SCSS, the syntax for the ID selector is `#{id}`, where id is the ID of the ob
 
 ## Styles
 
-Next, let's introduce styles in SCSS, which are used to set the styles of spatial objects, including position, rotation, material, and more.
+Next, let's introduce styles in SpatialCSS, which are used to set the styles of spatial objects, including position, rotation, material, and more.
 
 ### Layout
 
@@ -82,9 +82,9 @@ The object's center point is the point at the center of the object. For example,
 
 #### Parent-Child Relationship
 
-The parent-child relationship refers to the relationship between objects in the space. It determines the meaning of layout property values in SCSS because all layout properties are relative to the parent object. If there's no parent object, it's relative to the entire space.
+The parent-child relationship refers to the relationship between objects in the space. It determines the meaning of layout property values in SpatialCSS because all layout properties are relative to the parent object. If there's no parent object, it's relative to the entire space.
 
-> Note: In XSML, everything is relative, so you can understand that all layout relationships in SCSS are relative.
+> Note: In XSML, everything is relative, so you can understand that all layout relationships in SpatialCSS are relative.
 
 #### Properties
 
@@ -152,7 +152,7 @@ Material is used to set the material of an object. Its syntax is `material: "mat
 }
 ```
 
-This code sets the material of the object with the ID "a1" to red. But where is the "red" material defined? SCSS uses the same approach as defining fonts and keyframes:
+This code sets the material of the object with the ID "a1" to red. But where is the "red" material defined? SpatialCSS uses the same approach as defining fonts and keyframes:
 
 ```css
 @material red {
@@ -164,7 +164,7 @@ This code sets the material of the object with the ID "a1" to red. But where is 
 
 The standard material is the default material type and does not require setting a type. It provides the following properties.
 
-> Texture type properties are not supported through SCSS.
+> Texture type properties are not supported through SpatialCSS.
 
 ##### `diffuse-color`
 
@@ -228,7 +228,7 @@ The transparency mode of the material, with values `opaque`, `alpha`, `alpha-ble
 
 ### Animation
 
-SCSS supports CSS Animation, and its syntax is the same as CSS Animation. You can refer to [CSS Animation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/animation) for more details.
+SpatialCSS supports CSS Animation, and its syntax is the same as CSS Animation. You can refer to [CSS Animation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/animation) for more details.
 
 Here's an example:
 

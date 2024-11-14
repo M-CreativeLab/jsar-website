@@ -3,13 +3,15 @@ import { NextRouter, useRouter } from 'next/router'
 import Link from 'next/link'
 import type { MDXProps, MDXComponents } from 'mdx/types'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CodeBlock, github } from 'react-code-blocks'
-import { Affix, Divider, Layout, Select, Tree, TreeDataNode, Typography } from 'antd'
+import { Divider, Layout, Select, Tree, TreeDataNode, Typography } from 'antd'
 import { DownOutlined, LinkOutlined } from '@ant-design/icons'
 
-import latestTocOfManual from '../../../docs/manual/toc.json'
 import { useTranslations } from 'next-intl'
+import CodeCopyButton from '../../../components/codecopy-button'
+import Footer from '../../../components/footer'
+import latestTocOfManual from '../../../docs/manual/toc.json'
 
 type TocItem = {
   key: string
@@ -37,50 +39,79 @@ function toMenuTreeData(toc: TocItem[], parentKey: string | null, selectedKey?: 
   })
 }
 
+/**
+ * Extract the paths from the menu
+ * 
+ * @param toc The menu
+ * @param parentKey The parent key
+ * @returns The paths of the menu
+ */
 function getPathsFromMenu(toc: TocItem[], parentKey: string | null): string[] {
   return toc.reduce((paths: string[], item: TocItem) => {
-    paths.push(parentKey == null ? item.key : `${parentKey}/${item.key}`)
+    let currentPath: string = parentKey == null ? item.key : `${parentKey}/${item.key}`
+    paths.push(currentPath)
     if (item.children) {
-      paths = paths.concat(getPathsFromMenu(item.children, item.key))
+      paths = paths.concat(getPathsFromMenu(item.children, currentPath))
     }
     return paths
   }, [])
 }
 
-function getInnerText(props: any): string {
-  if (typeof props.children === 'string') {
-    return props.children
-  } else if (props.children?.props) {
-    return getInnerText(props.children.props)
-  } else {
-    return ''
+type Props = {
+  children: string | React.ReactElement<Props>[]
+}
+
+function getInnerText(textOrProps: string | Props): string {
+  if (typeof textOrProps === 'string') {
+    return textOrProps.toLowerCase()
   }
+  if (typeof textOrProps.children === 'string') {
+    return textOrProps.children.toLowerCase()
+  }
+  if (Array.isArray(textOrProps.children)) {
+    return textOrProps.children.map(child => {
+      if (typeof child === 'string') {
+        return getInnerText(child)
+      } else {
+        const text = getInnerText(child.props)
+        if (child.type === 'em') {
+          return `_${text}_`
+        } else {
+          return text
+        }
+      }
+    }).join('')
+  }
+  return ''
 }
 
 function createHeaderRenderer(level?: 1 | 2 | 3 | 4 | 5) {
+  const headerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '0.5rem',
+  }
   return (props: any) => {
-    const sectionId = getInnerText(props);
+    const hasDivider = level <= 2
+    const sectionId = getInnerText(props).replace(/\s/g, '-')
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '0.5rem',
-        }}
-      >
-        <Typography.Title
-          level={level}
-          style={{
-            ...segmentStyle,
-            position: 'relative',
-          }}
-        >
-          <a id={sectionId} style={{ position: 'absolute', top: '-90px' }}></a>
-          {props.children}
-        </Typography.Title>
-        <Link href={`#${sectionId}`} style={{ display: 'flex' }}>
-          <LinkOutlined style={{ fontSize: 18, color: 'unset' }} />
-        </Link>
+      <div>
+        <div style={headerStyle}>
+          <Typography.Title
+            level={level}
+            style={{
+              ...segmentStyle,
+              position: 'relative',
+            }}
+          >
+            <a id={sectionId} style={{ position: 'absolute', top: '-90px' }}></a>
+            {props.children}
+          </Typography.Title>
+          <Link href={`#${sectionId}`} style={{ display: 'flex' }}>
+            <LinkOutlined style={{ fontSize: 18, color: 'unset' }} />
+          </Link>
+        </div>
+        {hasDivider && <Divider style={{ marginTop: 0 }} />}
       </div>
     )
   }
@@ -115,30 +146,94 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
       }
     },
     img: (props) => {
+      let disableCaption = false
+      let containerStyle: React.CSSProperties = {
+        width: 'fit-content',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifySelf: 'center',
+      }
+      let imageStyle: React.CSSProperties = {}
+      if (props?.title) {
+        const toPair = (s: string) => {
+          const pair = s.split('=')
+          return [pair[0], pair[1]]
+        }
+        const params = new URLSearchParams(props.title.split(',').map(toPair))
+        if (params.has('width')) {
+          imageStyle.width = `${params.get('width')}`
+        }
+        if (params.has('height')) {
+          imageStyle.height = `${params.get('height')}`
+        }
+        if (params.has('align')) {
+          containerStyle.justifySelf = params.get('align') as any
+        }
+        if (params.has('caption') && params.get('caption') === 'disable') {
+          disableCaption = true
+        }
+      }
+      if (!imageStyle.width) {
+        imageStyle.maxWidth = 'min(40%, 400px)'
+      }
       return (
-        <Typography.Paragraph>
-          <img {...props} style={{ maxWidth: 'min(60%, 780px)' }} />
+        <Typography.Paragraph style={containerStyle}>
+          <img alt={props.alt} src={props.src} srcSet={props.srcSet} style={imageStyle} />
+          {(!disableCaption && props.alt) && <Typography.Text type="secondary">{props.alt}</Typography.Text>}
         </Typography.Paragraph>
       )
     },
     pre: (props) => {
       const lang = (props.children as any)?.props.className?.replace('language-', '')
       const code = (props.children as any)?.props.children
+      const text = code?.replace(/\n$/, '') || ''
+
+      const paddingInHorizontal = '1.8rem'
+      const containerStyle: React.CSSProperties = {
+        position: 'relative',
+        background: 'rgb(249, 250, 251)',
+        borderRadius: '0.5rem',
+        border: '1px solid rgb(230, 230, 230)',
+        overflow: 'hidden',
+      }
+      const titleStyle: React.CSSProperties = {
+        display: 'block',
+        background: 'rgb(246, 248, 250)',
+        fontSize: '1.1em',
+        fontWeight: 'bold',
+        boxSizing: 'border-box',
+        borderBottom: '1px solid rgb(230, 230, 230)',
+        padding: `0.8rem ${paddingInHorizontal}`,
+      }
+      const codeContainerStyle: React.CSSProperties = {
+        width: '100%',
+        backgroundColor: 'rgb(249, 250, 251)',
+        boxSizing: 'border-box',
+        border: 0,
+        padding: `${paddingInHorizontal}`,
+        margin: '0',
+        fontSize: '1em',
+        fontFamily: 'monospace',
+        minWidth: 'calc(100% - 1rem)',
+        overflowX: 'auto',
+      }
+
       return (
-        <Typography.Paragraph>
+        <Typography.Paragraph style={containerStyle}>
+          {props?.title && <Typography.Text style={titleStyle}>{props.title}</Typography.Text>}
           <CodeBlock
             language={lang}
             theme={github}
-            text={code.replace(/\n$/, '')}
-            showLineNumbers
-            codeContainerStyle={{
-              padding: '0.5rem',
-              fontSize: '1em',
-              fontFamily: 'monospace',
-              minWidth: 'calc(100% - 1rem)',
-              overflowX: 'auto',
-            }}
+            text={text}
+            showLineNumbers={false}
+            codeContainerStyle={codeContainerStyle}
           />
+          <CodeCopyButton codeToCopy={text} buttonStyle={{
+            position: 'absolute',
+            right: 15,
+            top: 10,
+          }} />
         </Typography.Paragraph>
       )
     },
@@ -203,12 +298,14 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
   const t = useTranslations('ManualPages')
   const router = useRouter()
   const treeData = toMenuTreeData(tocItems || tocOfManual, null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
   const [docPath, setDocPath] = useState<string | undefined>(undefined)
   const [markdownChildren, setMarkdownChildren] = useState<React.ReactNode>(null)
 
   useEffect(() => {
+    console.info(router)
     if (router.isReady) {
       const newDocPath = getDocumentPath(router)
       setDocPath(newDocPath)
@@ -221,10 +318,12 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
           const el = window.document.getElementById(id)
           if (el) {
             const rect = el.getBoundingClientRect()
-            window.top?.scroll({
-              top: window.scrollY + rect.top,
-              behavior: 'smooth',
-            })
+            if (contentRef.current) {
+              contentRef.current.scroll({
+                top: rect.top,
+                behavior: 'smooth',
+              })
+            }
           }
         }
       }, 100)
@@ -244,6 +343,7 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
       }
 
       // load language version
+      console.info(verPrefix, router, router.locale, newDocPath)
       try {
         MarkdownContent = require(`../../../${verPrefix}/manual-${router.locale}/${newDocPath}.mdx`).default
       } catch (_e) {
@@ -256,21 +356,28 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
   return (
     <Layout
       style={{
-        width: '80vw',
-        margin: '60px auto',
-        padding: '2rem',
+        height: 'calc(100vh - 64px - 20px)',
+        margin: '10px 0 10px 10px',
+        boxSizing: 'border-box',
         backgroundColor: '#fff',
         borderRadius: '0.75rem',
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        overflow: 'hidden',
       }}
     >
       <Layout.Sider
-        width={260}
+        width={300}
         style={{
-          marginRight: '6rem',
+          height: 'auto',
+          margin: '0.5rem 0',
+          padding: '0.5rem 1rem',
           backgroundColor: 'transparent',
+          borderRight: '1px solid #f0f0f0',
+          overflow: 'auto',
         }}
       >
-        <Affix offsetTop={120}>
+        <div>
           <div>
             <div
               style={{
@@ -300,6 +407,10 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
               </Select>
             </div>
             <Divider />
+          </div>
+          <div
+            style={{ marginTop: '32px' }}
+          >
             <Tree
               autoExpandParent={true}
               virtual={false}
@@ -318,6 +429,13 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
                 if (selectedKeys.length > 0) {
                   const key = selectedKeys[0] as string
                   router.push(`/manual/${router.query.ver}/${key}`)
+                  // Scroll to top on select
+                  if (contentRef.current) {
+                    contentRef.current.scroll({
+                      top: 0,
+                      behavior: 'smooth',
+                    })
+                  }
                   setExpandedKeys([key])
                 }
               }}
@@ -339,7 +457,7 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
                 return (
                   <span
                     style={{
-                      fontSize: '16px',
+                      fontSize: '14px',
                       padding: '0 0.5rem',
                       lineHeight: '2',
                     }}
@@ -353,16 +471,25 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
               }}
             />
           </div>
-        </Affix>
+        </div>
       </Layout.Sider>
       <Layout.Content
+        ref={contentRef}
         style={{
-          minHeight: '100vh',
+          height: '100%',
+          overflow: 'auto',
         }}
       >
-        <Typography.Paragraph>
+        <Typography.Paragraph style={{
+          minHeight: '60vh',
+          padding: '1rem 2rem 4rem 2rem',
+          boxSizing: 'border-box',
+        }}>
           {markdownChildren}
         </Typography.Paragraph>
+
+        <Divider />
+        <Footer alignLeft compat />
       </Layout.Content>
     </Layout>
   )
@@ -408,6 +535,7 @@ export const getStaticProps = (async (context) => {
 
   return {
     props: {
+      hideFooter: true,
       messages: (await import(`../../../messages/${context.locale}`)).default,
       versions: await getVersions(),
       tocItems,

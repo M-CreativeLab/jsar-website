@@ -1,16 +1,35 @@
-# Create a Project
+# Write your first XSML
 
-JSAR allows you to initialize a project in various ways, including:
+[XSML][] is a new markup language used to describe the interface and interactive logic, similar to HTML. To initialize an [XSML][] project in various ways, including:
 
-- Locally creating a project using npm commands.
-- Creating a GitHub project from a template.
+- Creating a project using [npm][] commands locally.
+- Creating a project from GitHub template.
+
+## Prerequisites
+
+Before creating a project, ensure that you have the following prerequisites.
+
+### Install Node.js
+
+> If you already have Node.js installed, you can skip this step.
+
+Go to https://nodejs.org/ to download and install Node.js.
+
+After a successful installation, check the [Node.js][] and [npm][] versions using the following commands:
+
+```bash
+node -v
+npm -v
+```
+
+> Ensure that your Node.js version is greater than or equal to 18.0.0, or choose the latest LTS version.
 
 ## Create via npm
 
 Developers can create a project using npm after installing [Node.js](https://nodejs.org/en/). Once Node.js is installed, open a terminal and run the following command:
 
 ```bash
-$ npm init @yodaos-jsar/widget
+npm init @yodaos-jsar/widget
 ```
 
 This command initializes the project by performing the following steps:
@@ -20,7 +39,7 @@ This command initializes the project by performing the following steps:
 
 After running the command successfully, you will have a `package.json` file. Here's an example of how to configure it:
 
-```json
+```json title="package.json"
 {
   "name": "jsar-gallery-rokid-jungle",
   "displayName": "Rokid Jungle",
@@ -47,7 +66,7 @@ After running the command successfully, you will have a `package.json` file. Her
 After successfully initializing the project, you need to install dependencies to enable type checking and auto-completion during development:
 
 ```bash
-$ npm install
+npm install
 ```
 
 This installs the type definition files for space widgets, allowing you to benefit from type checking and auto-completion during development.
@@ -98,7 +117,7 @@ The above files and directories are recommended names and locations, but not man
 
 The [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) is the TypeScript configuration file, used to configure the behavior of the TypeScript compiler and VSCode's intelligent suggestions.
 
-```json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "module": "commonjs",
@@ -136,3 +155,13 @@ Important notes:
 2. The `main` field must point to an xsml file and does not support JavaScript files.
 3. The `files` field must include xsml files and `icon.png`, which is used for display in the store and the list of mini-programs.
 4. Be sure to add the `@yodaos-jsar/types` dependency. It contains type definition files for space mini-programs, enabling type checking and autocompletion during development.
+
+## Next
+
+Now you have learned how to write both HTML and XSML projects.
+
+The next step is to learn how to run these in the JSAR integrated application, in next section, we will show you how to use the _Play WebXR_ application to run your project.
+
+[Node.js]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
+[XSML]: https://jsar.netlify.app/en-us/manual/0.2.1/basic-concepts/intro-xsml

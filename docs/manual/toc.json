@@ -8,20 +8,20 @@
     "key": "quick-start",
     "children": [
       {
-        "title": "PROJECT_CONFIGURATION",
-        "key": "configuration"
+        "title": "PROJECT_SETUP",
+        "key": "setup"
       },
       {
-        "title": "PROJECT_CREATE",
-        "key": "create-project"
+        "title": "PROJECT_WRITE_HTML",
+        "key": "write-html"
+      },
+      {
+        "title": "PROJECT_WRITE_XSML",
+        "key": "write-xsml"
       },
       {
         "title": "PROJECT_RUN",
-        "key": "run-project"
-      },
-      {
-        "title": "PROJECT_BUILD",
-        "key": "build-project"
+        "key": "run"
       }
     ]
   },
@@ -30,20 +30,16 @@
     "key": "basic-concepts",
     "children": [
       {
-        "title": "SPACE_MINIAPPS",
-        "key": "space-widget"
+        "title": "BASIC_CONCEPTS_SPACES",
+        "key": "spaces"
       },
       {
-        "title": "XSML",
-        "key": "intro-xsml"
+        "title": "BASIC_CONCEPTS_INPUT_SOURCES",
+        "key": "input-sources"
       },
       {
-        "title": "SCSS",
-        "key": "intro-scss"
-      },
-      {
-        "title": "TYPESCRIPT",
-        "key": "typescript"
+        "title": "BASIC_CONCEPTS_RECAP_OF_HTML",
+        "key": "recap-of-html"
       }
     ]
   },
@@ -52,28 +48,126 @@
     "key": "features",
     "children": [
       {
-        "title": "MESHES_AND_MODELS",
-        "key": "meshes-and-models"
+        "title": "FEATURES_TYPESCRIPT",
+        "key": "typescript"
       },
       {
-        "title": "MATERIALS",
-        "key": "materials"
+        "title": "FEATURES_THREEJS",
+        "key": "three"
       },
       {
-        "title": "GUI",
-        "key": "gui"
+        "title": "FEATURES_BABYLONJS",
+        "key": "babylon"
       },
       {
-        "title": "ANIMATIONS",
-        "key": "animations"
+        "title": "FEATURES_MODULES",
+        "key": "modules"
       },
       {
-        "title": "AUDIO",
+        "title": "FEATURES_WEBASSEMBLY",
+        "key": "webassembly"
+      },
+      {
+        "title": "FEATURES_WEBWORKERS",
+        "key": "web-workers"
+      },
+      {
+        "title": "FEATURES_AUDIO",
         "key": "audio"
       },
       {
-        "title": "INPUT_EVENTS",
-        "key": "input-events"
+        "title": "FEATURES_DEBUGGING",
+        "key": "debugging"
+      }
+    ]
+  },
+  {
+    "title": "REFERENCES",
+    "key": "references",
+    "children": [
+      {
+        "title": "REFERENCES_WEB_API",
+        "key": "web-apis"
+      },
+      {
+        "title": "REFERENCES_JSAR_API",
+        "key": "jsar-apis"
+      },
+      {
+        "title": "REFERENCES_WEBGL",
+        "key": "webgl"
+      },
+      {
+        "title": "REFERENCES_WEBXR",
+        "key": "webxr"
+      },
+      {
+        "title": "REFERENCES_WEBXR_INPUTSOURCES",
+        "key": "webxr-inputsources"
+      },
+      {
+        "title": "REFERENCES_RUNTIME_CONFIGURATION",
+        "key": "runtime-configuration"
+      },
+      {
+        "title": "REFERENCES_CACHING",
+        "key": "caching"
+      },
+      {
+        "title": "REFERENCES_GRAPHICS_BACKENDS",
+        "key": "graphics-backends"
+      },
+      {
+        "title": "REFERENCES_EMBEDDER_GUIDES",
+        "key": "embedder-guides",
+        "children": [
+          {
+            "title": "REFERENCES_EMBEDDER_NATIVE_API",
+            "key": "native-apis"
+          },
+          {
+            "title": "REFERENCES_EMBEDDER_UNITY_API",
+            "key": "unity-apis"
+          }
+        ]
+      },
+      {
+        "title": "REFERENCES_XSML",
+        "key": "xsml"
+      },
+      {
+        "title": "REFERENCES_SPATIAL_CSS",
+        "key": "spatial-css"
+      }
+    ]
+  },
+  {
+    "title": "TUTORIALS",
+    "key": "tutorials",
+    "children": [
+      {
+        "title": "TUTORIALS_HELLOWORLD_THREEJS",
+        "key": "helloworld-threejs"
+      },
+      {
+        "title": "TUTORIALS_HELLOWORLD_BABYLONJS",
+        "key": "helloworld-babylonjs"
+      },
+      {
+        "title": "TUTORIALS_CREATE_MESHES",
+        "key": "create-meshes"
+      },
+      {
+        "title": "TUTORIALS_CREATE_MATERIALS",
+        "key": "create-materials"
+      },
+      {
+        "title": "TUTORIALS_HTTPS_REQUEST",
+        "key": "https-request"
+      },
+      {
+        "title": "TUTORIALS_CONNECT_WEBSOCKET_SERVER",
+        "key": "connect-websocket-server"
       }
     ]
   },
@@ -104,54 +198,6 @@
     ]
   },
   {
-    "title": "RUNTIME",
-    "key": "runtime",
-    "children": [
-      {
-        "title": "RUNTIME_BABYLONJS_APIS",
-        "key": "babylonjs-apis"
-      },
-      {
-        "title": "RUNTIME_WEB_APIS",
-        "key": "web-apis"
-      },
-      {
-        "title": "RUNTIME_NODEJS_APIS",
-        "key": "nodejs-apis"
-      },
-      {
-        "title": "RUNTIME_JSAR_APIS",
-        "key": "jsar-internal-apis"
-      },
-      {
-        "title": "RUNTIME_RESOURCE_CACHE",
-        "key": "resource-cache"
-      },
-      {
-        "title": "RUNTIME_MODULE_SYSTEM",
-        "key": "module-system"
-      },
-      {
-        "title": "INTEGRATE_RUNTIME_WITH_UNITY",
-        "key": "integrate-runtime-with-unity"
-      }
-    ]
-  },
-  {
-    "title": "DELIVERY",
-    "key": "delivery",
-    "children": [
-      {
-        "title": "DELIVERY_ROKID_ARSTORE",
-        "key": "rokid-arstore"
-      },
-      {
-        "title": "DELIVERY_JSAR_CANARY",
-        "key": "jsar-canary"
-      }
-    ]
-  },
-  {
     "title": "CONTRIBUTING",
     "key": "contributing",
     "children": [
@@ -164,9 +210,5 @@
         "key": "jsar-style-guide"
       }
     ]
-  },
-  {
-    "title": "API_REFERENCE",
-    "key": "api-reference"
   }
 ]

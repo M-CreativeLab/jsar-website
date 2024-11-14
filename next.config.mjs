@@ -1,5 +1,6 @@
 import nextMdx from '@next/mdx'
 import remarkGfm from 'remark-gfm'
+import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 
 const withMDX = nextMdx({
   extension: /\.mdx?$/,
@@ -13,7 +14,9 @@ const withMDX = nextMdx({
         }
       ]
     ],
-    rehypePlugins: [],
+    rehypePlugins: [
+      rehypeMdxCodeProps,
+    ],
   },
 })
 

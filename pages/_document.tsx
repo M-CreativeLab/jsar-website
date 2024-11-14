@@ -22,7 +22,7 @@ function SiteDocument() {
   return (
     <Html lang="en">
       <Head>
-        <title>YodaOS JSAR: The embeddable AR runtime for JavaScript Developers</title>
+        <title>JSAR: The embeddable XR runtime for Web Developers</title>
         <base href="/" />
         <link rel="icon" href="logo-jsar.svg" />
         <script src="/js/iconfonts.js"></script>

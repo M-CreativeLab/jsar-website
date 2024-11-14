@@ -17,6 +17,7 @@ export function reportWebVitals({ id, name, label, value }: any) {
 }
 
 export default function App({ Component, pageProps }: any) {
+  console.info(pageProps)
   return (
     <NextIntlClientProvider
       formats={{
@@ -52,7 +53,7 @@ export default function App({ Component, pageProps }: any) {
           }
         }}
       >
-        <Layout>
+        <Layout footer={!pageProps.hideFooter}>
           <Component {...pageProps} />
         </Layout>
       </ConfigProvider>
