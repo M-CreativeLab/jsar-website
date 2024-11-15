@@ -8,7 +8,7 @@ export default {
     "menuSubItems": {
       "download": {
         "vscodeExtension": "VSCode 插件",
-        "JSARCanary": "JSAR Canary"
+        "JSARCanary": "Play WebXR"
       },
       "document": {
         "manual": "手册",

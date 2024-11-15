@@ -35,6 +35,17 @@ export default function RootLayout({
     }
   }, [])
 
+  let dropdownItemStyle: React.CSSProperties = {
+    fontSize: '16px',
+    display: 'flex',
+    flexDirection: 'row',
+    rowGap: '1rem',
+  }
+  let dropdownLogoStyle: React.CSSProperties = {
+    marginRight: '0.5rem',
+    width: '12px',
+  }
+
   return (
     <Layout>
       <Layout.Header
@@ -72,10 +83,12 @@ export default function RootLayout({
                   key: 'vscode-extension',
                   label: (
                     <a href="https://marketplace.visualstudio.com/items?itemName=RokidMCreativeLab.vscode-jsar-devtools" target="_blank">
-                      <Space style={{ fontSize: '16px' }}>
-                        <svg className="icon" aria-hidden="true">
-                          <use xlinkHref="#icon-vscode"></use>
-                        </svg>
+                      <Space style={dropdownItemStyle}>
+                        <div style={dropdownLogoStyle}>
+                          <svg className="icon" aria-hidden="true">
+                            <use xlinkHref="#icon-vscode"></use>
+                          </svg>
+                        </div>
                         {t('menuSubItems.download.vscodeExtension')}
                       </Space>
                     </a>
@@ -83,14 +96,16 @@ export default function RootLayout({
                 }, {
                   key: 'jsar-canary',
                   label: (
-                    <a href="https://ar.rokidcdn.com/web-assets/pages/jsar-canary/jsar-canary-latest.apk">
-                      <Space style={{ fontSize: '16px' }}>
-                        <Image
-                          src="https://ar.rokidcdn.com/web-assets/pages/jsar-canary/logo.png"
-                          alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
-                          width={12}
-                          height={12}
-                        />
+                    <a href="http://ar.rokidcdn.com/web-assets/yodaos-jsar/PlayWEBXR.apk">
+                      <Space style={dropdownItemStyle}>
+                        <div style={dropdownLogoStyle}>
+                          <Image
+                            src="https://ar.rokidcdn.com/web-assets/pages/jsar-canary/logo.png"
+                            alt="YodaOS JSAR: The embeddable AR runtime for JavaScript Developers"
+                            width={12}
+                            height={12}
+                          />
+                        </div>
                         {t('menuSubItems.download.JSARCanary')}
                       </Space>
                     </a>
