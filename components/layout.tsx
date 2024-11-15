@@ -117,28 +117,6 @@ export default function RootLayout({
                     </a>
                   )
                 }, {
-                  key: 'apis',
-                  label: (
-                    <a href={getLocaleHref(router, '/manual/latest/api-reference')}>
-                      <Space style={{ fontSize: '16px' }}>
-                        <UnorderedListOutlined />
-                        {t('menuSubItems.document.apiReference')}
-                      </Space>
-                    </a>
-                  )
-                }, {
-                  key: 'publish',
-                  label: (
-                    <a href={getLocaleHref(router, '/manual/latest/delivery')}>
-                      <Space style={{ fontSize: '16px' }}>
-                        <svg className="icon" aria-hidden="true">
-                          <use xlinkHref="#icon-package"></use>
-                        </svg>
-                        {t('menuSubItems.document.publish')}
-                      </Space>
-                    </a>
-                  )
-                }, {
                   key: 'examples',
                   label: (
                     <a href={getLocaleHref(router, '/playground')} target="_blank">

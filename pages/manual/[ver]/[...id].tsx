@@ -393,7 +393,7 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
                 value={router.query.ver}
                 style={{ flex: 1 }}
                 onChange={(ver) => {
-                  router.push(`/manual/${ver}/${getDocumentPath(router)}`, undefined, { shallow: false })
+                  router.push(`/manual/${ver}/introduction`, undefined, { shallow: false })
                 }}
               >
                 <Select.Option value="latest">{t('latest')}</Select.Option>

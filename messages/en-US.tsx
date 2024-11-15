@@ -14,7 +14,7 @@ export default {
         "manual": "Manual",
         "apiReference": "API Reference",
         "publish": "Publish",
-        "playground": "Playground"
+        "playground": "Playground (deprecated)"
       },
       "community": {
         "forum": "Forum",

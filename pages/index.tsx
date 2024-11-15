@@ -137,13 +137,6 @@ export default function Home() {
               </li>
             </ul>
             <Space style={{ marginTop: '20px' }}>
-              <a href="https://marketplace.visualstudio.com/items?itemName=RokidMCreativeLab.vscode-jsar-devtools" target="_blank">
-                <Button shape="round" size="large" type="primary" icon={
-                  <svg className="icon" aria-hidden="true">
-                    <use xlinkHref="#icon-vscode"></use>
-                  </svg>
-                }>{t('buttons.downloadVscodeExtension')}</Button>
-              </a>
               <Link href="manual/latest/introduction">
                 <Button shape="round" size="large">
                   {t('buttons.developerDocumentation')}
