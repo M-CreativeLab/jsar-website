@@ -1,19 +1,43 @@
-# 基础功能
+# 功能介绍
 
-本节将按照开发功能进行介绍，分别包括：
+在本章中，我们将介绍 JSAR 的开发功能，帮助应用开发者了解 JSAR 提供的功能及其使用方法。
 
-- [网格与模型](./features/meshes-and-models)
-- [材质](./features/materials)
-- [动画](./features/animations)
-- [音频](./features/audio)
-- [输入事件](./features/input-events)
+## 脚本与模块
 
-未来会添加的功能：
+JSAR 实现了基于 [v8 引擎][v8] 的脚本引擎和模块系统，允许开发者使用 JavaScript 编写应用程序脚本。在此基础上，JSAR 还支持 [TypeScript][]，开发者可以在运行时直接使用 TypeScript，无需任何配置或编译。
 
-- [ ] GUI
-- [ ] 粒子系统
-- [ ] 物理引擎
-- [ ] 灯光
-- [ ] 后处理
+- [模块](./features/modules)
+- [WebAssembly](./features/webassembly)
+- [Web Workers](./features/web-workers)
+- [TypeScript 支持](./features/typescript)
 
-如果你有任何功能需求，请在我们的 [GitHub Discussion](https://github.com/M-CreativeLab/jsar-website/discussions/new/choose) 反馈。
+[v8]: https://v8.dev/
+[TypeScript]: https://www.typescriptlang.org/
+
+## 空间（3D）开发
+
+JSAR 与 [Three.js][] 和 [Babylon.js][] 等 3D 库兼容，使开发者能够轻松创建 3D 应用程序。同时，JSAR 还为 [Vanilla JS][vanillajs] 开发者提供了支持文章，帮助他们集成自己的 3D 库。
+
+- [Three.js 支持](./features/three)
+- [Babylon.js 支持](./features/babylon)
+- [Vanilla.js 支持](./features/vanillajs)
+
+[Three.js]: https://threejs.org/
+[Babylon.js]: https://www.babylonjs.com/
+[vanillajs]: https://vanilla-js.com/
+
+## 多媒体
+
+多媒体是应用体验的重要组成部分，尤其是在 XR 领域。
+
+JSAR 提供了多媒体相关的 API，帮助开发者在应用中使用图像、音频和视频。此外，JSAR 还提供了增强多媒体体验的高级功能，例如简化的 3D 音频创建方式。
+
+- [音频系统](./features/audio)
+
+## 应用调试
+
+每个 JSAR 应用程序都是一个独立的进程，并会启动一个调试服务器，为开发者提供调试接口。调试服务器基于 [Chrome DevTools Protocol][cdp]，允许开发者在浏览器中调试应用程序。
+
+- [调试功能](./features/debugging)
+
+[cdp]: https://chromedevtools.github.io/devtools-protocol/

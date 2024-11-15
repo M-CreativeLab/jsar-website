@@ -1,0 +1,48 @@
+import { Typography } from 'antd'
+
+# 设置
+
+开始使用 JSAR 之前，需要准备以下内容：
+
+- 在支持的设备上安装 _Play WebXR_ 应用（`.apk` 文件）：[Rokid AR Studio][] 或 [Rokid AR Lite][]。
+- 创建一个通用的 Web 项目，最简单的方式是创建一个包含一些 HTML 内容的 `index.html` 文件。
+
+[Rokid AR Studio]: https://arstudio.rokid.com/  
+[Rokid AR Lite]: https://arlite.rokid.com/  
+
+## 安装 _Play WebXR_
+
+_Play WebXR_ 是一个基于 [Unity][] 开发的应用程序，可以运行在 [Rokid AR Studio][] 和 [Rokid AR Lite][] 上。你可以通过以下方式获取最新版本的应用程序：
+
+- 从设备上的应用商店获取。
+- 从 [这里](https://foobar) 下载最新的 `.apk` 文件，并通过 adb 手动安装。
+
+当设备上安装了 _Play WebXR_ 并打开后，你将进入 _Play WebXR_ 创建的独立空间。像所有的 Web 浏览器一样，它提供了一个输入框，用于输入你想运行的 URL。
+
+## 支持的 URL 类型
+
+类似于 Web 浏览器可以打开图像、视频、PDF 文件等，JSAR 也支持多种 URL 类型，包括：
+
+### 图像
+
+当 URL 以 `.jpg`、`.jpeg` 或 `.png` 结尾时，它将被识别为图像，并显示在虚拟空间中的屏幕上。
+
+### 3D 模型
+
+目前仅支持 `.glb` 和 `.gltf` 文件类型的 3D 模型。当用户输入此类 URL 时，3D 模型将以缩放后的尺寸渲染在空间中。
+
+### HTML
+
+当 URL 以 `.html` 结尾时，它将被识别为 [HTML][] 文件并运行在空间中。
+
+### XSML
+
+[XSML][] 是 JSAR 早期版本引入的一种 HTML 类似的标记语言，用于表示 3D 对象。但由于 HTML 已能实现相同的功能，因此不推荐再使用 XSML。
+
+## 下一步
+
+在下一节中，我们将从编写一个简单的 HTML 开始。
+
+[Unity]: https://unity.com/  
+[HTML]: https://en.wikipedia.org/wiki/HTML  
+[XSML]: https://jsar.netlify.app/en-us/manual/0.2.1/basic-concepts/intro-xsml  
