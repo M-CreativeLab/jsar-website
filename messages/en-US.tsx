@@ -140,6 +140,7 @@ export default {
       "FEATURES_TYPESCRIPT": "TypeScript support",
       "FEATURES_THREEJS": "Three.js support",
       "FEATURES_BABYLONJS": "Babylon.js support",
+      "FEATURES_VANILLAJS": "Vanilla.js support",
       "FEATURES_MODULES": "Modules",
       "FEATURES_WEBWORKERS": "Web Workers",
       "FEATURES_WEBASSEMBLY": "WebAssembly",

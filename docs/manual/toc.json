@@ -60,6 +60,10 @@
         "key": "babylon"
       },
       {
+        "title": "FEATURES_VANILLAJS",
+        "key": "vanillajs"
+      },
+      {
         "title": "FEATURES_MODULES",
         "key": "modules"
       },
