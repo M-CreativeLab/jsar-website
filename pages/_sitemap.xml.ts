@@ -57,7 +57,6 @@ function getPathsFromMenu(toc: TocItem[], parentKey: string | null): string[] {
 }
 
 export async function getServerSideProps({ res }) {
-
   let paths = [] as string[]
   const versions = await getVersions()
   const locals = ['zh', 'en-us']
