@@ -1,0 +1,149 @@
+# 在 JSAR 中运行应用程序和资源
+
+在前面的章节中，您已经了解了如何安装 _Play WebXR_ 以及如何在 HTML 或 XSML 中创建项目。接下来，让我们看看如何在 _Play WebXR_ 应用程序和其他方式中运行项目。
+
+JSAR 只是一个浏览器引擎库，它并未提供具体的运行方式，但我们构建了一些工具来帮助开发者运行您的项目。
+
+- [经典 Web 浏览器](./quick-start/run#classic-web-browser)
+- [_Play WebXR_ 应用程序](./quick-start/run#_play-webxr_-app)
+  - [x] Rokid AR Studio
+  - [ ] Rokid AR Lite (进行中)
+- [系统启动器](./quick-start/run#system-launcher)
+  - [ ] Rokid AR Studio (进行中)
+  - [ ] Rokid AR Lite (进行中)
+- [Visual Studio Code 扩展（仅适用于 XSML）](./quick-start/run#visual-studio-code-extension-(only-for-xsml))
+
+## 经典 Web 浏览器
+
+在经典 Web 浏览器中，运行 XSML 与 HTML 是不同的，本节将介绍如何运行它们。
+
+### 在经典 Web 浏览器中运行 HTML
+
+HTML 当然在任何经典 Web 浏览器中都支持，您只需要确保您的 HTML 可以在经典 Web 浏览器和 JSAR 中同时运行。以下是如何在经典 Web 浏览器中运行您的项目的示例：
+
+```html title="index.html"
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First WebXR</title>
+  <script type="module">
+    import * as THREE from 'three';
+
+    let renderer;
+    const gl = navigator.gl;
+    if (typeof gl !== 'undefined') {
+      /** 如果存在 navigator.gl，说明是 JSAR 环境 */
+      renderer = new THREE.WebGLRenderer({
+        canvas: {
+          addEventListener() { },
+        },
+        context: gl,
+      });
+      // ...
+    } else {
+      /** 如果不存在 navigator.gl，说明是经典 Web 浏览器 */
+      renderer = new THREE.WebGLRenderer(); // 这会创建一个默认的 canvas 元素。
+    }
+
+    // 在这里继续您的 3D 渲染。
+  </script>
+</head>
+<body>
+</body>
+</html>
+```
+
+如上面的代码所示，您可以使用 `navigator.gl` 来检测当前环境是否是 JSAR。如果该属性存在，则表示当前环境是 JSAR，您可以使用共享的 WebGL 上下文来创建一个 `three` 渲染器。否则，表示当前环境是经典的 Web 浏览器，您可以使用默认的 canvas 元素来创建一个 `three` 渲染器。
+
+通过这种方式，您可以轻松地在任何经典 Web 浏览器中运行 HTML 项目进行应用开发、测试和调试，然后再将其运行在 JSAR 中使用，是否很有趣呢？
+
+### 在经典 Web 浏览器中运行 XSML
+
+在 JSAR 的早期版本中，有一个库 [jsar-dom][]，它帮助在经典 Web 浏览器中运行 XSML 文件。它会解析 XSML 文件并在浏览器中使用 JavaScript 和 WebAssembly 运行。
+
+因此，您可以使用 [jsar-dom][] 来构建一个网页，在经典 Web 浏览器中运行您的 XSML，这是 [一个示例](https://github.com/M-CreativeLab/jsar-dom/blob/main/pages/impl-babylonjs.ts) 展示了如何构建它。此外，我们还提供了一个在线工具：[https://m-creativelab.github.io/jsar-dom/](https://m-creativelab.github.io/jsar-dom/)，您可以无需构建即可使用它。
+
+```sh
+https://m-creativelab.github.io/jsar-dom/?url={your_xsml_url}
+```
+
+例如：
+
+- 使用 GitHub Raw: [https://m-creativelab.github.io/jsar-dom/?url=https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-rokid-jungle/main/main.xsml](https://m-creativelab.github.io/jsar-dom/?url=https://raw.githubusercontent.com/M-CreativeLab/jsar-gallery-rokid-jungle/main/main.xsml)
+- 使用 jsDelivr: [https://m-creativelab.github.io/jsar-dom/?url=https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml](https://m-creativelab.github.io/jsar-dom/?url=https://cdn.jsdelivr.net/gh/M-CreativeLab/jsar-gallery-rokid-jungle@main/main.xsml)
+
+该在线工具还支持本地运行您的项目，但您需要在本地启动一个 HTTP 服务器。例如：
+
+```sh
+npm install serve -g
+```
+
+安装 `serve` 后，导航到您的项目目录并运行：
+
+```sh
+serve -p 8080 --cors
+```
+
+> 注意：请确保添加 `--cors` 参数，因为如果没有它，可能会出现跨域访问问题。这是因为 localhost 域和 jsar.netlify.app 域不同。
+
+然后，通过浏览器访问 `http://localhost:8080/main.xsml` 来验证您的服务是否正常运行。它应该返回您预期的 XSML 内容。
+
+具体路径可能会根据您的项目结构有所不同。如果您的 URL 返回如上所示的 XSML 内容，您可以将 URL 参数更改为本地 HTTP 服务器的 XSML 地址，例如：
+
+```
+https://m-creativelab.github.io/jsar-dom/?url=http://localhost:8080/main.xsml
+```
+
+> 注意：[jsar-dom][] 在线工具的 URL 并不稳定，如果您发现它无法使用，请通过 [GitHub Issues](https://github.com/M-CreativeLab/jsar-dom/issues/new) 联系我们。
+
+[jsar-dom]: https://github.com/m-CreativeLab/jsar-dom
+
+## _Play WebXR_ 应用
+
+_Play WebXR_ 是一款集成了 JSAR 的应用，可以运行 Web 应用、图像和 3D 模型。它目前支持 Rokid 的 AR Studio 和 AR Lite 设备。
+
+![logo](logo-playwebxr.jpg)
+
+> 想要安装 _Play WebXR_？请参阅 [安装](./quick-start/setup#install-_play-webxr_)。
+
+在 _Play WebXR_ 中运行 HTML、XSML 和其他支持的格式非常简单，只需在输入框中输入项目的 URL，然后点击 "OPEN" 按钮。
+
+![screenshot](playwebxr-screenshot-input.png)
+
+然后，您可以看到您的应用已经打开：
+
+![screenshot](playwebxr-screenshot-opened.png)
+
+打开应用后，您可以根据需要在空间中拖动、移动或移除它。当然，您也可以同时打开另一个应用。
+
+![screenshot](playwebxr-screenshot-apps.png)
+
+## 系统启动器
+
+如果您是 Web 开发者，并且没有 Android 开发经验，您可能不知道什么是系统启动器。在我们介绍如何运行之前，让我们先了解一下什么是系统启动器。
+
+在 Android 中，启动器是一个提供主屏幕的应用，这是用户在启动 Android 设备时看到的第一个屏幕，也是他们可以放置应用和小部件快捷方式的地方。
+
+在 XR 操作系统中，无论是否是 Android，它也有一个名为 "系统桌面" 或 "首页" 的启动器应用，帮助用户管理应用、窗口小部件和设置。此外，它还提供了 _虚拟窗口_ 来运行基于窗口的应用程序和 _虚拟卷_ 来运行 3D 应用程序。
+
+如果一个系统启动器集成了 JSAR，它可以在这些 _虚拟卷_ 中运行 Web 应用程序（网页和 WebXR 应用），用户可以在 "系统桌面" 中与它们进行交互。
+
+> 注意：由于系统启动器与 Rokid 设备的集成尚未完成，我们将在集成完成后再介绍。
+
+## Visual Studio Code 扩展（仅适用于 XSML）
+
+> 注意：此扩展仅适用于 XSML，如果您使用的是 HTML，请参考 [经典 Web 浏览器](./quick-start/run#classic-web-browser) 部分。
+
+![screenshot](howto-run-project.png)
+
+- 首先，打开任何 `*.xsml` 文件。
+- 选择打开的标签页，在右上角，您可以找到一个按钮来打开场景视图。
+- 点击按钮打开场景视图。
+
+打开场景视图后，有两个功能按钮：
+
+- 重置位置：将场景视图的位置重置为原点。
+- 刷新：重新加载场景视图。
+
+您可以根据需要点击这两个按钮。此外，当您通过编辑器更改项目文件时，场景视图将自动刷新。

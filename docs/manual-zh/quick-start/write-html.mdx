@@ -1,0 +1,153 @@
+# 编写您的第一个 HTML
+
+使用 JSAR 的方法与创建网页相同，开发者可以创建一个简单的 `index.html` 文件，内容如下：
+
+
+```html title="index.html"
+<html>
+<head>
+  <title>My First WebXR</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://ar.rokidcdn.com/web-assets/yodaos-jsar/dist/three/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1.0, 0.1, 1000);
+
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(0, 1, 1);
+    scene.add(light);
+
+    const geometry = new THREE.TorusKnotGeometry(0.2, 0.05, 50, 16);
+    const material = new THREE.MeshLambertMaterial({ color: 0x00ffff, wireframe: false });
+    const obj = new THREE.Mesh(geometry, material);
+    scene.add(obj);
+
+    navigator.xr.requestSession('immersive-ar', {}).then((session) => {
+      const baseLayer = new XRWebGLLayer(session, navigator.gl);
+      session.updateRenderState({ baseLayer });
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: {
+          // mock the canvas
+          addEventListener() { },
+        },
+        context: navigator.gl,
+      });
+      renderer.xr.enabled = true;
+      renderer.xr.setReferenceSpaceType('local');
+      renderer.xr.setSession(session);
+
+      function animate() {
+        obj.rotation.x += 0.01;
+        obj.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      camera.position.z = 5;
+      renderer.setAnimationLoop(animate);
+    }, (err) => {
+      console.warn('Failed to start XR session:', err);
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>
+```
+
+现在我们逐段解释上面的代码。
+
+## 使用 `importmap`
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://ar.rokidcdn.com/web-assets/yodaos-jsar/dist/three/build/three.module.js"
+    }
+  }
+</script>
+```
+
+[`importmap`][] 功能可以方便地配置模块的导入路径。在本例中，导入的 `three` 模块将解析为 URL `https://ar.rokidcdn.com/web-assets/yodaos-jsar/dist/three/build/three.module.js`。
+
+
+```html
+<script type="module">
+  import * as THREE from 'three';
+  // ...
+</script>
+```
+
+[`importmap`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap
+
+## 创建 `three` 渲染器
+
+在传统的 Web 浏览器中，为了让 3D 库正常工作，开发者需要创建一个 canvas 来获取 WebGL 上下文，然后创建库的渲染器以开始渲染。
+
+```js
+const renderer = new THREE.WebGLRenderer();
+```
+
+上述代码会调用 `document.createElement('canvas')` 来创建一个 canvas。开发者可以将 canvas 元素传递给构造函数，用作渲染的画布。
+
+```js
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('custom-canvas') });
+```
+
+在传统的 Web 浏览器中，渲染目标是浏览器窗口；而在 JSAR 中，所有应用（包括 WebXR 和宿主应用）共享同一个渲染目标，这也意味着 WebGL 上下文是共享的。创建一个 `three` 渲染器的方法如下：
+
+```js
+const gl = navigator.gl;
+const renderer = new THREE.WebGLRenderer({
+  canvas: {
+    // mock the canvas
+    addEventListener() { },
+  },
+  context: gl,
+});
+```
+
+JSAR 运行时在 `navigator` 对象上暴露了一个新的 __只读__ 属性 `gl: WebGL2RenderingContext`，应用程序可以使用该属性在共享的上下文中进行绘制。
+
+## 请求 XR 会话
+
+在 JSAR 中，开发者不需要通过 AR/VR 按钮来触发 XR 会话，因为设备已经处于 XR 模式，开发者可以直接请求会话：
+
+```js
+navigator.xr.requestSession('immersive-ar', {}).then((session) => {
+  const baseLayer = new XRWebGLLayer(session, navigator.gl);
+  session.updateRenderState({ baseLayer });
+
+  renderer.xr.enabled = true;
+  renderer.xr.setReferenceSpaceType('local');
+  renderer.xr.setSession(session);
+});
+```
+
+上述代码演示了如何配置 three.js 库与 WebXR 协同工作， 同样的代码在传统的 Web 浏览器中也可以使用。
+
+## 启动动画循环
+
+现在，`three` 渲染器和 WebXR 配置都已准备就绪，最后一步是启动动画循环：
+
+```js
+function animate() {
+  obj.rotation.x += 0.01;
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(animate);
+```
+Three.js 的 `renderer.setAnimationLoop` 方法用于启动动画循环，内部会调用 `XRSession` 的 `requestAnimationFrame` 方法，以获取下一帧的回调并在该时刻渲染场景。
+
+## 下一步
+
+在下一节中，我们将介绍 [XSML][] 部分，帮助您入门。对于新手来说，了解 [XSML][] 是可选的，因为该功能将被废弃。
+
+[XSML]: https://jsar.netlify.app/en-us/manual/0.2.1/basic-concepts/intro-xsml
