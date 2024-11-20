@@ -37,3 +37,4 @@ next-env.d.ts
 # docs
 docs-versions/*
 !docs-versions/.gitkeep
+.knowledge
