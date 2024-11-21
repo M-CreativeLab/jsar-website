@@ -1,0 +1,259 @@
+# Vanilla.js 支持
+
+[Vanilla.js][vanillajs] 并不是一个框架或库，而是用来描述使用纯 JavaScript 开发的术语，即不依赖任何附加库或框架。这与使用像 jQuery 这样提供大量实用函数和方法的库正好相反。
+
+> 想了解更多关于 Vanilla.js 的内容，可以访问其官方网站：[vanilla-js.com][vanillajs]。
+
+在本文中，我们将 “Vanilla.js” 用于指代在没有像 [Three.js][threejs] 或 [Babylon.js][babylonjs] 等 JSAR 支持的流行 3D 库的情况下，仅用纯 JavaScript/TypeScript 开发的方式。
+
+本文将介绍以下内容：
+
+- 如何使用 Vanilla.js 构建空间（3D）应用程序，通过 WebXR 和 WebGL API。
+- 如何在 JSAR 中支持自定义基于 WebGL 的 3D 库或框架。
+
+> WebGPU 功能将在后续版本中提供。
+
+## 准备 HTML
+
+在构建空间应用程序之前，您需要先准备基础的 HTML 页面：
+
+```html title="index-vanillajs.html"
+<html>
+<head>
+  <title>Vanilla.js Space Application</title>
+  <script type="module">
+    console.info(navigator.xr);
+    console.info(navigator.gl);
+
+    navigator.xr.requestSession('immersive-ar').then((session) => {
+      const baseLayer = new XRWebGLLayer(session, navigator.gl);
+      session.updateRenderState({ baseLayer });
+
+      // Start rendering
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>
+```
+
+在上述代码中，`navigator.xr` 是 WebXR 的 API，而 `navigator.gl` 是由 JSAR 引入的，用于提供用于立体渲染的 WebGL 上下文。
+
+需要注意的是，与传统的 Web 浏览器不同，传统浏览器需要在用户点击所谓的“VR/AR”按钮时调用 `navigator.xr.requestSession`，而在 JSAR 中，这并不是必要的，因为用户已经处于 XR 环境中。
+
+`navigator.gl` 是一个 `WebGLRenderingContext` 或 `WebGL2RenderingContext` 对象，由 JSAR 创建，用于 WebXR 的立体渲染，因此默认与 XR 兼容。
+
+上述代码请求了一个 `immersive-ar` 会话，并使用 `navigator.gl` 上下文创建了一个 `XRWebGLLayer` 对象，并将其设置为会话的基础层。这些代码行是必要的，它们告诉 JSAR 将 `navigator.gl` 上下文渲染到会话中。
+
+## 设置你的渲染器
+
+在开始渲染场景之前，你需要使用 `navigator.gl` 来创建缓冲区、着色器和其他渲染资源。
+
+```js title="create-vertex-buffer.js"
+const buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+  -1, -1, 0,
+  1, -1, 0,
+  -1, 1, 0,
+  1, 1, 0,
+]), gl.STATIC_DRAW);
+```
+
+```js title="create-shaders.js"
+const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vertexShader, `
+  attribute vec3 position;
+  void main() {
+    gl_Position = vec4(position, 1.0);
+  }
+`);
+gl.compileShader(vertexShader);
+
+const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fragmentShader, `
+  void main() {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  }
+`);
+gl.compileShader(fragmentShader);
+```
+
+```js title="create-program.js"
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+```
+
+上述代码片段只是一些示例，用于展示渲染上下文对象的使用方式，开发者可以自由使用任何 WebGL API 来创建自己的渲染管线。
+
+## 获取参考空间
+
+要在主场景中渲染你的场景，你需要请求获取一个参考空间，以指明你的场景的原点位置。
+
+```typescript title="request-reference-space.ts"
+let rootSpace: XRReferenceSpace;
+session.requestReferenceSpace('local').then((referenceSpace) => {
+  // Store the reference space for later use
+  rootSpace = referenceSpace;
+});
+```
+
+> 当前 JSAR 仅支持 `local` 参考空间类型，其他类型将在后续支持。
+
+在设置好渲染器后，你可以通过请求动画帧开始渲染你的场景。
+
+```typescript title="render-loop.ts"
+function render(time, frame: XRFrame) {
+  session.requestAnimationFrame(render);
+
+  if (!rootSpace) {
+    // Skip if the root reference space is not ready
+    return;
+  }
+  const viewerPose = frame.getViewerPose(rootSpace);
+  for (const view of viewerPose.views) {
+    console.info(view.projectionMatrix);
+    console.info(view.transform);
+  }
+  // This depends on which stero rendering mode is used: multiview or not?
+}
+
+session.requestAnimationFrame(render);
+```
+
+以上展示了如何在 WebXR 中请求动画帧，以及如何从帧对象中获取视图器姿态和视图。关于 `XRFrame` 和其他对象的更多用法，你可以参考 [WebXR 基础参考](./references/webxr)。
+
+## 立体渲染
+
+要将你的场景渲染到 XR 设备，你需要自己实现立体渲染。在 JSAR 中，你需要实现单次传递的立体渲染和单次传递的多视图渲染。这是因为在 JSAR 中，立体渲染模式并不是由应用程序决定的，而是由主机决定的。如果主机使用单次传递的多视图渲染，你需要将场景渲染到多视图帧缓冲区；否则，你需要将场景渲染到左右眼帧缓冲区。
+
+### 检查立体渲染模式
+
+要在运行时检查立体渲染模式，可以使用以下代码：
+
+```typescript title="check-stereo-rendering-mode.ts"
+if (baseLayer.multiviewRequired) {
+  // Use the single-pass multiview rendering
+} else {
+  // Use the single-pass stereo rendering
+}
+```
+
+`XRWebGLLayer` 对象在 JSAR 中新增了一个属性 `multiviewRequired`，用于指示是否需要使用单次传递的多视图渲染。
+
+> 在 YodaOS-Master 和 _Play WebXR_ 中，仅使用单次传递的多视图渲染，因为它可以减少应用程序的 CPU 使用率。如果你只打算开始支持一种模式，我们建议你优先实现单次传递的多视图渲染。
+
+### 单次传递的立体渲染
+
+要实现单次传递的立体渲染，你只需将对象渲染到左右眼帧缓冲区，而无需创建最终的帧缓冲区进行显示。
+
+```typescript title="single-pass-stereo-rendering.ts"
+for (const view of viewerPose.views) {
+  // Set the projection matrix and view matrix
+  gl.bindFramebuffer(gl.FRAMEBUFFER, baseLayer.framebuffer);
+  gl.useProgram(program);
+
+  // Set the matrices
+  gl.uniformMatrix4fv(gl.getUniformLocation(program, 'projectionMatrix'), false, view.projectionMatrix);
+  gl.uniformMatrix4fv(gl.getUniformLocation(program, 'viewMatrix'), false, view.transform.inverse.matrix);
+
+  // Draw the objects
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+```
+
+在每个视图中，设置投影矩阵和视图矩阵，并将场景绘制到 `XRWebGLLayer` 对象的帧缓冲区中。
+
+### Single-pass multiview 渲染
+
+要实现 Single-pass multiview 渲染，你需要将对象渲染到帧缓冲区中。
+
+```typescript title="single-pass-multiview-rendering.ts"
+gl.bindFramebuffer(gl.FRAMEBUFFER, baseLayer.framebuffer);
+
+for (const view of viewerPose.views) {
+  // Set the matrices
+  const postfix = view.eye === 'left' ? 'L' : 'R';
+  gl.uniformMatrix4fv(gl.getUniformLocation(program, `projectionMatrix${postfix}`), false, view.projectionMatrix);
+  gl.uniformMatrix4fv(gl.getUniformLocation(program, `viewMatrix${postfix}`), false, view.transform.inverse.matrix);
+}
+
+// Draw the objects
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.enableVertexAttribArray(0);
+gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+```
+
+如你所见，单次传递的多视图渲染与单次传递的立体渲染类似，但你需要为每个眼睛视图设置矩阵，并且只需绘制一次对象。
+
+为了使多视图渲染生效，你需要修改着色器以支持多视图渲染。例如，你可以使用以下代码来获取眼睛索引：
+
+```glsl title="multiview-shader.vert"
+#extension GL_OVR_multiview2 : enable
+layout(num_views = 2) in;
+
+uniform mat4 projectionMatrixL;
+uniform mat4 projectionMatrixR;
+uniform mat4 viewMatrixL;
+uniform mat4 viewMatrixR;
+
+void main() {
+  gl_Position = (gl_ViewID_OVR == 0 ? projectionMatrixL : projectionMatrixR) * (gl_ViewID_OVR == 0 ? viewMatrixL : viewMatrixR) * vec4(position, 1.0);
+}
+```
+
+```glsl title="multiview-shader.frag"
+#extension GL_OVR_multiview2 : enable
+
+void main() {
+  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}
+```
+
+在上述着色器中，为了支持多视图渲染进行了以下修改：
+
+- 使用 `GL_OVR_multiview2` 扩展以启用多视图渲染。
+- 使用 `layout(num_views = 2) in;` 指定视图数量，这表示输入的视图为两个。
+- 使用 `gl_ViewID_OVR` 获取当前视图索引以选择相应的矩阵。
+
+### 合成最终帧缓冲区
+
+在传统的 Web 浏览器中，你需要创建最终帧缓冲区以显示立体渲染结果，但在 JSAR 中，这一步由宿主环境的应用完成，因此应用程序不需要执行这个合成步骤。
+
+因此，尤其是在 Single-pass multiview 渲染中，你不需要使用 `OCCLUS_multiview` 来支持多视图渲染中的 MSAA，因为使用的帧缓冲区完全由宿主环境管理，应用程序只需将对象渲染到帧缓冲区即可。
+
+## 限制
+
+完成上述工作后，你可以在主场景中看到你的虚拟对象，但当你移动你的头部（视图器）时，你会发现渲染有延迟。这是因为 JSAR 使用异步渲染方法来避免宿主环境渲染线程被阻塞，因此应用程序的对象总是延迟渲染。
+
+为了解决这个问题，你需要对着色器中的 uniform 进行一些更改：
+
+- 对于投影矩阵或矩阵组，使用以下名称：
+  - `projectionMatrix`
+  - `projectionMatrices`
+- 对于视图矩阵或矩阵组，使用以下名称：
+  - `viewMatrix`
+  - `viewMatrices`
+- 不要使用 `modelViewMatrix`、`modelViewProjectionMatrix` 等。
+- 不要为视图和投影矩阵使用 uniform 块。
+
+通过上述更改，JSAR 渲染器将使用当前时间获取正确的矩阵，从而消除延迟。
+
+我们建议开发者不要使用诸如 `modelViewMatrix`、`modelViewProjectionMatrix` 等矩阵，即使 JSAR 条件性地支持它们。
+
+原因是 JSAR 会在当前帧中替换视图和投影矩阵以避免渲染延迟。如果在着色器中使用了计算的矩阵，则无法通过视图和投影矩阵替换已计算的矩阵，延迟问题仍然存在。
+
+如果你仍然想使用 `modelViewMatrix`，JSAR 提供了一个 GLSL 预处理器，将着色器中的 `modelViewMatrix` 替换为 `viewMatrix * modelMatrix`，因此需要在应用程序中声明并设置 `modelMatrix` uniform。例如，Three.js 提供了对此的支持。
+
+此外，不要为视图和投影矩阵使用 uniform 块，因为 uniform 块在渲染器中缺少必要的数据结构，因此无法在当前帧中替换相应的矩阵，延迟问题仍然存在。
+
+[threejs]: https://threejs.org/
+[babylonjs]: https://www.babylonjs.com/
+[vanillajs]: https://vanilla-js.com/
