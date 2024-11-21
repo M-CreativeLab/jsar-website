@@ -1,0 +1,111 @@
+# 重新认识 HTML
+
+大多数 Web 初学者从 HTML 开始学习。
+
+HTML 是 Web 的基础。HTML 的全称是超文本标记语言（HyperText Markup Language）。它是一种定义内容结构的标记语言，由一系列元素组成，用于封装或包装内容的不同部分，使其以特定方式显示或执行某些行为。
+
+```html title="index.html"
+<html>
+  <head>
+    <title>My First Web Page</title>
+  </head>
+  <body>
+    <h1>Welcome to My First Web Page</h1>
+    <p>This is a paragraph of text.</p>
+  </body>
+</html>
+```
+
+## 空间中的 HTML
+
+在传统的 Web 浏览器中，HTML 通常用于创建基于窗口的应用程序，即网页。浏览器渲染 HTML 并将其显示给用户，用户可以通过点击链接、按钮和其他元素与页面进行交互。
+
+这种行为已经扩展到其他基于屏幕的设备，例如智能手机和平板电脑。在这些设备上，HTML 或网页被用于创建窗口化的应用程序。
+
+但问题是：在没有窗口的设备上，例如 AR 眼镜或 VR 头显，HTML 应该如何在空间中工作？
+
+相信每个 Web 开发者都会迅速给出这个答案：在渲染 HTML 之前，创建一个虚拟屏幕或窗口。
+
+好消息是，我们确实采用了这种方式来在空间中渲染网页：
+
+1. 首先创建一个虚拟窗口。
+2. 将 HTML 内容渲染到该窗口中。
+3. 将窗口显示在空间中。
+4. 将用户的交互传递到窗口。
+
+现在，我们可以在虚拟窗口中使用任何网页，并且可以与其进行交互。这种体验类似于桌面 Web 浏览器或智能手机的体验，这是将 Web 带入空间的第一步。
+
+下一步则是支持非窗口化的对象及其交互。
+
+## XSML 的诞生
+
+由于 `<body>` 仅表示一个二维平面，无法直接在其中放置立方体或球体等三维对象，因此我们需要扩展 HTML 来支持三维对象。我们将其称为 XSML（扩展空间标记语言，eXtended Space Markup Language）。
+
+```html title="index.xsml"
+<xsml>
+  <head>
+    <title>My First Web box</title>
+  </head>
+  <space>
+    <cube />
+    <sphere />
+    <plane>
+      <h1>Welcome to My First Web Page</h1>
+      <p>This is a paragraph of text.</p>
+    </plane>
+  </scene>
+</xsml>
+```
+
+在 XSML 中，我们对 HTML 做了以下更改：
+
+- 将 `<body>` 替换为 `<space>`，现在根元素可以表示一个三维空间。
+- 添加新标签来表示 3D 对象，例如 `<cube>`、`<sphere>` 和 `<plane>`。
+- 将原始 HTML 标签（如 `<h1>` 和 `<p>`）放置在 `<plane>` 标签内。
+
+这看起来很简单，也很容易使用，对吗？
+
+答案是：__不__。最困难的部分在于 _XSML 不是 HTML_，它是一种需要从头开始编写的全新语言。这导致了 Web 生态系统被分裂成 HTML 和 XSML 两个部分，而没有人愿意学习一种新语言，更不愿意将现有的 HTML 内容迁移到 XSML。
+
+第二个需要考虑的问题是，Web APIs 和 CSS 的设计是基于 HTML 上下文的。如果我们要引入一种新的标记语言，就需要付出大量努力来让 Web APIs 和 CSS 与 XSML 设计兼容。
+
+因此，__向后兼容性__ 是 Web 在空间中成功的关键。我们需要找到一种方法，在不破坏现有 Web 生态系统的情况下扩展 HTML，以支持 3D 对象。
+
+## 重新认识 HTML
+
+为了找到保持向后兼容性的关键，我们需要回顾 HTML，并找到扩展它以支持 3D 对象的方法。
+
+答案是：HTML 不是一个应用程序，而是一个文档。
+
+```html
+<body>
+  <h1>Welcome to My First Web Page</h1>
+  <p>This is a paragraph of text.</p>
+</body>
+```
+
+上述代码片段提供了以下信息：文档中有一个标题和一段文字，浏览器会将其渲染给用户，但并没有明确告诉浏览器如何渲染它以及使用什么渲染目标。
+
+这意味着 `<body>` 既不是一个窗口，也不是一个空间体积，也不是我们可以看到的任何东西。它只是一个文档，一段信息。
+
+基于此，HTML 文档可以像传统 Web 浏览器一样被渲染在窗口中，也可以被渲染在三维空间中。例如，`<body>` 可以被渲染在一个立方体内，`<h1>` 可以被渲染在一个平面上，`<p>` 也可以被渲染在另一个平面上。
+
+让我们向 HTML 文档中添加一个 3D 对象：
+
+```html title="index.html"
+<body>
+  <h1>Welcome to My First Web Page</h1>
+  <p>This is a paragraph of text.</p>
+  <sphere />
+</body>
+```
+
+上述 HTML 在文档中添加了一个 `<sphere />` 标签，并将其插入在 `<p>` 标签之后。渲染器可以在段落之后渲染该球体，用户能够在同一空间中看到球体和其他二维元素。
+
+这完全向后兼容！现有的 HTML（网页）可以无需任何修改就被渲染到三维空间中。剩下的工作是扩展 HTML 以支持 3D 对象和交互，这是渐进增强的一部分。对于所有 Web 开发者，他们只需像以前一样工作，并按需学习新的元素和属性，将 XR 体验添加到他们的网页中。
+
+## 期望
+
+JSAR 的愿景是帮助 Web 开发者利用现有的 Web 技术创建 XR 体验。这是一种对 Web 的渐进增强，并且是向后兼容的。
+
+基于这个愿景，XSML 已被弃用，取而代之的是扩展的 HTML。

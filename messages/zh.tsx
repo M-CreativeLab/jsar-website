@@ -131,7 +131,7 @@ export default {
       "BASIC_CONCEPTS": "基本概念",
       "BASIC_CONCEPTS_SPACES": "空间",
       "BASIC_CONCEPTS_INPUT_SOURCES": "输入系统",
-      "BASIC_CONCEPTS_RECAP_OF_HTML": "重新看待 HTML",
+      "BASIC_CONCEPTS_RECAP_OF_HTML": "重新认识 HTML",
       "SPACE_MINIAPPS": "空间小程序",
       "XSML": "XSML",
       "SCSS": "SCSS",

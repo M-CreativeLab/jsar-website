@@ -1,0 +1,45 @@
+# 输入源（Input Sources）
+
+[输入源][Input Sources] 是 [WebXR 设备 API][WebXR Device API] 和 [OpenXR 1.1][OpenXR 1.1] 中引入的一种机制，用于与 XR 环境进行交互。它代表了可用于与 XR 环境交互的物理或虚拟输入设备。输入源可以是控制器、手部或其他输入设备。
+
+[OpenXR 1.1]: https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#input  
+[WebXR Device API]: https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API  
+[Input Sources]: https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API/Inputs#input_sources  
+
+## 基于屏幕平台的输入系统
+
+在桌面和移动设备上，输入系统主要基于特定的输入设备，例如鼠标、键盘、触摸屏或游戏手柄。为了与这些设备交互，开发框架通常会为相应的输入设备提供专门的 API。
+
+例如，在 Web 开发中：
+- [Pointer Events][] API 用于处理鼠标、触摸和触控笔输入。
+- [Keyboard Events][] API 用于处理键盘输入。
+- [Gamepad API][] 用于处理游戏手柄输入。
+
+这是因为不同用例的输入设备明确定义，而在 XR 开发中，输入设备则更加多样和复杂。
+
+[Pointer Events]: https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events  
+[Keyboard Events]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent  
+[Gamepad API]: https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API
+
+## XR 中的输入系统
+
+在 XR 开发中，输入系统更加复杂，因为输入设备种类更加多样。例如：
+
+- **控制器（Controllers）**：带有按钮、触发器和操纵杆的手持设备。
+- **手部（Hands）**：用户的手部在 XR 环境中被跟踪。
+- **眼睛（Eyes）**：用户的视线方向在 XR 环境中被跟踪。
+- **语音（Voice）**：用户的语音指令在 XR 环境中被识别。
+
+为了处理这些多样化的输入设备，引入了输入源（Input Source）来表示可用于与 XR 环境交互的物理或虚拟输入源。
+
+值得注意的是，输入源并不一定代表特定的输入设备。例如，在 visionOS Safari 中引入了一个名为 `transient-pointer` 的输入源，这个输入源仅在用户捏手势时可用，并且会根据视线方向和捏手势的手部姿势计算目标射线。这表明输入源可以由多个输入设备的协作产生，因为 WebXR 的输入源设计更抽象和灵活。
+
+> 想了解更多 Safari 的自然输入设计？请查看这篇博文：[为 Apple Vision Pro WebXR 引入自然输入](https://webkit.org/blog/15162/introducing-natural-input-for-webxr-in-apple-vision-pro/)。
+
+## JSAR 中的输入源
+
+JSAR 实现了 WebXR 输入源，并提供了适用于 Rokid XR 设备的通用输入源，例如：`main-controller`、`hand-left`、`hand-right` 和 `eye`。有关 JSAR 实现的输入源的完整规范，请参阅 [参考文档/WebXR 输入源](./references/webxr-input-sources)。
+
+## 下一步
+
+在下一节中，让我们[重新认识 HTML](./basic-concepts/recap-of-html)，了解为何我们仍然选择使用 HTML 来构建 XR 应用程序。
