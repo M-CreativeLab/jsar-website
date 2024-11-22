@@ -11,3 +11,10 @@ details {
 summary {
   font-size: 16px;
 }
+
+/**
+ * Patch for code blocks in markdown
+ */
+.mdx-code code > span {
+  background-color: transparent !important;
+}

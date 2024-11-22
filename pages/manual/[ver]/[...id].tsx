@@ -220,7 +220,7 @@ function createCustomMdxComponents(router: NextRouter): MDXComponents {
       }
 
       return (
-        <Typography.Paragraph style={containerStyle}>
+        <Typography.Paragraph style={containerStyle} className={'mdx-code'}>
           {props?.title && <Typography.Text style={titleStyle}>{props.title}</Typography.Text>}
           <CodeBlock
             language={lang}
