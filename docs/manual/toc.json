@@ -158,14 +158,6 @@
         "key": "helloworld-babylonjs"
       },
       {
-        "title": "TUTORIALS_CREATE_MESHES",
-        "key": "create-meshes"
-      },
-      {
-        "title": "TUTORIALS_CREATE_MATERIALS",
-        "key": "create-materials"
-      },
-      {
         "title": "TUTORIALS_HTTPS_REQUEST",
         "key": "https-request"
       },
