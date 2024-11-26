@@ -14,7 +14,7 @@ export default {
         "manual": "手册",
         "apiReference": "API 参考",
         "publish": "发布",
-        "playground": "Playground"
+        "playground": "Playground（已弃用）"
       },
       "community": {
         "forum": "论坛",
