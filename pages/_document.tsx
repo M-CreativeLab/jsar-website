@@ -22,7 +22,7 @@ function SiteDocument() {
   return (
     <Html lang="en">
       <Head>
-        <title>JSAR: The embeddable XR runtime for Web Developers</title>
+        <title>JSAR: The XR-first Web Runtime</title>
         <base href="/" />
         <link rel="icon" href="logo-jsar.svg" />
         <script src="/js/iconfonts.js"></script>

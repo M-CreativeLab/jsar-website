@@ -40,6 +40,52 @@ function toMenuTreeData(toc: TocItem[], parentKey: string | null, selectedKey?: 
 }
 
 /**
+ * It selects an item from the tree.
+ * 
+ * @param path The path to select such as "introduction" or "introduction/overview".
+ * @param root The root of the tree.
+ * @param prefix The prefix used to match the item key.
+ * @returns The selected item or null if not found.
+ */
+function selectItemFromTree(path: string, root: TocItem[], prefix = ''): TocItem | null {
+  if (path[0] === '/') {
+    path = path.substring(1)
+  }
+
+  let hasNext: boolean
+  let currentPart: string
+  const slashIndex = path.search('/')
+  if (slashIndex === -1) {
+    hasNext = false
+    currentPart = path
+  } else {
+    hasNext = true
+    currentPart = path.substring(0, slashIndex)
+  }
+
+  let currentPath: string
+  if (prefix) {
+    if (prefix.endsWith('/')) {
+      currentPath = `${prefix}${currentPart}`
+    } else {
+      currentPath = `${prefix}/${currentPart}`
+    }
+  } else {
+    currentPath = currentPart
+  }
+
+  for (let item of root) {
+    if (item.key === currentPath) {
+      if (hasNext) {
+        return selectItemFromTree(path.substring(slashIndex + 1), item.children || [], currentPath)
+      } else {
+        return item
+      }
+    }
+  }
+}
+
+/**
  * Extract the paths from the menu
  * 
  * @param toc The menu
@@ -304,8 +350,14 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
   const [docPath, setDocPath] = useState<string | undefined>(undefined)
   const [markdownChildren, setMarkdownChildren] = useState<React.ReactNode>(null)
 
+  if (docPath) {
+    const currentItem = selectItemFromTree(docPath, treeData)
+    if (currentItem?.title) {
+      document.title = t(`toc.${currentItem.title}`)
+    }
+  }
+
   useEffect(() => {
-    console.info(router)
     if (router.isReady) {
       const newDocPath = getDocumentPath(router)
       setDocPath(newDocPath)
@@ -343,7 +395,6 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
       }
 
       // load language version
-      console.info(verPrefix, router, router.locale, newDocPath)
       try {
         MarkdownContent = require(`../../../${verPrefix}/manual-${router.locale}/${newDocPath}.mdx`).default
       } catch (_e) {
@@ -352,6 +403,8 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
       setMarkdownChildren(<MarkdownContent components={createCustomMdxComponents(router)} />)
     }
   }, [router.asPath])
+
+  // console.info(docPath, treeData);
 
   return (
     <Layout
@@ -429,6 +482,7 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
                 if (selectedKeys.length > 0) {
                   const key = selectedKeys[0] as string
                   router.push(`/manual/${router.query.ver}/${key}`)
+                  console.info(selectedKeys)
                   // Scroll to top on select
                   if (contentRef.current) {
                     contentRef.current.scroll({
