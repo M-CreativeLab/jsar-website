@@ -30,6 +30,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# netlify
+.netlify
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -38,3 +41,4 @@ next-env.d.ts
 docs-versions/*
 !docs-versions/.gitkeep
 .knowledge
+public/embeddings.json

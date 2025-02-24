@@ -528,6 +528,7 @@ export default function Page({ versions, tocItems }: { versions: string[], tocIt
         </div>
       </Layout.Sider>
       <Layout.Content
+        id="content"
         ref={contentRef}
         style={{
           height: '100%',

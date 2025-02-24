@@ -5,6 +5,7 @@ import { Button, Dropdown, Layout, Space } from 'antd'
 import Image from 'next/image'
 import { NextRouter, useRouter } from 'next/router'
 import Footer from './footer'
+import Assistant from './assistant'
 
 function getLocaleHref(router: NextRouter, href: string): string {
   if (router.locale === router.defaultLocale) {
@@ -196,6 +197,9 @@ export default function RootLayout({
         {children}
       </Layout.Content>
       {footer && <Footer />}
+      <div style={{ position: 'fixed', bottom: 25, right: 25, zIndex: 1000 }}>
+        <Assistant />
+      </div>
     </Layout>
   )
 }

@@ -15,6 +15,33 @@ summary {
 /**
  * Patch for code blocks in markdown
  */
-.mdx-code code > span {
+.mdx-code code>span {
   background-color: transparent !important;
+}
+
+@property --scroll-background {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+#assistant>ul {
+  transition: --scroll-background 0.5s;
+}
+
+#assistant>ul:hover {
+  --scroll-background: rgba(0, 0, 0, 0.12);
+}
+
+#assistant>ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+#assistant>ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+#assistant>ul::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-background);
+  border-radius: 1rem;
 }
