@@ -95,5 +95,7 @@ const pendingData = Promise.all(
 )
 
 pendingData.then(data => {
-  fs.writeFileSync(path.join(targetDir, 'embeddings.json'), JSON.stringify(data))
+  const filename = path.join(targetDir, 'sections.json')
+  fs.writeFileSync(filename, JSON.stringify(data))
+  console.info('Wrote embeddings to ', filename)
 })
