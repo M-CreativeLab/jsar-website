@@ -28,6 +28,8 @@ export default async (req: Request, _context: Context): Promise<Response> => {
   return new Response(response.body, {
     headers: {
       'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
     }
   })
 }

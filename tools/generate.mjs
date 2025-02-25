@@ -95,7 +95,12 @@ const pendingData = Promise.all(
 )
 
 pendingData.then(data => {
+  const content = JSON.stringify(data)
   const filename = path.join(targetDir, 'embeddings.json')
-  fs.writeFileSync(filename, JSON.stringify(data))
+  fs.writeFileSync(filename, content)
   console.info('Wrote embeddings to ', filename)
+
+  const filenameInEdgeFunctions = path.join(targetDir, '../netlify/edge-functions', 'embeddings.json')
+  fs.writeFileSync(filenameInEdgeFunctions, content)
+  console.info('Wrote embeddings to ', filenameInEdgeFunctions)
 })
