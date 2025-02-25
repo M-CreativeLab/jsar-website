@@ -1,4 +1,3 @@
-import * as fs from 'fs/promises'
 import type { Context } from '@netlify/functions'
 import * as v1 from './v1/index.mts'
 
@@ -7,13 +6,6 @@ export default async (req: Request, context: Context) => {
   let subPath = context.params[0]
   if (!subPath.startsWith('/')) {
     subPath = '/' + subPath // must start with '/'
-  }
-
-  try {
-    const embeddings = JSON.parse(await fs.readFile('./embeddings.json', 'utf8'))
-    console.info('[embeddings] loaded:', embeddings.length)
-  } catch (err) {
-    console.error('[embeddings] error:', err)
   }
 
   if (version === 'v1') {
