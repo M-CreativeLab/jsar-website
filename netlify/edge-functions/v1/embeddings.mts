@@ -1,6 +1,6 @@
 import type { Context } from '@netlify/functions'
 
-export default async (req: Request, context: Context): Promise<Response> => {
+export default async (req: Request, _context: Context): Promise<Response> => {
   const url = new URL(req.url)
   const input = url.searchParams.get('input')
   if (!input) {
@@ -12,7 +12,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env['INFERENCE_API_KEY']}`
+      'Authorization': `Bearer ${Netlify.env.get('INFERENCE_API_KEY')}`
     },
     body: JSON.stringify({
       model: 'BAAI/bge-large-zh-v1.5',

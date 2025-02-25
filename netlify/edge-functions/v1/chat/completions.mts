@@ -13,7 +13,7 @@ export default async (req: Request, _context: Context): Promise<Response> => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env['INFERENCE_API_KEY']}`
+      'Authorization': `Bearer ${Netlify.env.get('INFERENCE_API_KEY')}`
     },
     body: JSON.stringify({
       model: 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B',
